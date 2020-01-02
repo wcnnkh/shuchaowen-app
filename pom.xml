@@ -1,6 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>shuchaowen</groupId>
+		<artifactId>shuchaowen</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 	<groupId>shuchaowen-app</groupId>
 	<artifactId>shuchaowen-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -8,19 +13,42 @@
 	<modules>
 		<module>shuchaowen-app-public</module>
 		<module>shuchaowen-app-simple</module>
+		<module>shuchaowen-app-common</module>
+		<module>shuchaowen-app-user-pojo</module>
+		<module>shuchaowen-app-user-service</module>
+		<module>shuchaowen-app-user-service-simple</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>shuchaowen-core</artifactId>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-common</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-user-pojo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-user-service</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
