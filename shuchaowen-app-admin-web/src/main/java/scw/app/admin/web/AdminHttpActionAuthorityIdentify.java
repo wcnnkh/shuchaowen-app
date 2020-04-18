@@ -9,8 +9,8 @@ import scw.mvc.action.authority.HttpActionAuthorityIdentify;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.http.HttpChannel;
 import scw.result.ResultFactory;
-import scw.util.Result;
-import scw.util.Result.AnyResult;
+import scw.util.result.SimpleResult;
+import scw.util.result.SimpleResult.AnyResult;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class AdminHttpActionAuthorityIdentify implements
@@ -22,7 +22,7 @@ public class AdminHttpActionAuthorityIdentify implements
 	@Autowired
 	private ResultFactory resultFactory;
 
-	public Result<Object> identify(HttpChannel httpChannel,
+	public SimpleResult<Object> identify(HttpChannel httpChannel,
 			HttpAction httpAction, HttpActionAuthority httpActionAuthority)
 			throws Throwable {
 		AdminRole adminRole = adminRoleFactory.getAdminRole(httpChannel,
