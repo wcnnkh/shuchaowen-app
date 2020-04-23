@@ -9,12 +9,10 @@ import scw.mvc.action.authority.HttpActionAuthorityIdentify;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.http.HttpChannel;
 import scw.result.ResultFactory;
-import scw.util.result.CommonResult;
-import scw.util.result.CommonResult.AnyResult;
+import scw.util.SimpleResult;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class AdminHttpActionAuthorityIdentify implements
-		HttpActionAuthorityIdentify {
+public class AdminHttpActionAuthorityIdentify implements HttpActionAuthorityIdentify {
 	@Autowired
 	private AdminRoleGroupActionService adminRoleGroupActionService;
 	@Autowired
@@ -22,21 +20,18 @@ public class AdminHttpActionAuthorityIdentify implements
 	@Autowired
 	private ResultFactory resultFactory;
 
-	public CommonResult<Object> identify(HttpChannel httpChannel,
-			HttpAction httpAction, HttpActionAuthority httpActionAuthority)
-			throws Throwable {
-		AdminRole adminRole = adminRoleFactory.getAdminRole(httpChannel,
-				httpAction);
+	public SimpleResult<Object> identify(HttpChannel httpChannel, HttpAction httpAction,
+			HttpActionAuthority httpActionAuthority) throws Throwable {
+		AdminRole adminRole = adminRoleFactory.getAdminRole(httpChannel, httpAction);
 		if (adminRole == null) {
-			return new AnyResult(false, resultFactory.authorizationFailure());
+			return new SimpleResult<Object>(false, resultFactory.authorizationFailure());
 		}
 
-		if (adminRoleGroupActionService.check(adminRole.getGroupId(),
-				httpActionAuthority.getId())) {
-			return new AnyResult(true);
+		if (adminRoleGroupActionService.check(adminRole.getGroupId(), httpActionAuthority.getId())) {
+			return new SimpleResult<Object>(true, null);
 		}
 
-		return new AnyResult(false, resultFactory.error("权限不足"));
+		return new SimpleResult<Object>(false, resultFactory.error("权限不足"));
 	}
 
 }
