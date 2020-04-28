@@ -4,13 +4,13 @@ import scw.app.payment.PaymentChannelSupports;
 import scw.app.payment.PaymentException;
 import scw.app.payment.PaymentRequest;
 import scw.app.payment.PaymentResponse;
-import scw.app.payment.PaymentServiceAdapter;
+import scw.app.payment.PaymentSupport;
 import scw.app.payment.PaymentVoucher;
 import scw.net.message.InputMessage;
 
-public class WeixinAppPaymentServiceAdapter implements PaymentServiceAdapter {
+public class WeixinAppPaymentSupport implements PaymentSupport {
 
-	public boolean isAdapter(String channel) {
+	public boolean isSupport(String channel) {
 		return PaymentChannelSupports.WX_APP.getName().equals(channel);
 	}
 

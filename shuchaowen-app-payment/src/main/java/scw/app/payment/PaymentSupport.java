@@ -2,8 +2,8 @@ package scw.app.payment;
 
 import scw.net.message.InputMessage;
 
-public interface PaymentServiceAdapter {
-	boolean isAdapter(String channel);
+public interface PaymentSupport {
+	boolean isSupport(String channel);
 
 	/**
 	 * 发起一个支付请求

@@ -4,12 +4,12 @@ import scw.app.payment.PaymentChannelSupports;
 import scw.app.payment.PaymentException;
 import scw.app.payment.PaymentRequest;
 import scw.app.payment.PaymentResponse;
-import scw.app.payment.PaymentServiceAdapter;
+import scw.app.payment.PaymentSupport;
 import scw.app.payment.PaymentVoucher;
 import scw.net.message.InputMessage;
 
-public class AliAppPaymentServiceAdapter implements PaymentServiceAdapter{
-	public boolean isAdapter(String channel) {
+public class AliAppPaymentSupport implements PaymentSupport{
+	public boolean isSupport(String channel) {
 		return PaymentChannelSupports.ALI_APP.getName().equals(channel);
 	}
 
