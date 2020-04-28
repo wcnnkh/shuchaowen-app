@@ -18,6 +18,7 @@
 		<module>shuchaowen-app-admin-interface</module>
 		<module>shuchaowen-app-admin-service</module>
 		<module>shuchaowen-app-admin-web</module>
+		<module>shuchaowen-app-payment</module>
 	</modules>
 
 	<properties>
