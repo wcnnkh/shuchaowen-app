@@ -9,11 +9,11 @@ import scw.core.utils.StringUtils;
 import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Controller;
-import scw.result.DataResult;
-import scw.result.ResultFactory;
 import scw.security.authority.AuthorityTree;
 import scw.security.login.LoginService;
 import scw.security.token.UserToken;
+import scw.util.result.DataResult;
+import scw.util.result.ResultFactory;
 
 @Controller("admin")
 public class IndexController {

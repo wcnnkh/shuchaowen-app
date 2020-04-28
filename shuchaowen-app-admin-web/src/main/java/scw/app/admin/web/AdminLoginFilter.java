@@ -6,7 +6,7 @@ import scw.mvc.action.filter.ActionFilterChain;
 import scw.mvc.action.filter.HttpActionFilter;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.http.HttpChannel;
-import scw.result.ResultFactory;
+import scw.util.result.ResultFactory;
 
 public class AdminLoginFilter extends HttpActionFilter {
 	@Autowired

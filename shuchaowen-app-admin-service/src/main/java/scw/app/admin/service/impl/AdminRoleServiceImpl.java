@@ -10,10 +10,10 @@ import scw.core.Pagination;
 import scw.core.instance.annotation.Configuration;
 import scw.core.reflect.CloneUtils;
 import scw.db.DB;
-import scw.result.DataResult;
-import scw.result.ResultFactory;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
+import scw.util.result.DataResult;
+import scw.util.result.ResultFactory;
 
 @Configuration
 public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {

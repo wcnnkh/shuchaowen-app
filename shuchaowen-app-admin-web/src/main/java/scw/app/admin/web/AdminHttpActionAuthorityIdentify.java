@@ -8,8 +8,8 @@ import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityIdentify;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.http.HttpChannel;
-import scw.result.ResultFactory;
-import scw.util.SimpleResult;
+import scw.util.result.ResultFactory;
+import scw.util.result.SimpleResult;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class AdminHttpActionAuthorityIdentify implements HttpActionAuthorityIdentify {

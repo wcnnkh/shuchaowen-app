@@ -2,7 +2,7 @@ package scw.app.admin.service;
 
 import java.util.Collection;
 
-import scw.result.Result;
+import scw.util.result.Result;
 
 public interface AdminRoleGroupActionService {
 	boolean check(int groupId, String actionId);

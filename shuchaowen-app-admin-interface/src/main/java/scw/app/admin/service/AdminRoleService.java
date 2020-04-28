@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.admin.model.AdminRoleModel;
 import scw.app.admin.pojo.AdminRole;
 import scw.core.Pagination;
-import scw.result.DataResult;
+import scw.util.result.DataResult;
 
 public interface AdminRoleService {
 	AdminRole getById(int id);
