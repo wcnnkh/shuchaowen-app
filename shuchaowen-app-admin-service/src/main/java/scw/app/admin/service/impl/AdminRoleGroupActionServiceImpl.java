@@ -6,12 +6,12 @@ import java.util.List;
 import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.beans.annotation.Autowired;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.db.DB;
 import scw.util.result.Result;
 import scw.util.result.ResultFactory;
 
-@Configuration
+@Service
 public class AdminRoleGroupActionServiceImpl extends BaseImpl implements
 		AdminRoleGroupActionService {
 	@Autowired
