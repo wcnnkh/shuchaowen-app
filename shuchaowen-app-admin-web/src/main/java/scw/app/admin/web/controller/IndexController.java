@@ -9,6 +9,7 @@ import scw.core.utils.StringUtils;
 import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Controller;
+import scw.net.http.HttpMethod;
 import scw.security.authority.AuthorityTree;
 import scw.security.login.LoginService;
 import scw.security.token.UserToken;
@@ -26,7 +27,7 @@ public class IndexController {
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 
-	@Controller(value = "login")
+	@Controller(value = "login", methods=HttpMethod.POST)
 	public DataResult<UserToken<Integer>> login(String userName, String password) {
 		if (StringUtils.isEmpty(userName, password)) {
 			return resultFactory.parameterError();
