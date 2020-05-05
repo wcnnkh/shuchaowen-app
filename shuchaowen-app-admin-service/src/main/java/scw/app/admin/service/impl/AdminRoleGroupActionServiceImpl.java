@@ -43,4 +43,8 @@ public class AdminRoleGroupActionServiceImpl extends BaseImpl implements
 		return resultFactory.success();
 	}
 
+	public List<AdminRoleGroupAction> getActionList(int groupId) {
+		return db.getByIdList(AdminRoleGroupAction.class, groupId);
+	}
+
 }

@@ -16,6 +16,8 @@ import scw.util.result.ResultFactory;
 
 @Configuration
 public class AdminActionFilter extends HttpActionFilter {
+	public static final String ROUTE_ATTR_NAME = "route";
+	
 	@Autowired
 	private AdminRoleFactory adminRoleFactory;
 	@Autowired

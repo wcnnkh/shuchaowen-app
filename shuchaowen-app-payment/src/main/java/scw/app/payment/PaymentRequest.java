@@ -14,7 +14,7 @@ public class PaymentRequest implements Serializable {
 	private String orderNo;
 	private String channel;
 	private long amount;
-	private String client;
+	private String clientIp;
 	private Currency currency;
 	private String subject;
 	private String body;
@@ -45,12 +45,12 @@ public class PaymentRequest implements Serializable {
 		this.amount = amount;
 	}
 
-	public String getClient() {
-		return client;
+	public String getClientIp() {
+		return clientIp;
 	}
 
-	public void setClient(String client) {
-		this.client = client;
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
 	}
 
 	public Currency getCurrency() {
