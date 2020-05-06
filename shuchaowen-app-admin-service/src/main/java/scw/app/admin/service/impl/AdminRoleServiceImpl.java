@@ -8,8 +8,8 @@ import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.InitMethod;
 import scw.beans.annotation.Service;
+import scw.core.Copy;
 import scw.core.Pagination;
-import scw.core.instance.InstanceUtils;
 import scw.db.DB;
 import scw.security.SignatureUtils;
 import scw.sql.SimpleSql;
@@ -61,7 +61,7 @@ public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {
 			return resultFactory.error("账号已存在");
 		}
 
-		AdminRole adminRole = InstanceUtils.copy(AdminRole.class, adminRoleModel);
+		AdminRole adminRole = Copy.copy(AdminRole.class, adminRoleModel);
 		db.save(adminRole);
 		return resultFactory.success(adminRole);
 	}
@@ -72,7 +72,7 @@ public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {
 			return resultFactory.error("不存在的用户");
 		}
 
-		InstanceUtils.copy(adminRoleModel, adminRole);
+		Copy.copy(adminRoleModel, adminRole);
 		db.update(adminRole);
 		return resultFactory.success(adminRole);
 	}
