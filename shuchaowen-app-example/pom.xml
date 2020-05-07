@@ -6,20 +6,17 @@
 		<artifactId>shuchaowen-app</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>shuchaowen-app-admin-pojo</artifactId>
+	<groupId>shuchaowen-app-example</groupId>
+	<artifactId>shuchaowen-app-example</artifactId>
 
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-common</artifactId>
+			<artifactId>shuchaowen-app-admin-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-orm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-security</artifactId>
+			<groupId>shuchaowen-app</groupId>
+			<artifactId>shuchaowen-app-admin-service</artifactId>
 		</dependency>
 	</dependencies>
 </project>

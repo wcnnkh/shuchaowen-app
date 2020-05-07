@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.admin.model.AdminRoleGroupModel;
 import scw.app.admin.model.AdminRoleGroupTree;
 import scw.app.admin.pojo.AdminRoleGroup;
-import scw.result.DataResult;
+import scw.util.result.DataResult;
 
 public interface AdminRoleGroupService {
 	AdminRoleGroup getById(int id);

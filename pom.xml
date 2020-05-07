@@ -18,6 +18,8 @@
 		<module>shuchaowen-app-admin-interface</module>
 		<module>shuchaowen-app-admin-service</module>
 		<module>shuchaowen-app-admin-web</module>
+		<module>shuchaowen-app-payment</module>
+		<module>shuchaowen-app-example</module>
 	</modules>
 
 	<properties>
@@ -56,6 +58,16 @@
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-admin-interface</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-admin-web</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-admin-service</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

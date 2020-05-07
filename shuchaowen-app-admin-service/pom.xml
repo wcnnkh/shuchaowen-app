@@ -13,8 +13,16 @@
 			<artifactId>shuchaowen-app-admin-interface</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>shuchaowen-app</groupId>
+			<artifactId>shuchaowen-app-admin-pojo</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>shuchaowen</groupId>
 			<artifactId>shuchaowen-db</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-mvc</artifactId>
 		</dependency>
 	</dependencies>
 </project>

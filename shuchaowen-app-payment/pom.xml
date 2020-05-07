@@ -6,20 +6,17 @@
 		<artifactId>shuchaowen-app</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>shuchaowen-app-admin-pojo</artifactId>
-
+	<artifactId>shuchaowen-app-payment</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-common</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-orm</artifactId>
+			<artifactId>shuchaowen-mvc</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-security</artifactId>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>3.7.26.ALL</version>
 		</dependency>
 	</dependencies>
 </project>
