@@ -10,11 +10,11 @@ import scw.app.admin.service.AdminRoleService;
 import scw.app.admin.web.AdminLogin;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
+import scw.mapper.MapperUtils;
 import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Controller;
 import scw.net.http.HttpMethod;
-import scw.orm.ORMUtils;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.login.LoginService;
@@ -66,8 +66,7 @@ public class IndexController {
 		} else {
 			List<AdminRoleGroupAction> adminRoleGroupActions = adminRoleGroupActionService
 					.getActionList(adminRole.getGroupId());
-			List<String> actionIds = ORMUtils.getObjectOperations()
-					.getColumnValueList(adminRoleGroupActions, "actionId");
+			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(adminRoleGroupActions, "actionId");
 			authorityTrees = httpActionAuthorityManager
 					.getRelationAuthorityTreeList(actionIds,
 							new MenuAuthorityFilter<HttpActionAuthority>());
