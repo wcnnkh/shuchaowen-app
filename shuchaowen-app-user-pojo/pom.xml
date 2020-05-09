@@ -13,13 +13,5 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-common</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-orm</artifactId>
-		</dependency>
 	</dependencies>
 </project>
