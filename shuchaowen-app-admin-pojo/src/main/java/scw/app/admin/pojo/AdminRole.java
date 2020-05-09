@@ -1,9 +1,9 @@
 package scw.app.admin.pojo;
 
 import scw.app.admin.model.AdminRoleModel;
-import scw.orm.annotation.PrimaryKey;
-import scw.orm.sql.annotation.AutoIncrement;
-import scw.orm.sql.annotation.Table;
+import scw.sql.orm.annotation.AutoIncrement;
+import scw.sql.orm.annotation.PrimaryKey;
+import scw.sql.orm.annotation.Table;
 
 @Table
 public class AdminRole extends AdminRoleModel {
