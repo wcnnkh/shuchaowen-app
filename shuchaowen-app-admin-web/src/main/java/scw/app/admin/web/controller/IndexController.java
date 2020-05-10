@@ -15,11 +15,11 @@ import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Controller;
 import scw.net.http.HttpMethod;
+import scw.result.DataResult;
+import scw.result.ResultFactory;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.login.LoginService;
-import scw.util.result.DataResult;
-import scw.util.result.ResultFactory;
 
 @Controller("admin")
 public class IndexController {

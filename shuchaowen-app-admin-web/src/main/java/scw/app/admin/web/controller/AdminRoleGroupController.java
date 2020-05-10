@@ -12,6 +12,7 @@ import scw.app.admin.web.AdminActionFilter;
 import scw.app.admin.web.AdminLogin;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
+import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Authority;
 import scw.mvc.annotation.AuthorityParent;
 import scw.mvc.annotation.Controller;
@@ -31,7 +32,7 @@ public class AdminRoleGroupController {
 	@Autowired
 	private AdminRoleService adminRoleService;
 	@Autowired
-	private scw.util.result.ResultFactory resultFactory;
+	private HttpActionAuthorityManager httpActionAuthorityManager;
 
 	@Authority(value = "管理员权限组", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementAuthority") })
 	@Controller(value = "list")
@@ -43,7 +44,7 @@ public class AdminRoleGroupController {
 		
 		return adminRoleGroupService.getSubList(adminRole.getGroupId());
 	}
-
+	
 	@Authority("创建/更新管理员权限组")
 	@Controller(value = "create_or_update", methods = HttpMethod.POST)
 	public void create(int id, String name, List<String> actionIds) {
