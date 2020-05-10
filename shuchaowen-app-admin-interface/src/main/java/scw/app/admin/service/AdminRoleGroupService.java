@@ -1,9 +1,10 @@
 package scw.app.admin.service;
 
-import java.util.Collection;
 import java.util.List;
 
+import scw.app.admin.model.AdminRoleGroupInfo;
 import scw.app.admin.pojo.AdminRoleGroup;
+import scw.result.DataResult;
 import scw.result.Result;
 
 public interface AdminRoleGroupService {
@@ -11,5 +12,7 @@ public interface AdminRoleGroupService {
 
 	List<AdminRoleGroup> getSubList(int id);
 
-	Result createOrUpdate(int id, String name, Collection<String> authorityIds);
+	DataResult<AdminRoleGroupInfo> createOrUpdate(AdminRoleGroupInfo adminRoleGroupInfo);
+	
+	Result disableGroup(int groupId, boolean disable);
 }
