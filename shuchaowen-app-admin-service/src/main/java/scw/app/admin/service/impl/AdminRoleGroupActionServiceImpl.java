@@ -8,8 +8,8 @@ import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
 import scw.db.DB;
-import scw.util.result.Result;
-import scw.util.result.ResultFactory;
+import scw.result.Result;
+import scw.result.ResultFactory;
 
 @Service
 public class AdminRoleGroupActionServiceImpl extends BaseImpl implements

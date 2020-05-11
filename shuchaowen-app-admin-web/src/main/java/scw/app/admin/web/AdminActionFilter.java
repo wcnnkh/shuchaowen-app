@@ -12,7 +12,7 @@ import scw.mvc.action.filter.HttpActionFilter;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.annotation.Authority;
 import scw.mvc.http.HttpChannel;
-import scw.util.result.ResultFactory;
+import scw.result.ResultFactory;
 
 @Configuration
 public class AdminActionFilter extends HttpActionFilter {

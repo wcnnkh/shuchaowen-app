@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 import scw.app.user.pojo.enums.UnionIdType;
-import scw.orm.annotation.PrimaryKey;
-import scw.orm.sql.annotation.AutoIncrement;
-import scw.orm.sql.annotation.Column;
-import scw.orm.sql.annotation.Table;
+import scw.sql.orm.annotation.AutoIncrement;
+import scw.sql.orm.annotation.Column;
+import scw.sql.orm.annotation.PrimaryKey;
+import scw.sql.orm.annotation.Table;
 
 @Table
 public class User implements Serializable {

@@ -6,7 +6,7 @@ import scw.app.admin.model.AdminRoleModel;
 import scw.app.admin.pojo.AdminRole;
 import scw.core.GlobalPropertyFactory;
 import scw.core.Pagination;
-import scw.util.result.DataResult;
+import scw.result.DataResult;
 
 public interface AdminRoleService {
 	public static String DEFAULT_ADMIN_NAME = GlobalPropertyFactory

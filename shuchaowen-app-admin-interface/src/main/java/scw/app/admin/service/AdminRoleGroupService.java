@@ -2,20 +2,17 @@ package scw.app.admin.service;
 
 import java.util.List;
 
-import scw.app.admin.model.AdminRoleGroupModel;
-import scw.app.admin.model.AdminRoleGroupTree;
+import scw.app.admin.model.AdminRoleGroupInfo;
 import scw.app.admin.pojo.AdminRoleGroup;
-import scw.util.result.DataResult;
+import scw.result.DataResult;
+import scw.result.Result;
 
 public interface AdminRoleGroupService {
 	AdminRoleGroup getById(int id);
 
 	List<AdminRoleGroup> getSubList(int id);
 
-	List<AdminRoleGroupTree> getAdminRoleGroupTreeList(int id);
-
-	DataResult<AdminRoleGroup> create(AdminRoleGroupModel adminRoleGroupModel);
-
-	DataResult<AdminRoleGroup> update(int id,
-			AdminRoleGroupModel adminRoleGroupModel);
+	DataResult<AdminRoleGroupInfo> createOrUpdate(AdminRoleGroupInfo adminRoleGroupInfo);
+	
+	Result disableGroup(int groupId, boolean disable);
 }

@@ -2,7 +2,7 @@ package scw.app.admin.model;
 
 import java.io.Serializable;
 
-import scw.orm.sql.annotation.Index;
+import scw.sql.orm.annotation.Index;
 
 public class AdminRoleModel implements Serializable {
 	private static final long serialVersionUID = 1L;
