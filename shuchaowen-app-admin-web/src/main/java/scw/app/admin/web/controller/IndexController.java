@@ -11,7 +11,6 @@ import scw.app.admin.web.AdminLogin;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.mapper.MapperUtils;
-import scw.mvc.action.authority.HttpActionAuthority;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
 import scw.mvc.annotation.Controller;
 import scw.net.http.HttpMethod;
@@ -19,6 +18,7 @@ import scw.result.DataResult;
 import scw.result.ResultFactory;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
+import scw.security.authority.http.HttpAuthority;
 import scw.security.login.LoginService;
 
 @Controller("admin")
@@ -53,23 +53,23 @@ public class IndexController {
 
 	@AdminLogin
 	@Controller(value = "menus")
-	public DataResult<List<AuthorityTree<HttpActionAuthority>>> getMenus(int uid) {
+	public DataResult<List<AuthorityTree<HttpAuthority>>> getMenus(int uid) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {
 			return resultFactory.error("用户不存在");
 		}
 
-		List<AuthorityTree<HttpActionAuthority>> authorityTrees;
+		List<AuthorityTree<HttpAuthority>> authorityTrees;
 		if (adminRole.getUserName().equals(AdminRoleService.DEFAULT_ADMIN_NAME)) {
 			authorityTrees = httpActionAuthorityManager.getAuthorityTreeList(
-					null, new MenuAuthorityFilter<HttpActionAuthority>());
+					null, new MenuAuthorityFilter<HttpAuthority>());
 		} else {
 			List<AdminRoleGroupAction> adminRoleGroupActions = adminRoleGroupActionService
 					.getActionList(adminRole.getGroupId());
 			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(adminRoleGroupActions, "actionId");
 			authorityTrees = httpActionAuthorityManager
 					.getRelationAuthorityTreeList(actionIds,
-							new MenuAuthorityFilter<HttpActionAuthority>());
+							new MenuAuthorityFilter<HttpAuthority>());
 		}
 		return resultFactory.success(authorityTrees);
 	}
