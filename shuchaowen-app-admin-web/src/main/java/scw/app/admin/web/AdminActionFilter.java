@@ -5,17 +5,17 @@ import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
+import scw.mvc.Channel;
+import scw.mvc.action.Action;
 import scw.mvc.action.authority.HttpActionAuthorityManager;
+import scw.mvc.action.filter.ActionFilter;
 import scw.mvc.action.filter.ActionFilterChain;
-import scw.mvc.action.filter.HttpActionFilter;
-import scw.mvc.action.manager.HttpAction;
 import scw.mvc.annotation.ActionAuthority;
-import scw.mvc.http.HttpChannel;
 import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
 
 @Configuration
-public class AdminActionFilter extends HttpActionFilter {
+public class AdminActionFilter implements ActionFilter {
 	public static final String ROUTE_ATTR_NAME = "route";
 	
 	@Autowired
@@ -27,8 +27,7 @@ public class AdminActionFilter extends HttpActionFilter {
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 
-	@Override
-	protected Object doHttpFilter(HttpChannel channel, HttpAction action,
+	public Object doFilter(Channel channel, Action action,
 			ActionFilterChain chain) throws Throwable {
 		AdminLogin adminLogin = action.getAnnotatedElement().getAnnotation(
 				AdminLogin.class);
