@@ -3,7 +3,7 @@ package scw.app.admin.model;
 import java.io.Serializable;
 
 import scw.app.admin.pojo.AdminRole;
-import scw.security.token.UserToken;
+import scw.security.login.UserToken;
 
 public class AdminLoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;

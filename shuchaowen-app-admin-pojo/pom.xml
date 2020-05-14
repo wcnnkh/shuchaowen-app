@@ -13,9 +13,5 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-common</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-security</artifactId>
-		</dependency>
 	</dependencies>
 </project>

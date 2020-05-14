@@ -8,7 +8,7 @@ import scw.core.utils.StringUtils;
 import scw.mvc.action.manager.HttpAction;
 import scw.mvc.http.HttpChannel;
 import scw.security.login.LoginService;
-import scw.security.token.UserToken;
+import scw.security.login.UserToken;
 
 @Configuration
 public class DefaultAdminRoleFactory implements AdminRoleFactory {
