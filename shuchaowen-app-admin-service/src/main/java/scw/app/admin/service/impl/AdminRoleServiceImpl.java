@@ -16,7 +16,7 @@ import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
-import scw.util.value.property.PropertyFactory;
+import scw.value.property.PropertyFactory;
 
 @Service
 public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {
