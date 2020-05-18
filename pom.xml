@@ -20,6 +20,9 @@
 		<module>shuchaowen-app-admin-web</module>
 		<module>shuchaowen-app-payment</module>
 		<module>shuchaowen-app-example</module>
+		<module>shuchaowen-app-product-pojo</module>
+		<module>shuchaowen-app-product-interface</module>
+		<module>shuchaowen-app-product-service</module>
 	</modules>
 
 	<properties>
