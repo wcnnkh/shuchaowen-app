@@ -5,12 +5,12 @@ import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
+import scw.mvc.HttpChannel;
+import scw.mvc.action.Action;
+import scw.mvc.action.ActionFilter;
+import scw.mvc.action.ActionService;
+import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
-import scw.net.http.server.mvc.HttpChannel;
-import scw.net.http.server.mvc.action.Action;
-import scw.net.http.server.mvc.action.ActionFilter;
-import scw.net.http.server.mvc.action.ActionService;
-import scw.net.http.server.mvc.annotation.ActionAuthority;
 import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
 

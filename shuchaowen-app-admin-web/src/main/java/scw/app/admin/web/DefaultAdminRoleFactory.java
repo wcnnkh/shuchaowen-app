@@ -5,8 +5,8 @@ import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
-import scw.net.http.server.mvc.HttpChannel;
-import scw.net.http.server.mvc.action.Action;
+import scw.mvc.HttpChannel;
+import scw.mvc.action.Action;
 import scw.security.login.LoginService;
 import scw.security.login.UserToken;
 
@@ -17,7 +17,7 @@ public class DefaultAdminRoleFactory implements AdminRoleFactory {
 	@Autowired
 	private LoginService<Integer> loginService;
 
-	public AdminRole getAdminRole(HttpChannel httpChannel, Action httpAction) {
+	public AdminRole getAdminRole(HttpChannel httpChannel, Action action) {
 		String token = httpChannel.getString("token");
 		if (StringUtils.isEmpty(token)) {
 			return null;
