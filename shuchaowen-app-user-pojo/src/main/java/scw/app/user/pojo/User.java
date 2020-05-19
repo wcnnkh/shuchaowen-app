@@ -18,7 +18,6 @@ public class User implements Serializable {
 	private long cts;
 	@Column(type = "varchar", length = 4096)
 	private Map<UnionIdType, String> unionIdMap;
-	private String nickName;
 	private String password;
 
 	public long getUid() {
@@ -51,13 +50,5 @@ public class User implements Serializable {
 
 	public void setUnionIdMap(Map<UnionIdType, String> unionIdMap) {
 		this.unionIdMap = unionIdMap;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
 	}
 }

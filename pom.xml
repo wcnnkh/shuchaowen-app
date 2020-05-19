@@ -13,7 +13,6 @@
 		<module>shuchaowen-app-common</module>
 		<module>shuchaowen-app-user-pojo</module>
 		<module>shuchaowen-app-user-service</module>
-		<module>shuchaowen-app-user-service-simple</module>
 		<module>shuchaowen-app-admin-pojo</module>
 		<module>shuchaowen-app-admin-interface</module>
 		<module>shuchaowen-app-admin-service</module>
@@ -23,6 +22,7 @@
 		<module>shuchaowen-app-product-pojo</module>
 		<module>shuchaowen-app-product-interface</module>
 		<module>shuchaowen-app-product-service</module>
+		<module>shuchaowen-app-user-interface</module>
 	</modules>
 
 	<properties>
@@ -46,6 +46,11 @@
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-user-pojo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-user-interface</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
