@@ -18,5 +18,9 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-admin-service</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-db</artifactId>
+		</dependency>
 	</dependencies>
 </project>

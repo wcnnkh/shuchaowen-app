@@ -3,14 +3,14 @@ package scw.app.admin.web;
 import scw.app.admin.pojo.AdminRole;
 import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.core.utils.StringUtils;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.security.login.LoginService;
 import scw.security.login.UserToken;
 
-@Configuration
+@Service
 public class DefaultAdminRoleFactory implements AdminRoleFactory {
 	@Autowired
 	private AdminRoleService adminRoleService;
