@@ -25,6 +25,6 @@ public interface AdminRoleService {
 
 	DataResult<AdminRole> update(int id, AdminRoleModel adminRoleModel);
 
-	Pagination<List<AdminRole>> getPagination(String userName, String nickName,
-			int page, int limit);
+	Pagination<List<AdminRole>> getAdminRolePagination(int groupId, int page, int limit,
+			String userName, String nickName);
 }

@@ -1,13 +1,17 @@
 package scw.app.admin.service.impl;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import scw.app.admin.model.AdminRoleGroupInfo;
 import scw.app.admin.pojo.AdminRoleGroup;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleGroupService;
+import scw.app.common.model.ElementUiTree;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
+import scw.core.utils.CollectionUtils;
 import scw.db.DB;
 import scw.io.serialzer.SerializerUtils;
 import scw.result.DataResult;
@@ -63,5 +67,41 @@ public class AdminRoleGroupServiceImpl extends BaseImpl implements
 
 		adminRoleGroup.setDisable(disable);
 		return resultFactory.success();
+	}
+
+	public List<ElementUiTree<Integer>> getAdminRoleGroupTreeList(
+			int parentGroupId) {
+		List<AdminRoleGroup> adminRoleGroups = getSubList(parentGroupId);
+		if (CollectionUtils.isEmpty(adminRoleGroups)) {
+			return null;
+		}
+
+		List<ElementUiTree<Integer>> elementUiTrees = new LinkedList<ElementUiTree<Integer>>();
+		for (AdminRoleGroup group : adminRoleGroups) {
+			ElementUiTree<Integer> tree = new ElementUiTree<Integer>(
+					group.getId(), group.getName(),
+					getAdminRoleGroupTreeList(group.getId()));
+			elementUiTrees.add(tree);
+		}
+		return elementUiTrees;
+	}
+
+	public List<Integer> getAllSubList(int groupId) {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(groupId);
+		appendSubList(list, groupId);
+		return list;
+	}
+
+	public void appendSubList(List<Integer> list, int groupId) {
+		List<AdminRoleGroup> groups = getSubList(groupId);
+		if (CollectionUtils.isEmpty(groups)) {
+			return;
+		}
+
+		for (AdminRoleGroup group : groups) {
+			list.add(group.getId());
+			appendSubList(list, group.getId());
+		}
 	}
 }

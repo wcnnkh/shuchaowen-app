@@ -14,6 +14,7 @@ import scw.app.admin.service.AdminRoleGroupService;
 import scw.app.admin.service.AdminRoleService;
 import scw.app.admin.web.AdminActionFilter;
 import scw.app.admin.web.AdminLogin;
+import scw.app.common.model.ElementUiTree;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
 import scw.http.HttpMethod;
@@ -45,7 +46,7 @@ public class AdminRoleGroupController {
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 	@Autowired
 	private scw.result.ResultFactory resultFactory;
-	
+
 	@ActionAuthority(value = "管理员权限组", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementAuthority") })
 	@Controller(value = "list")
 	public Collection<AdminRoleGroup> list(int uid, int parentGroupId) {
@@ -59,13 +60,25 @@ public class AdminRoleGroupController {
 	}
 
 	@AdminLogin
+	@Controller(value = "trees")
+	public List<ElementUiTree<Integer>> getAdminRoleGroupTreeList(int uid) {
+		AdminRole adminRole = adminRoleService.getById(uid);
+		if (adminRole == null) {
+			throw new TapeDescriptionException("系统错误，用户不存在");
+		}
+
+		return adminRoleGroupService.getAdminRoleGroupTreeList(adminRole
+				.getGroupId());
+	}
+
+	@AdminLogin
 	@Controller(value = "authoritys")
 	public Object getUserAuthority(int groupId, int uid) {
 		AdminRoleGroup group = adminRoleGroupService.getById(groupId);
-		if(group == null){
-			return resultFactory.error("参数错误"); 
+		if (group == null) {
+			return resultFactory.error("参数错误");
 		}
-		
+
 		AdminRole adminRole = adminRoleService.getById(uid);
 		List<AuthorityTree<HttpAuthority>> authorityTrees;
 		if (adminRole.getUserName().equals(AdminRoleService.DEFAULT_ADMIN_NAME)) {
@@ -85,11 +98,8 @@ public class AdminRoleGroupController {
 				.getActionList(groupId);
 		List<String> actionIds = MapperUtils.getMapper().getFieldValueList(
 				adminRoleGroupActions, "actionId");
-		List<HttpAuthority> authorities = httpActionAuthorityManager
-				.getRelationAuthorityList(actionIds, null);
 		map.put("authorityTrees", authorityTrees);
-		map.put("selectedIds",
-				MapperUtils.getMapper().getFieldValueList(authorities, "id"));
+		map.put("selectedIds", actionIds);
 		return map;
 	}
 
