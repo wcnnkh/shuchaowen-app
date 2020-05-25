@@ -5,15 +5,5 @@
     <artifactId>shuchaowen-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>shuchaowen-app-user-service-simple</artifactId>
-  <dependencies>
-  	<dependency>
-  		<groupId>shuchaowen-app</groupId>
-  		<artifactId>shuchaowen-app-user-service</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>shuchaowen</groupId>
-  		<artifactId>shuchaowen-integration</artifactId>
-  	</dependency>
-  </dependencies>
+  <artifactId>shuchaowen-app-product-service</artifactId>
 </project>

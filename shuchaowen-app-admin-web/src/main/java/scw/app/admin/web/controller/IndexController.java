@@ -33,7 +33,7 @@ public class IndexController {
 	private AdminRoleGroupActionService adminRoleGroupActionService;
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
-
+	
 	@Controller(value = "login", methods = HttpMethod.POST)
 	public DataResult<AdminLoginInfo> login(String userName, String password) {
 		if (StringUtils.isEmpty(userName, password)) {
