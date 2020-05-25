@@ -2,6 +2,7 @@ package scw.app.admin.web.controller;
 
 import java.util.List;
 
+import scw.app.admin.model.AdminRoleModel;
 import scw.app.admin.pojo.AdminRole;
 import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
@@ -15,9 +16,11 @@ import scw.http.HttpMethod;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
+import scw.mvc.annotation.RequestBody;
 import scw.mvc.annotation.ResultFactory;
 import scw.mvc.exception.TapeDescriptionException;
 import scw.mvc.security.HttpActionAuthorityManager;
+import scw.result.DataResult;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
@@ -49,7 +52,12 @@ public class AdminRoleController {
 
 	@ActionAuthority("创建/更新管理员信息")
 	@Controller(value = "create_or_update", methods = HttpMethod.POST)
-	public void create() {
+	public DataResult<AdminRole> create(int id, @RequestBody AdminRoleModel adminRoleModel) {
+		if (id == 0) {
+			return adminRoleService.create(adminRoleModel);
+		} else {
+			return adminRoleService.update(id, adminRoleModel);
+		}
 	}
 
 	@ActionAuthority("创建管理员")
