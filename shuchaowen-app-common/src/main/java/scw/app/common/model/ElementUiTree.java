@@ -11,13 +11,13 @@ import java.util.Collection;
 public class ElementUiTree<V> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final V value;
-	private final String lable;
+	private final String label;
 	private final Collection<ElementUiTree<V>> children;
 
-	public ElementUiTree(V value, String lable,
+	public ElementUiTree(V value, String label,
 			Collection<ElementUiTree<V>> children) {
 		this.value = value;
-		this.lable = lable;
+		this.label = label;
 		this.children = children;
 	}
 
@@ -25,8 +25,8 @@ public class ElementUiTree<V> implements Serializable {
 		return value;
 	}
 
-	public String getLable() {
-		return lable;
+	public String getLabel() {
+		return label;
 	}
 
 	public Collection<ElementUiTree<V>> getChildren() {
