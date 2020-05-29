@@ -10,7 +10,6 @@ import scw.app.admin.service.AdminRoleService;
 import scw.app.admin.web.AdminActionFilter;
 import scw.app.admin.web.AdminLogin;
 import scw.beans.annotation.Autowired;
-import scw.core.Pagination;
 import scw.core.annotation.KeyValuePair;
 import scw.http.HttpMethod;
 import scw.mapper.MapperUtils;
@@ -24,6 +23,7 @@ import scw.result.DataResult;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
+import scw.util.Pagination;
 
 @ActionAuthority(value = "系统设置", menu = true)
 @AdminLogin
@@ -39,7 +39,7 @@ public class AdminRoleController {
 
 	@ActionAuthority(value = "管理员列表", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementList") })
 	@Controller("list")
-	public Pagination<List<AdminRole>> list(String userName, String nickName,
+	public Pagination<AdminRole> list(String userName, String nickName,
 			int uid, int page, int limit) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {

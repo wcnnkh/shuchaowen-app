@@ -1,7 +1,5 @@
 package scw.app.admin.service.impl;
 
-import java.util.List;
-
 import scw.app.admin.model.AdminRoleModel;
 import scw.app.admin.pojo.AdminRole;
 import scw.app.admin.service.AdminRoleGroupService;
@@ -9,7 +7,6 @@ import scw.app.admin.service.AdminRoleService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.InitMethod;
 import scw.beans.annotation.Service;
-import scw.core.Pagination;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.mapper.Copy;
@@ -20,6 +17,7 @@ import scw.sql.SimpleSql;
 import scw.sql.Sql;
 import scw.sql.SqlUtils;
 import scw.sql.WhereSql;
+import scw.util.Pagination;
 
 @Service
 public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {
@@ -82,7 +80,7 @@ public class AdminRoleServiceImpl extends BaseImpl implements AdminRoleService {
 		return resultFactory.success(adminRole);
 	}
 
-	public Pagination<List<AdminRole>> getAdminRolePagination(int groupId,
+	public Pagination<AdminRole> getAdminRolePagination(int groupId,
 			int page, int limit, String userName, String nickName) {
 		WhereSql sql = new WhereSql();
 		if (StringUtils.isNotEmpty(userName)) {
