@@ -1,12 +1,10 @@
 package scw.app.admin.service;
 
-import java.util.List;
-
 import scw.app.admin.model.AdminRoleModel;
 import scw.app.admin.pojo.AdminRole;
 import scw.core.GlobalPropertyFactory;
-import scw.core.Pagination;
 import scw.result.DataResult;
+import scw.util.Pagination;
 
 public interface AdminRoleService {
 	public static String DEFAULT_ADMIN_NAME = GlobalPropertyFactory
@@ -25,6 +23,6 @@ public interface AdminRoleService {
 
 	DataResult<AdminRole> update(int id, AdminRoleModel adminRoleModel);
 
-	Pagination<List<AdminRole>> getAdminRolePagination(int groupId, int page, int limit,
+	Pagination<AdminRole> getAdminRolePagination(int groupId, int page, int limit,
 			String userName, String nickName);
 }
