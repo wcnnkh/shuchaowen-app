@@ -8,7 +8,6 @@ import scw.core.instance.annotation.Configuration;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.mvc.action.ActionFilter;
-import scw.mvc.action.ActionService;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.ResultFactory;
@@ -27,7 +26,7 @@ public class AdminActionFilter implements ActionFilter {
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 
-	public Object doFilter(HttpChannel httpChannel, Action action, ActionService service) throws Throwable {
+	public Object doFilter(Action action, HttpChannel httpChannel) throws Throwable {
 		AdminLogin adminLogin = action.getAnnotatedElement().getAnnotation(AdminLogin.class);
 		ActionAuthority actionAuthority = action.getMethodAnnotatedElement().getAnnotation(ActionAuthority.class);
 		if (adminLogin != null || actionAuthority != null) {
@@ -37,24 +36,24 @@ public class AdminActionFilter implements ActionFilter {
 			}
 
 			if (adminRole.getUserName().equals(AdminRoleService.DEFAULT_ADMIN_NAME)) {
-				return service.doAction(httpChannel, action);
+				return action.doAction(httpChannel);
 			}
 
 			if (actionAuthority != null) {
 				HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
 				if (httpAuthority == null) {
 					httpChannel.getLogger().warn("not found autority: {}", action);
-					return service.doAction(httpChannel, action);
+					return action.doAction(httpChannel);
 				}
 				// 权限判断
 				if (adminRoleGroupActionService.check(adminRole.getGroupId(), httpAuthority.getId())) {
-					return service.doAction(httpChannel, action);
+					return action.doAction(httpChannel);
 				}
 
 				return resultFactory.error("权限不足");
 			}
 		}
-		return service.doAction(httpChannel, action);
+		return action.doAction(httpChannel);
 	}
 
 }
