@@ -11,6 +11,7 @@ import scw.app.admin.web.AdminActionFilter;
 import scw.app.admin.web.AdminLogin;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
+import scw.core.parameter.annotation.DefaultValue;
 import scw.http.HttpMethod;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.ActionAuthority;
@@ -40,14 +41,15 @@ public class AdminRoleController {
 	@ActionAuthority(value = "管理员列表", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementList") })
 	@Controller("list")
 	public Pagination<AdminRole> list(String userName, String nickName,
-			int uid, int page, int limit) {
+			int uid, @DefaultValue("1")Integer page, @DefaultValue("10") Integer limit) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {
 			throw new TapeDescriptionException("系统错误，用户不存在");
 		}
 
-		return adminRoleService.getAdminRolePagination(adminRole.getGroupId(),
+		Pagination<AdminRole> pagination = adminRoleService.getAdminRolePagination(adminRole.getGroupId(),
 				page, limit, userName, nickName);
+		return pagination;
 	}
 
 	@ActionAuthority("创建/更新管理员信息")

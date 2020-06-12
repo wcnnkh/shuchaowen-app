@@ -18,12 +18,12 @@ public class DefaultAdminRoleFactory implements AdminRoleFactory {
 	private LoginService<Integer> loginService;
 
 	public AdminRole getAdminRole(HttpChannel httpChannel, Action action) {
-		String token = httpChannel.getString("token");
+		String token = httpChannel.getValue("token").getAsString();
 		if (StringUtils.isEmpty(token)) {
 			return null;
 		}
 
-		Integer uid = httpChannel.getInteger("uid");
+		Integer uid = httpChannel.getValue("uid").getAsInteger();
 		if (uid == null) {
 			return null;
 		}
