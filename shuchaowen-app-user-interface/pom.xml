@@ -12,5 +12,9 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-user-pojo</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-mvc</artifactId>
+		</dependency>
 	</dependencies>
 </project>
