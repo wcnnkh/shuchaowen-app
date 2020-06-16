@@ -3,6 +3,7 @@ package scw.app.user.pojo;
 import java.io.Serializable;
 
 import scw.app.user.pojo.enums.UnionIdType;
+import scw.sql.orm.annotation.Index;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -13,6 +14,7 @@ public class UnionId implements Serializable{
 	private UnionIdType unionIdType;
 	@PrimaryKey
 	private String unionId;
+	@Index
 	private long uid;
 	public UnionIdType getUnionIdType() {
 		return unionIdType;
