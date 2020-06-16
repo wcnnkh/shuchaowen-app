@@ -51,7 +51,7 @@ public class AdminRoleGroupServiceImpl extends BaseImpl implements
 			info.setId(adminRoleGroup.getId());
 			return resultFactory.success(info);
 		}
-		return new DataResult<AdminRoleGroupInfo>(result);
+		return result.dataResult();
 	}
 
 	public List<AdminRoleGroup> getSubList(int id) {
