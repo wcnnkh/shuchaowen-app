@@ -12,10 +12,16 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-user-interface</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>shuchaowen</groupId>
 			<artifactId>shuchaowen-db</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

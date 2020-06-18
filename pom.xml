@@ -82,6 +82,18 @@
 				<artifactId>shuchaowen-app-admin-service</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-common-interface</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.aliyun</groupId>
+				<artifactId>aliyun-java-sdk-core</artifactId>
+				<version>4.5.1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
