@@ -3,7 +3,7 @@ package scw.app.user.service;
 import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
 import scw.app.user.pojo.enums.UnionIdType;
-import scw.event.method.annotation.PublishEvent;
+import scw.app.user.pojo.enums.UserAttributeModel;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
@@ -11,16 +11,6 @@ import scw.result.Result;
 
 @Controller(value = "user", methods = HttpMethod.POST)
 public interface UserService {
-	/**
-	 * 注册成功事件
-	 */
-	public static final String REGISTER_EVENT_NAME = "scw,user.register.success";
-
-	/**
-	 * 绑定成功事件
-	 */
-	public static final String BIND_EVENT_NAME = "scw.user.bind.success";
-
 	User getUser(long uid);
 
 	UnionId getUnionId(UnionIdType unionIdType, String unionId);
@@ -35,13 +25,10 @@ public interface UserService {
 	 * @param password
 	 * @return
 	 */
-	@PublishEvent(REGISTER_EVENT_NAME)
-	DataResult<User> register(UnionIdType unionIdType, String unionId, String password);
+	DataResult<User> register(UnionIdType unionIdType, String unionId, String password, UserAttributeModel userAttributeModel);
 
-	@PublishEvent(BIND_EVENT_NAME)
 	DataResult<User> bind(long uid, UnionIdType unionIdType, String unionId);
 
-	@Controller(value = "bind")
 	Result bind(long uid, UnionIdType unionIdType, String unionId, String code);
 
 	/**
@@ -53,6 +40,13 @@ public interface UserService {
 	 * @param code
 	 * @return
 	 */
-	@Controller(value = "register")
-	Result register(UnionIdType unionIdType, String unionId, String password, String code);
+	Result register(UnionIdType unionIdType, String unionId, String password, String code, UserAttributeModel userAttributeModel);
+	
+	/**
+	 * 修改用户其他属性
+	 * @param uid
+	 * @param userAttributeModel
+	 * @return
+	 */
+	Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel);
 }

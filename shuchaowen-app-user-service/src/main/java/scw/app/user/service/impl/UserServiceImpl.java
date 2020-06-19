@@ -3,6 +3,7 @@ package scw.app.user.service.impl;
 import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
 import scw.app.user.pojo.enums.UnionIdType;
+import scw.app.user.pojo.enums.UserAttributeModel;
 import scw.app.user.pojo.enums.VerificationCodeType;
 import scw.app.user.service.UserService;
 import scw.app.user.service.VerificationCodeService;
@@ -12,6 +13,7 @@ import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.lang.NotSupportedException;
+import scw.mapper.Copy;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -39,7 +41,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return db.getById(UnionId.class, unionIdType, unionId);
 	}
 
-	public DataResult<User> register(UnionIdType unionIdType, String unionId, String password) {
+	public DataResult<User> register(UnionIdType unionIdType, String unionId, String password,
+			UserAttributeModel userAttribute) {
 		if (unionIdType == null || StringUtils.isEmpty(unionId)) {
 			return resultFactory.error("参数错误");
 		}
@@ -55,6 +58,10 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			user.setPassword(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME));
 		}
 
+		if (userAttribute != null) {
+			Copy.copy(user, userAttribute);
+		}
+
 		user.putUnionId(unionIdType, unionId);
 		db.save(user);
 
@@ -65,7 +72,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return resultFactory.success(user);
 	}
 
-	public Result register(UnionIdType unionIdType, String unionId, String password, String code) {
+	public Result register(UnionIdType unionIdType, String unionId, String password, String code,
+			UserAttributeModel userAttributeModel) {
 		if (verificationCodeService == null) {
 			throw new NotSupportedException("不支持验证码注册");
 		}
@@ -76,7 +84,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			return result;
 		}
 
-		return register(unionIdType, unionId, password).result();
+		return register(unionIdType, unionId, password, userAttributeModel).result();
 	}
 
 	public DataResult<User> bind(long uid, UnionIdType unionIdType, String unionId) {
@@ -115,5 +123,29 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 
 		return bind(uid, unionIdType, unionId).result();
+	}
+
+	public Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel) {
+		User user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("用户不存在");
+		}
+
+		if (userAttributeModel != null) {
+			if (userAttributeModel.getBirthday() != null) {
+				user.setBirthday(userAttributeModel.getBirthday());
+			}
+
+			if (userAttributeModel.getSex() != null) {
+				user.setSex(userAttributeModel.getSex());
+			}
+
+			if (userAttributeModel.getAge() != 0 && userAttributeModel.getAge() != user.getAge()) {
+				user.setAge(userAttributeModel.getAge());
+			}
+			db.save(userAttributeModel);
+		}
+
+		return resultFactory.success();
 	}
 }
