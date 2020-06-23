@@ -1,9 +1,9 @@
 package scw.app.user.service;
 
+import scw.app.user.enums.UnionIdType;
+import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
-import scw.app.user.pojo.enums.UnionIdType;
-import scw.app.user.pojo.enums.UserAttributeModel;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;

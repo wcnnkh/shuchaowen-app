@@ -38,6 +38,11 @@
 			<groupId>shuchaowen</groupId>
 			<artifactId>shuchaowen-security</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-db</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

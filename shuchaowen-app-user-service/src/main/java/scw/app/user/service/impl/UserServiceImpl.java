@@ -1,12 +1,12 @@
 package scw.app.user.service.impl;
 
+import scw.app.common.BaseServiceImpl;
+import scw.app.user.enums.UnionIdType;
+import scw.app.user.enums.VerificationCodeType;
+import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
-import scw.app.user.pojo.enums.UnionIdType;
-import scw.app.user.pojo.enums.UserAttributeModel;
-import scw.app.user.pojo.enums.VerificationCodeType;
 import scw.app.user.service.UserService;
-import scw.app.user.service.VerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.Constants;
 import scw.core.instance.annotation.Configuration;

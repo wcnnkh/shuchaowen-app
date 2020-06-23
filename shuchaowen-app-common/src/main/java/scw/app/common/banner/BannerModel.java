@@ -1,4 +1,4 @@
-package scw.app.user.pojo.enums;
+package scw.app.common.banner;
 
 import java.io.Serializable;
 import java.util.Set;

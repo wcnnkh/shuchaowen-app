@@ -2,7 +2,7 @@ package scw.app.user.pojo;
 
 import java.io.Serializable;
 
-import scw.app.user.pojo.enums.UnionIdType;
+import scw.app.user.enums.UnionIdType;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
