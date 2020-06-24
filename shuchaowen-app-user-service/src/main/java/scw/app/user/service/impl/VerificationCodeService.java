@@ -1,7 +1,7 @@
-package scw.app.user.service;
+package scw.app.user.service.impl;
 
-import scw.app.user.pojo.enums.UnionIdType;
-import scw.app.user.pojo.enums.VerificationCodeType;
+import scw.app.user.enums.UnionIdType;
+import scw.app.user.enums.VerificationCodeType;
 import scw.mvc.annotation.Controller;
 import scw.result.Result;
 

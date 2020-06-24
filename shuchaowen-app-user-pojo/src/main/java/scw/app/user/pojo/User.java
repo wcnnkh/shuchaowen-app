@@ -1,18 +1,18 @@
 package scw.app.user.pojo;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import scw.aop.support.FieldSetter;
-import scw.app.user.pojo.enums.UnionIdType;
+import scw.app.user.enums.UnionIdType;
+import scw.app.user.model.UserAttributeModel;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.Column;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table
-public class User implements Serializable {
+public class User extends UserAttributeModel {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
 	@AutoIncrement

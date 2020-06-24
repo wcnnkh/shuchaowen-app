@@ -1,4 +1,4 @@
-package scw.app.user.service.impl;
+package scw.app.common;
 
 import scw.db.DB;
 import scw.result.ResultFactory;

@@ -1,4 +1,4 @@
-package scw.app.user.pojo.enums;
+package scw.app.user.enums;
 
 public enum VerificationCodeType {
 	REGISTER,

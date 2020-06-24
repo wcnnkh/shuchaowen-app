@@ -6,7 +6,6 @@
 		<artifactId>shuchaowen-app</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>shuchaowen-app-example</groupId>
 	<artifactId>shuchaowen-app-example</artifactId>
 
 	<dependencies>
