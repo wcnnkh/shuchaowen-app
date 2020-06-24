@@ -4,7 +4,6 @@ import java.util.List;
 
 import scw.app.common.BaseServiceImpl;
 import scw.app.user.model.TaskModel;
-import scw.app.user.model.UserTaskInfo;
 import scw.app.user.pojo.Task;
 import scw.app.user.pojo.UserTask;
 import scw.app.user.service.UserTaskService;
@@ -33,13 +32,6 @@ public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskServ
 	}
 
 	public List<UserTask> getUserTaskList(long uid) {
-		// TODO Auto-generated method stub
-		return null;
+		return db.getByIdList(UserTask.class, uid);
 	}
-
-	public List<UserTaskInfo> getUserTaskInfoList(long uid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
