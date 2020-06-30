@@ -7,6 +7,7 @@ import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
 import scw.app.user.service.UserService;
+import scw.app.user.service.VerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.Constants;
 import scw.core.instance.annotation.Configuration;
