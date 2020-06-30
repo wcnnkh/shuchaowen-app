@@ -1,4 +1,4 @@
-package scw.app.user.service.impl;
+package scw.app.user.service;
 
 import scw.app.user.enums.UnionIdType;
 import scw.app.user.enums.VerificationCodeType;
