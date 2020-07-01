@@ -23,6 +23,9 @@
 		<module>shuchaowen-app-product-interface</module>
 		<module>shuchaowen-app-product-service</module>
 		<module>shuchaowen-app-user-interface</module>
+		<module>shuchaowen-app-cms-pojo</module>
+		<module>shuchaowen-app-cms-interface</module>
+		<module>shuchaowen-app-cms-service</module>
 	</modules>
 
 	<properties>
@@ -90,7 +93,19 @@
 
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-common-interface</artifactId>
+				<artifactId>shuchaowen-app-cms-pojo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-cms-interface</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-cms-service</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
