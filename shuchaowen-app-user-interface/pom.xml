@@ -16,5 +16,9 @@
 			<groupId>shuchaowen</groupId>
 			<artifactId>shuchaowen-mvc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-cloud</artifactId>
+		</dependency>
 	</dependencies>
 </project>
