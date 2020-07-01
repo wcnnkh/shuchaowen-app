@@ -19,6 +19,10 @@ public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskServ
 		super(db, resultFactory);
 	}
 
+	public List<UserTask> getUserTaskList(long uid) {
+		return db.getByIdList(UserTask.class, uid);
+	}
+
 	public DataResult<Task> addTask(TaskModel taskModel) {
 		Task task = new Task();
 		Copy.copy(task, taskModel);
@@ -28,10 +32,6 @@ public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskServ
 
 	public Result update(Task task) {
 		db.update(task);
-		return resultFactory.success();
-	}
-
-	public List<UserTask> getUserTaskList(long uid) {
-		return db.getByIdList(UserTask.class, uid);
+		return resultFactory.success(task);
 	}
 }
