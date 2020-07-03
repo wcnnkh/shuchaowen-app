@@ -26,6 +26,8 @@
 		<module>shuchaowen-app-cms-pojo</module>
 		<module>shuchaowen-app-cms-interface</module>
 		<module>shuchaowen-app-cms-service</module>
+		<module>shuchaowen-app-common-pojo</module>
+		<module>shuchaowen-app-common-interface</module>
 	</modules>
 
 	<properties>
