@@ -4,10 +4,12 @@ import scw.app.common.BaseServiceImpl;
 import scw.app.user.pojo.UserAccumulatedPoints;
 import scw.app.user.pojo.UserAccumulatedPointsLog;
 import scw.app.user.service.UserAccumulatedPointsService;
+import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class UserAccumulatedPointsServiceImpl extends BaseServiceImpl implements UserAccumulatedPointsService {
 
 	public UserAccumulatedPointsServiceImpl(DB db, ResultFactory resultFactory) {

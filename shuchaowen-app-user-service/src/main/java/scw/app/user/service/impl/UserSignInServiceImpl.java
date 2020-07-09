@@ -9,6 +9,7 @@ import scw.app.user.pojo.UserSignIn;
 import scw.app.user.pojo.UserSignInLogTable;
 import scw.app.user.service.UserSignInService;
 import scw.core.IteratorCallback;
+import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -18,6 +19,7 @@ import scw.util.CalendarUtils;
 import scw.util.KeyValuePair;
 import scw.util.Pagination;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class UserSignInServiceImpl extends BaseServiceImpl implements UserSignInService {
 
 	public UserSignInServiceImpl(DB db, ResultFactory resultFactory) {

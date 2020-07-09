@@ -20,7 +20,7 @@ import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
 
-@Configuration(value = UserService.class)
+@Configuration(order=Integer.MIN_VALUE)
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Autowired(required = false)
 	private VerificationCodeService verificationCodeService;

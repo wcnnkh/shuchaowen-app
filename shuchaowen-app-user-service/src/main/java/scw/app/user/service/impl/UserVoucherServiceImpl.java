@@ -6,12 +6,14 @@ import scw.app.common.BaseServiceImpl;
 import scw.app.user.pojo.UserVoucher;
 import scw.app.user.pojo.UserVoucherLog;
 import scw.app.user.service.UserVoucherService;
+import scw.core.instance.annotation.Configuration;
 import scw.data.generator.SequenceId;
 import scw.data.generator.SequenceIdGenerator;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class UserVoucherServiceImpl extends BaseServiceImpl implements UserVoucherService {
 	protected final SequenceIdGenerator sequenceIdGenerator;
 
