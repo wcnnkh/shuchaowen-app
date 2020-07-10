@@ -6,16 +6,16 @@ import java.util.Map;
 import scw.aop.support.FieldSetter;
 import scw.app.user.enums.UnionIdType;
 import scw.app.user.model.UserAttributeModel;
-import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.Column;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
+import scw.sql.orm.support.generation.annotation.Generator;
 
 @Table
 public class User extends UserAttributeModel {
 	private static final long serialVersionUID = 1L;
+	@Generator
 	@PrimaryKey
-	@AutoIncrement
 	private long uid;
 	private long cts;
 	@Column(length=1000)
