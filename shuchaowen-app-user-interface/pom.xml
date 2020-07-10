@@ -16,5 +16,13 @@
 			<groupId>shuchaowen</groupId>
 			<artifactId>shuchaowen-mvc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-cloud</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-tencent</artifactId>
+		</dependency>
 	</dependencies>
 </project>

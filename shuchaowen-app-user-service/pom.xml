@@ -12,6 +12,11 @@
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-user-interface</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-tencent</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.aliyun</groupId>

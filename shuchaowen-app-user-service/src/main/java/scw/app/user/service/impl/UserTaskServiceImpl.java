@@ -7,16 +7,22 @@ import scw.app.user.model.TaskModel;
 import scw.app.user.pojo.Task;
 import scw.app.user.pojo.UserTask;
 import scw.app.user.service.UserTaskService;
+import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskService {
 
 	public UserTaskServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+	}
+
+	public List<UserTask> getUserTaskList(long uid) {
+		return db.getByIdList(UserTask.class, uid);
 	}
 
 	public DataResult<Task> addTask(TaskModel taskModel) {
@@ -28,10 +34,6 @@ public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskServ
 
 	public Result update(Task task) {
 		db.update(task);
-		return resultFactory.success();
-	}
-
-	public List<UserTask> getUserTaskList(long uid) {
-		return db.getByIdList(UserTask.class, uid);
+		return resultFactory.success(task);
 	}
 }

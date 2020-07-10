@@ -5,6 +5,7 @@ public enum UnionIdType {
 	user_name,
 	nick_name,
 	phone,
-	wx_openid
+	wx_openid,
+	qq_openid
 	;
 }
