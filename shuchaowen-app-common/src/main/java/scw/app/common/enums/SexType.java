@@ -30,4 +30,13 @@ public enum SexType {
 		}
 		return null;
 	}
+	
+	public static SexType forDescribe(String describe) {
+		for (SexType sexType : values()) {
+			if (sexType.getDescribe().equals(describe)) {
+				return sexType;
+			}
+		}
+		return null;
+	}
 }
