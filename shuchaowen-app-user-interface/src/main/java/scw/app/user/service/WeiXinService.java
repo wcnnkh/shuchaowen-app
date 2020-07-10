@@ -1,6 +1,6 @@
 package scw.app.user.service;
 
-import scw.app.common.annotation.LoginUse;
+import scw.app.common.security.LoginRequired;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.ResultFactory;
@@ -15,11 +15,11 @@ public interface WeiXinService {
 	@Controller(value = "login")
 	UserToken<Long> login(String code, Scope scope);
 
-	@LoginUse
+	@LoginRequired
 	@Controller(value = "userinfo")
 	Userinfo getUserInfo(long uid);
 
-	@LoginUse
+	@LoginRequired
 	@Controller(value = "bind")
 	Result bind(long uid, String code, Scope scope);
 }
