@@ -67,6 +67,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		db.save(user);
 
 		uuid = new UnionId();
+		uuid.setUnionIdType(unionIdType);
 		uuid.setUnionId(unionId);
 		uuid.setUid(user.getUid());
 		db.save(uuid);
