@@ -1,7 +1,6 @@
 package scw.app.common.security;
 
 import scw.beans.annotation.Autowired;
-import scw.core.GlobalPropertyFactory;
 import scw.core.instance.annotation.Configuration;
 import scw.http.HttpCookie;
 import scw.http.HttpUtils;
@@ -17,10 +16,6 @@ import scw.value.Value;
 @Configuration(order = Integer.MIN_VALUE)
 public class DefaultLoginRequiredVerification implements
 		LoginRequiredVerification {
-	private static final String TOKEN_NAME = GlobalPropertyFactory
-			.getInstance().getValue("login.verification.token.name",
-					String.class, "token");
-
 	private LoginService<Long> loginService;
 	@Autowired
 	private ResultFactory resultFactory;
