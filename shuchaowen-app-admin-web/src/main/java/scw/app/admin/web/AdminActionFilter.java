@@ -27,9 +27,9 @@ public class AdminActionFilter implements ActionFilter {
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 
 	public Object doFilter(Action action, HttpChannel httpChannel) throws Throwable {
-		AdminLogin adminLogin = action.getAnnotatedElement().getAnnotation(AdminLogin.class);
+		AdminLoginRequired adminLoginRequired = action.getAnnotatedElement().getAnnotation(AdminLoginRequired.class);
 		ActionAuthority actionAuthority = action.getMethodAnnotatedElement().getAnnotation(ActionAuthority.class);
-		if (adminLogin != null || actionAuthority != null) {
+		if (adminLoginRequired != null || actionAuthority != null) {
 			AdminRole adminRole = adminRoleFactory.getAdminRole(httpChannel, action);
 			if (adminRole == null) {
 				return resultFactory.authorizationFailure();

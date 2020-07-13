@@ -8,6 +8,7 @@ import scw.app.user.pojo.QQUserInfo;
 import scw.app.user.pojo.User;
 import scw.app.user.service.QQService;
 import scw.app.user.service.UserService;
+import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.oauth2.AccessToken;
@@ -20,6 +21,7 @@ import scw.tencent.qq.Configuration;
 import scw.tencent.qq.QQUtils;
 import scw.tencent.qq.Userinfo;
 
+@scw.core.instance.annotation.Configuration(order = Integer.MIN_VALUE)
 public class QQServiceImpl extends BaseServiceImpl implements QQService {
 	private final Configuration configuration;
 	private final UserService userService;
@@ -34,6 +36,10 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 	}
 
 	public UserToken<Long> login(String openid, String accessToken) {
+		if (StringUtils.isEmpty(openid, accessToken)) {
+			throw new RuntimeException("参数错误");
+		}
+
 		User user = userService.getUser(UnionIdType.qq_openid, openid);
 		if (user == null) {
 			QQUserInfo qqUserInfo = new QQUserInfo();
@@ -55,6 +61,10 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 	}
 
 	public UserToken<Long> webLogin(String code, String redirect_uri) {
+		if (StringUtils.isEmpty(code, redirect_uri)) {
+			throw new RuntimeException("参数错误");
+		}
+
 		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
 				redirect_uri, code);
 		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
@@ -62,6 +72,10 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 	}
 
 	public Result bind(long uid, String openid, String accessToken) {
+		if (StringUtils.isEmpty(openid, accessToken)) {
+			return resultFactory.parameterError();
+		}
+
 		User user = userService.getUser(UnionIdType.qq_openid, openid);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
@@ -87,6 +101,10 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 	}
 
 	public Result webBind(long uid, String code, String redirect_uri) {
+		if (StringUtils.isEmpty(code, redirect_uri)) {
+			return resultFactory.parameterError();
+		}
+
 		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
 				redirect_uri, code);
 		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());

@@ -1,4 +1,4 @@
-package scw.app.common.annotation;
+package scw.app.common.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoginUse {
+public @interface LoginRequired {
+	boolean value() default true;
 }

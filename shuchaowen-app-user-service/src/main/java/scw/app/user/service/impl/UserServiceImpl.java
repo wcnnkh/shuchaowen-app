@@ -19,14 +19,19 @@ import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
+import scw.security.login.LoginService;
+import scw.security.login.UserToken;
 
-@Configuration(order=Integer.MIN_VALUE)
+@Configuration(order = Integer.MIN_VALUE)
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
+
 	@Autowired(required = false)
 	private VerificationCodeService verificationCodeService;
+	private LoginService<Long> loginService;
 
-	public UserServiceImpl(DB db, ResultFactory resultFactory) {
+	public UserServiceImpl(DB db, ResultFactory resultFactory, LoginService<Long> loginService) {
 		super(db, resultFactory);
+		this.loginService = loginService;
 	}
 
 	public User getUser(long uid) {
@@ -43,50 +48,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	}
 
 	public DataResult<User> register(UnionIdType unionIdType, String unionId, String password,
-			UserAttributeModel userAttribute) {
-		if (unionIdType == null || StringUtils.isEmpty(unionId)) {
-			return resultFactory.error("参数错误");
-		}
-
-		UnionId uuid = getUnionId(unionIdType, unionId);
-		if (uuid != null) {
-			return resultFactory.error("账号已存在");
-		}
-
-		User user = new User();
-		user.setCts(System.currentTimeMillis());
-		if (StringUtils.isNotEmpty(password)) {
-			user.setPassword(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME));
-		}
-
-		if (userAttribute != null) {
-			Copy.copy(user, userAttribute);
-		}
-
-		user.putUnionId(unionIdType, unionId);
-		db.save(user);
-
-		uuid = new UnionId();
-		uuid.setUnionIdType(unionIdType);
-		uuid.setUnionId(unionId);
-		uuid.setUid(user.getUid());
-		db.save(uuid);
-		return resultFactory.success(user);
+			UserAttributeModel userAttributeModel) {
+		return register(0, unionIdType, unionId, password, userAttributeModel);
 	}
 
 	public Result register(UnionIdType unionIdType, String unionId, String password, String code,
 			UserAttributeModel userAttributeModel) {
-		if (verificationCodeService == null) {
-			throw new NotSupportedException("不支持验证码注册");
-		}
-
-		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType,
-				VerificationCodeType.REGISTER);
-		if (result.isError()) {
-			return result;
-		}
-
-		return register(unionIdType, unionId, password, userAttributeModel).result();
+		return register(0, unionIdType, unionId, password, code, userAttributeModel);
 	}
 
 	public DataResult<User> bind(long uid, UnionIdType unionIdType, String unionId) {
@@ -95,7 +63,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 
 		UnionId uuid = getUnionId(unionIdType, unionId);
-		if (uuid != null) {
+		//如果账号已经存在且绑定者不是自己那就说明账号已经被别人绑定了
+		if (uuid != null && uuid.getUid() != uid) {
 			return resultFactory.error("账号已存在");
 		}
 
@@ -149,5 +118,94 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 
 		return resultFactory.success();
+	}
+
+	public DataResult<User> register(long uid, UnionIdType unionIdType, String unionId, String password,
+			UserAttributeModel userAttributeModel) {
+		if (unionIdType == null || StringUtils.isEmpty(unionId)) {
+			return resultFactory.error("参数错误");
+		}
+
+		User user = getUser(uid);
+		if (user != null) {
+			return resultFactory.error("已经注册过了");
+		}
+
+		UnionId uuid = getUnionId(unionIdType, unionId);
+		if (uuid != null) {
+			return resultFactory.error("账号已存在");
+		}
+
+		user = new User();
+		user.setUid(uid);
+		user.setCts(System.currentTimeMillis());
+		if (StringUtils.isNotEmpty(password)) {
+			user.setPassword(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME));
+		}
+
+		if (userAttributeModel != null) {
+			Copy.copy(user, userAttributeModel);
+		}
+
+		user.putUnionId(unionIdType, unionId);
+		db.save(user);
+
+		uuid = new UnionId();
+		uuid.setUnionIdType(unionIdType);
+		uuid.setUnionId(unionId);
+		uuid.setUid(user.getUid());
+		db.save(uuid);
+		return resultFactory.success(user);
+	}
+
+	public Result register(long uid, UnionIdType unionIdType, String unionId, String password, String code,
+			UserAttributeModel userAttributeModel) {
+		if (verificationCodeService == null) {
+			throw new NotSupportedException("不支持验证码注册");
+		}
+
+		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType,
+				VerificationCodeType.REGISTER);
+		if (result.isError()) {
+			return result;
+		}
+
+		return register(uid, unionIdType, unionId, password, userAttributeModel).result();
+	}
+
+	public DataResult<UserToken<Long>> login(UnionIdType unionIdType, String unionId, String code) {
+		if (verificationCodeService == null) {
+			throw new NotSupportedException("不支持验证码登录");
+		}
+
+		UnionId uid = getUnionId(unionIdType, unionId);
+		if (uid == null) {
+			return resultFactory.error("用户不存在");
+		}
+
+		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType, VerificationCodeType.LOGIN);
+		if (result.isError()) {
+			return result.dataResult();
+		}
+
+		UserToken<Long> userToken = loginService.login(uid.getUid());
+		return resultFactory.success(userToken);
+	}
+
+	public DataResult<UserToken<Long>> pwdLogin(UnionIdType unionIdType, String unionId, String password) {
+		User user = getUser(unionIdType, unionId);
+		if (user == null) {
+			return resultFactory.error("账号不存在");
+		}
+
+		if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(password)) {
+			return resultFactory.error("账号或密码错误(1)");
+		}
+
+		if (!user.getPassword().equals(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME))) {
+			return resultFactory.error("账号或密码错误(2)");
+		}
+
+		return resultFactory.success(loginService.login(user.getUid()));
 	}
 }

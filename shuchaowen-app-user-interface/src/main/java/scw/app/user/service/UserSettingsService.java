@@ -1,12 +1,12 @@
 package scw.app.user.service;
 
-import scw.app.common.annotation.LoginUse;
+import scw.app.common.security.LoginRequired;
 import scw.app.user.pojo.UserSettings;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.ResultFactory;
 
 @Controller(value="user/settings")
-@LoginUse
+@LoginRequired
 @ResultFactory
 public interface UserSettingsService {
 	@Controller(value="info")

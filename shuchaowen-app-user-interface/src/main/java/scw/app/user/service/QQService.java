@@ -1,6 +1,6 @@
 package scw.app.user.service;
 
-import scw.app.common.annotation.LoginUse;
+import scw.app.common.security.LoginRequired;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.ResultFactory;
@@ -17,15 +17,15 @@ public interface QQService {
 	@Controller(value = "web_login")
 	UserToken<Long> webLogin(String code, String redirect_uri);
 
-	@LoginUse
+	@LoginRequired
 	@Controller(value = "bind")
 	Result bind(long uid, String openid, String accessToken);
 
 	@Controller(value = "web_bind")
-	@LoginUse
+	@LoginRequired
 	Result webBind(long uid, String code, String redirect_uri);
 
-	@LoginUse
+	@LoginRequired
 	@Controller(value = "userinfo")
 	Userinfo getUserInfo(long uid);
 }
