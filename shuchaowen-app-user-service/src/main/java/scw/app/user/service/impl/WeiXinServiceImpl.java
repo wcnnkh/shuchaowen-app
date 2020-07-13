@@ -9,6 +9,7 @@ import scw.app.user.pojo.WeiXinUserInfo;
 import scw.app.user.service.UserService;
 import scw.app.user.service.WeiXinService;
 import scw.core.instance.annotation.Configuration;
+import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.result.DataResult;
@@ -37,6 +38,10 @@ public class WeiXinServiceImpl extends BaseServiceImpl implements WeiXinService 
 	}
 
 	public UserToken<Long> login(String code, Scope scope) {
+		if (StringUtils.isEmpty(code)) {
+			new RuntimeException("参数错误");
+		}
+
 		UserAccessToken userAccessToken = userGrantClient.getAccessToken(code, null);
 		User user = userService.getUser(UnionIdType.wx_openid, userAccessToken.getOpenid());
 		if (user == null) {
