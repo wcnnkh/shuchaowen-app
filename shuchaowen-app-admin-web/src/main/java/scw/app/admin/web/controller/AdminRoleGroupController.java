@@ -13,7 +13,7 @@ import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleGroupService;
 import scw.app.admin.service.AdminRoleService;
 import scw.app.admin.web.AdminActionFilter;
-import scw.app.admin.web.AdminLogin;
+import scw.app.admin.web.AdminLoginRequired;
 import scw.app.common.model.ElementUiTree;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
@@ -32,7 +32,7 @@ import scw.security.authority.AuthorityTree;
 import scw.security.authority.http.HttpAuthority;
 
 @ActionAuthorityParent(AdminRoleController.class)
-@AdminLogin
+@AdminLoginRequired
 @Controller(value = "/admin/group/")
 @ResultFactory
 public class AdminRoleGroupController {
@@ -59,7 +59,7 @@ public class AdminRoleGroupController {
 				.getGroupId() : parentGroupId);
 	}
 
-	@AdminLogin
+	@AdminLoginRequired
 	@Controller(value = "trees")
 	public List<ElementUiTree<Integer>> getAdminRoleGroupTreeList(int uid) {
 		AdminRole adminRole = adminRoleService.getById(uid);
@@ -71,7 +71,7 @@ public class AdminRoleGroupController {
 				.getGroupId());
 	}
 
-	@AdminLogin
+	@AdminLoginRequired
 	@Controller(value = "authoritys")
 	public Object getUserAuthority(int groupId, int uid) {
 		AdminRoleGroup group = adminRoleGroupService.getById(groupId);

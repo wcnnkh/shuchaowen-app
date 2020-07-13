@@ -7,7 +7,7 @@ import scw.app.admin.pojo.AdminRole;
 import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleService;
-import scw.app.admin.web.AdminLogin;
+import scw.app.admin.web.AdminLoginRequired;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
@@ -51,7 +51,7 @@ public class IndexController {
 		return resultFactory.success(adminLoginInfo);
 	}
 
-	@AdminLogin
+	@AdminLoginRequired
 	@Controller(value = "menus")
 	public DataResult<List<AuthorityTree<HttpAuthority>>> getMenus(int uid) {
 		AdminRole adminRole = adminRoleService.getById(uid);

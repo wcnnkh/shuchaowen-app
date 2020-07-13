@@ -8,7 +8,7 @@ import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleService;
 import scw.app.admin.web.AdminActionFilter;
-import scw.app.admin.web.AdminLogin;
+import scw.app.admin.web.AdminLoginRequired;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
 import scw.core.parameter.annotation.DefaultValue;
@@ -27,7 +27,7 @@ import scw.security.authority.http.HttpAuthority;
 import scw.util.Pagination;
 
 @ActionAuthority(value = "系统设置", menu = true)
-@AdminLogin
+@AdminLoginRequired
 @Controller(value = "/admin/user")
 @ResultFactory
 public class AdminRoleController {
@@ -67,7 +67,7 @@ public class AdminRoleController {
 	public void update() {
 	}
 
-	@AdminLogin
+	@AdminLoginRequired
 	@Controller(value = "authoritys")
 	public List<AuthorityTree<HttpAuthority>> getUserAuthority(int uid) {
 		AdminRole adminRole = adminRoleService.getById(uid);
