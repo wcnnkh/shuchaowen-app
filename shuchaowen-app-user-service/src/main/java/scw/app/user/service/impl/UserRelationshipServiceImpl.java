@@ -5,10 +5,12 @@ import java.util.List;
 import scw.app.common.BaseServiceImpl;
 import scw.app.user.pojo.UserRelationship;
 import scw.app.user.service.UserRelationshipService;
+import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
+@Configuration(order = Integer.MIN_VALUE)
 public class UserRelationshipServiceImpl extends BaseServiceImpl implements UserRelationshipService {
 
 	public UserRelationshipServiceImpl(DB db, ResultFactory resultFactory) {
