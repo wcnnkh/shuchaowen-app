@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.oauth2.AccessToken;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -17,7 +18,7 @@ public class WeChatSubscription implements Serializable {
 	@PrimaryKey
 	private String appId;
 	private String appSecret;
-	private String accessToken;
+	private AccessToken accessToken;
 
 	public String getAppId() {
 		return appId;
@@ -35,11 +36,11 @@ public class WeChatSubscription implements Serializable {
 		this.appSecret = appSecret;
 	}
 
-	public String getAccessToken() {
+	public AccessToken getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(String accessToken) {
+	public void setAccessToken(AccessToken accessToken) {
 		this.accessToken = accessToken;
 	}
 }

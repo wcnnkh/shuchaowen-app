@@ -11,8 +11,11 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>shuchaowen-app-common</module>
+		<module>shuchaowen-app-common-pojo</module>
+		<module>shuchaowen-app-common-interface</module>
 		<module>shuchaowen-app-user-pojo</module>
 		<module>shuchaowen-app-user-service</module>
+		<module>shuchaowen-app-user-interface</module>
 		<module>shuchaowen-app-admin-pojo</module>
 		<module>shuchaowen-app-admin-interface</module>
 		<module>shuchaowen-app-admin-service</module>
@@ -22,12 +25,9 @@
 		<module>shuchaowen-app-product-pojo</module>
 		<module>shuchaowen-app-product-interface</module>
 		<module>shuchaowen-app-product-service</module>
-		<module>shuchaowen-app-user-interface</module>
 		<module>shuchaowen-app-cms-pojo</module>
 		<module>shuchaowen-app-cms-interface</module>
 		<module>shuchaowen-app-cms-service</module>
-		<module>shuchaowen-app-common-pojo</module>
-		<module>shuchaowen-app-common-interface</module>
 	</modules>
 
 	<properties>
@@ -52,6 +52,26 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-payment</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-product-pojo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-product-interface</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-product-service</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-common</artifactId>
@@ -98,16 +118,28 @@
 				<artifactId>shuchaowen-app-cms-pojo</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-cms-interface</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-cms-service</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-common-pojo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>shuchaowen-app</groupId>
+				<artifactId>shuchaowen-app-common-interface</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 

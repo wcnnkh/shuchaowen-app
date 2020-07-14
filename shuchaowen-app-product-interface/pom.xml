@@ -6,4 +6,10 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>shuchaowen-app-product-interface</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>shuchaowen-app</groupId>
+  		<artifactId>shuchaowen-app-product-pojo</artifactId>
+  	</dependency>
+  </dependencies>
 </project>

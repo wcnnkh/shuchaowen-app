@@ -7,7 +7,7 @@ import scw.mvc.action.Action;
 import scw.mvc.action.ActionFilter;
 import scw.result.Result;
 
-@Configuration(order = Integer.MAX_VALUE)
+@Configuration
 public class SecurityActionFilter implements ActionFilter {
 	@Autowired(required = false)
 	private LoginRequiredVerification requiredConfiguration;
