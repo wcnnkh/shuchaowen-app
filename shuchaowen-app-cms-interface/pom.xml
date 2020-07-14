@@ -6,4 +6,10 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>shuchaowen-app-cms-interface</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>shuchaowen-app</groupId>
+  		<artifactId>shuchaowen-app-cms-pojo</artifactId>
+  	</dependency>
+  </dependencies>
 </project>
