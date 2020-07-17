@@ -10,7 +10,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-cms-service</artifactId>
+			<artifactId>shuchaowen-app-cms-interface</artifactId>
 		</dependency>
 	</dependencies>
 </project>
