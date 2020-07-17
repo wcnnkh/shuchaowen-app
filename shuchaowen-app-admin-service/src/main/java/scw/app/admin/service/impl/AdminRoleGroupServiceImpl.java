@@ -1,7 +1,6 @@
 package scw.app.admin.service.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import scw.app.admin.model.AdminRoleGroupInfo;
@@ -76,7 +75,7 @@ public class AdminRoleGroupServiceImpl extends BaseImpl implements
 			return null;
 		}
 
-		List<ElementUiTree<Integer>> elementUiTrees = new LinkedList<ElementUiTree<Integer>>();
+		List<ElementUiTree<Integer>> elementUiTrees = new ArrayList<ElementUiTree<Integer>>();
 		for (AdminRoleGroup group : adminRoleGroups) {
 			ElementUiTree<Integer> tree = new ElementUiTree<Integer>(
 					group.getId(), group.getName(),
