@@ -1,34 +1,25 @@
 package scw.app.cms.pojo;
 
-import scw.app.cms.model.BasicContent;
-import scw.sql.orm.annotation.AutoIncrement;
+import scw.app.cms.model.BasicChannel;
 import scw.sql.orm.annotation.PrimaryKey;
+import scw.sql.orm.annotation.Table;
 
-public class Content extends BasicContent {
+@Table
+public class Channel extends BasicChannel {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
-	@AutoIncrement
-	private long id;
-	private long lastUpdateTime;// 最后一次更新时间
-	private long createTime;// 创建时间
-	private long deleteTime;// 删除时间
+	private int id;
+	private long createTime;
+	private long lastUpdateTime;
 	private long createUid;
 	private long lastUpdateUid;
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
-	}
-
-	public long getLastUpdateTime() {
-		return lastUpdateTime;
-	}
-
-	public void setLastUpdateTime(long lastUpdateTime) {
-		this.lastUpdateTime = lastUpdateTime;
 	}
 
 	public long getCreateTime() {
@@ -39,12 +30,12 @@ public class Content extends BasicContent {
 		this.createTime = createTime;
 	}
 
-	public long getDeleteTime() {
-		return deleteTime;
+	public long getLastUpdateTime() {
+		return lastUpdateTime;
 	}
 
-	public void setDeleteTime(long deleteTime) {
-		this.deleteTime = deleteTime;
+	public void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 	}
 
 	public long getCreateUid() {

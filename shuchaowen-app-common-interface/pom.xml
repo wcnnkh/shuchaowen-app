@@ -6,4 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>shuchaowen-app-common-interface</artifactId>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>shuchaowen-app</groupId>
+  		<artifactId>shuchaowen-app-common-pojo</artifactId>
+  	</dependency>
+  </dependencies>
 </project>
