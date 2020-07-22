@@ -12,4 +12,5 @@
 			  <url>http://maven.shuchaowen.com</url>
 		  </repository>
     </repositories>
+    
 2.引入对应模块(有空再补全)
