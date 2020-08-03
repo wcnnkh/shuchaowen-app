@@ -1,4 +1,4 @@
-package scw.app.common.pojo;
+package scw.app.user.pojo;
 
 import java.io.Serializable;
 

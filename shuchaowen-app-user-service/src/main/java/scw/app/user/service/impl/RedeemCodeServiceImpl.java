@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scw.app.common.BaseServiceImpl;
+import scw.app.common.service.RedeemCodeGenerator;
 import scw.app.user.pojo.RedeemCode;
 import scw.app.user.pojo.UserRedeemCodeLog;
 import scw.app.user.service.RedeemCodeService;

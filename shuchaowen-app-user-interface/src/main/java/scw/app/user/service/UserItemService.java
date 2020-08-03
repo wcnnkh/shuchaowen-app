@@ -1,8 +1,8 @@
-package scw.app.common.service;
+package scw.app.user.service;
 
 import java.util.List;
 
-import scw.app.common.pojo.UserItem;
+import scw.app.user.pojo.UserItem;
 import scw.result.Result;
 
 public interface UserItemService {
