@@ -23,5 +23,10 @@
 			<artifactId>aliyun-java-sdk-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>shuchaowen-app</groupId>
+			<artifactId>shuchaowen-app-common-interface</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -77,7 +77,7 @@ public class AliDaYuVerificationCodeSender implements VerificationCodeSender {
 		map.put("sms_type", "normal");
 		map.put("rec_num", user);
 		map.put("sign", getSign(map));
-		String content = HttpUtils.getHttpClient().post(host, String.class, map, MediaType.APPLICATION_FORM_URLENCODED);
+		String content = HttpUtils.getHttpClient().post(String.class, host, map, MediaType.APPLICATION_FORM_URLENCODED).getBody();
 		logger.info(content);
 		return resultFactory.success(content);
 	}
