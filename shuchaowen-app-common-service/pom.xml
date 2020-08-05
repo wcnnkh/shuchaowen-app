@@ -6,16 +6,11 @@
 		<artifactId>shuchaowen-app</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>shuchaowen-app-common-interface</artifactId>
+	<artifactId>shuchaowen-app-common-service</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-common-pojo</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
+			<artifactId>shuchaowen-app-common-interface</artifactId>
 		</dependency>
 	</dependencies>
 </project>
