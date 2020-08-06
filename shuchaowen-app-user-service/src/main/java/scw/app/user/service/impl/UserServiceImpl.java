@@ -1,15 +1,13 @@
 package scw.app.user.service.impl;
 
 import scw.app.common.BaseServiceImpl;
-import scw.app.user.enums.UnionIdType;
-import scw.app.user.enums.VerificationCodeType;
+import scw.app.common.vc.VerificationCodeService;
+import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
-import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
+import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
-import scw.app.user.service.VerificationCodeService;
 import scw.beans.annotation.Autowired;
-import scw.core.Constants;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
@@ -21,13 +19,19 @@ import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
 import scw.security.login.LoginService;
 import scw.security.login.UserToken;
+import scw.sql.SimpleSql;
+import scw.sql.Sql;
+import scw.sql.SqlUtils;
+import scw.sql.WhereSql;
+import scw.util.Pagination;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
-
 	@Autowired(required = false)
 	private VerificationCodeService verificationCodeService;
 	private LoginService<Long> loginService;
+	@Autowired
+	private PermissionGroupService permissionGroupService;
 
 	public UserServiceImpl(DB db, ResultFactory resultFactory, LoginService<Long> loginService) {
 		super(db, resultFactory);
@@ -38,62 +42,140 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return db.getById(User.class, uid);
 	}
 
-	public User getUser(UnionIdType unionIdType, String unionId) {
-		UnionId union = getUnionId(unionIdType, unionId);
-		return union == null ? null : getUser(union.getUid());
+	public User getUserByPhone(String phone) {
+		Sql sql = new SimpleSql("select * from user where phone=?", phone);
+		return db.selectOne(User.class, sql);
 	}
 
-	public UnionId getUnionId(UnionIdType unionIdType, String unionId) {
-		return db.getById(UnionId.class, unionIdType, unionId);
+	public User getUserByUsername(String username) {
+		Sql sql = new SimpleSql("select * from user where username=?", username);
+		return db.selectOne(User.class, sql);
 	}
 
-	public DataResult<User> register(UnionIdType unionIdType, String unionId, String password,
+	public User getUserByOpenid(OpenidType type, String openid) {
+		Sql sql;
+		switch (type) {
+		case WX:
+			sql = new SimpleSql("select * from user where openidForWX=?", openid);
+			break;
+		case QQ:
+			sql = new SimpleSql("select * from user where openidForQQ=?", openid);
+			break;
+		default:
+			return null;
+		}
+		return db.selectOne(User.class, sql);
+	}
+
+	private String formatPassword(String password) {
+		if (StringUtils.isEmpty(password)) {
+			return null;
+		}
+
+		return SignatureUtils.md5(password, "UTF-8");
+	}
+
+	public DataResult<User> registerByUsername(String username, String password,
 			UserAttributeModel userAttributeModel) {
-		return register(0, unionIdType, unionId, password, userAttributeModel);
-	}
-
-	public Result register(UnionIdType unionIdType, String unionId, String password, String code,
-			UserAttributeModel userAttributeModel) {
-		return register(0, unionIdType, unionId, password, code, userAttributeModel);
-	}
-
-	public DataResult<User> bind(long uid, UnionIdType unionIdType, String unionId) {
-		if (unionIdType == null || StringUtils.isEmpty(unionId)) {
-			return resultFactory.error("参数错误");
+		User user = getUserByUsername(username);
+		if (user != null) {
+			return resultFactory.error("账号已经存在");
 		}
 
-		UnionId uuid = getUnionId(unionIdType, unionId);
-		//如果账号已经存在且绑定者不是自己那就说明账号已经被别人绑定了
-		if (uuid != null && uuid.getUid() != uid) {
-			return resultFactory.error("账号已存在");
+		user = new User();
+		user.setUsername(username);
+		user.setPassword(formatPassword(password));
+		user.setCts(System.currentTimeMillis());
+
+		if (userAttributeModel != null) {
+			Copy.copy(user, userAttributeModel);
 		}
-
-		User user = getUser(uid);
-		if (user == null) {
-			return resultFactory.error("用户不存在(1)");
-		}
-
-		user.putUnionId(unionIdType, unionId);
-		db.update(user);
-
-		uuid = new UnionId();
-		uuid.setUnionId(unionId);
-		uuid.setUid(user.getUid());
-		db.save(uid);
+		db.save(user);
 		return resultFactory.success(user);
 	}
 
-	public Result bind(long uid, UnionIdType unionIdType, String unionId, String code) {
-		if (verificationCodeService == null) {
-			throw new NotSupportedException("不支持验证码绑定");
+	public DataResult<User> registerByPhone(String phone, String password, UserAttributeModel userAttributeModel) {
+		User user = getUserByPhone(phone);
+		if (user != null) {
+			return resultFactory.error("账号已经存在");
 		}
 
-		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType, VerificationCodeType.BIND);
-		if (result.isError()) {
-			return result;
+		user = new User();
+		user.setPhone(phone);
+		user.setPassword(formatPassword(password));
+		user.setCts(System.currentTimeMillis());
+
+		if (userAttributeModel != null) {
+			Copy.copy(user, userAttributeModel);
+		}
+		db.save(user);
+		return resultFactory.success(user);
+	}
+
+	private void setOpenid(User user, OpenidType type, String openid) {
+		switch (type) {
+		case WX:
+			user.setOpenidForWX(openid);
+			break;
+		case QQ:
+			user.setOpenidForQQ(openid);
+			break;
+		default:
+			throw new NotSupportedException("不支持的openid类型：" + type);
+		}
+	}
+
+	public DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel) {
+		User user = getUserByOpenid(type, openid);
+		if (user != null) {
+			return resultFactory.error("账号已经存在");
 		}
 
-		return bind(uid, unionIdType, unionId).result();
+		user = new User();
+		user.setCts(System.currentTimeMillis());
+		setOpenid(user, type, openid);
+		if (userAttributeModel != null) {
+			Copy.copy(user, userAttributeModel);
+		}
+		db.save(user);
+		return resultFactory.success(user);
+	}
+
+	public DataResult<User> bindPhone(long uid, String phone) {
+		User user = getUserByPhone(phone);
+		if (user != null) {
+			return resultFactory.error("手机号已被绑定");
+		}
+
+		user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("账号不存在");
+		}
+
+		if (user.getPhone().equals(phone)) {
+			return resultFactory.error("与原绑定手机号一致");
+		}
+
+		user.setPhone(phone);
+		db.update(user);
+		return resultFactory.success(user);
+	}
+
+	public DataResult<User> bindOpenid(long uid, OpenidType type, String openid,
+			UserAttributeModel userAttributeModel) {
+		User user = getUserByOpenid(type, openid);
+		if (user != null) {
+			return resultFactory.error("openid已被绑定");
+		}
+
+		user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("账号不存在");
+		}
+
+		setOpenid(user, type, openid);
+		db.update(user);
+		return resultFactory.success(user);
 	}
 
 	public Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel) {
@@ -120,92 +202,45 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return resultFactory.success();
 	}
 
-	public DataResult<User> register(long uid, UnionIdType unionIdType, String unionId, String password,
-			UserAttributeModel userAttributeModel) {
-		if (unionIdType == null || StringUtils.isEmpty(unionId)) {
-			return resultFactory.error("参数错误");
+	public Pagination<User> getPagination(int permissionGroupId, String username, String nickname, int page,
+			int limit) {
+		WhereSql sql = new WhereSql();
+		if (permissionGroupId > 0) {
+			sql.andIn("permissionGroupId", permissionGroupService.getAllSubList(permissionGroupId));
+		}
+
+		if (StringUtils.isNotEmpty(username)) {
+			sql.and("username like " + SqlUtils.toLikeValue(username));
+		}
+
+		if (StringUtils.isNotEmpty(nickname)) {
+			sql.and("nickname like " + SqlUtils.toLikeValue(nickname));
+		}
+
+		return db.select(User.class, page, limit, sql.assembleSql("select * from user", null));
+	}
+
+	public Result checkPassword(long uid, String password) {
+		if (StringUtils.isEmpty(password)) {
+			return resultFactory.parameterError();
 		}
 
 		User user = getUser(uid);
-		if (user != null) {
-			return resultFactory.error("已经注册过了");
-		}
-
-		UnionId uuid = getUnionId(unionIdType, unionId);
-		if (uuid != null) {
-			return resultFactory.error("账号已存在");
-		}
-
-		user = new User();
-		user.setUid(uid);
-		user.setCts(System.currentTimeMillis());
-		if (StringUtils.isNotEmpty(password)) {
-			user.setPassword(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME));
-		}
-
-		if (userAttributeModel != null) {
-			Copy.copy(user, userAttributeModel);
-		}
-
-		user.putUnionId(unionIdType, unionId);
-		db.save(user);
-
-		uuid = new UnionId();
-		uuid.setUnionIdType(unionIdType);
-		uuid.setUnionId(unionId);
-		uuid.setUid(user.getUid());
-		db.save(uuid);
-		return resultFactory.success(user);
-	}
-
-	public Result register(long uid, UnionIdType unionIdType, String unionId, String password, String code,
-			UserAttributeModel userAttributeModel) {
-		if (verificationCodeService == null) {
-			throw new NotSupportedException("不支持验证码注册");
-		}
-
-		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType,
-				VerificationCodeType.REGISTER);
-		if (result.isError()) {
-			return result;
-		}
-
-		return register(uid, unionIdType, unionId, password, userAttributeModel).result();
-	}
-
-	public DataResult<UserToken<Long>> login(UnionIdType unionIdType, String unionId, String code) {
-		if (verificationCodeService == null) {
-			throw new NotSupportedException("不支持验证码登录");
-		}
-
-		UnionId uid = getUnionId(unionIdType, unionId);
-		if (uid == null) {
-			return resultFactory.error("用户不存在");
-		}
-
-		Result result = verificationCodeService.checkVerificationCode(unionId, unionIdType, VerificationCodeType.LOGIN);
-		if (result.isError()) {
-			return result.dataResult();
-		}
-
-		UserToken<Long> userToken = loginService.login(uid.getUid());
-		return resultFactory.success(userToken);
-	}
-
-	public DataResult<UserToken<Long>> pwdLogin(UnionIdType unionIdType, String unionId, String password) {
-		User user = getUser(unionIdType, unionId);
 		if (user == null) {
 			return resultFactory.error("账号不存在");
 		}
 
-		if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(password)) {
-			return resultFactory.error("账号或密码错误(1)");
+		if (!formatPassword(password).equals(user.getPassword())) {
+			return resultFactory.error("账号或密码错误");
 		}
+		return resultFactory.success();
+	}
 
-		if (!user.getPassword().equals(SignatureUtils.md5(password, Constants.DEFAULT_CHARSET_NAME))) {
-			return resultFactory.error("账号或密码错误(2)");
-		}
+	public UserToken<Long> login(long uid) {
+		return loginService.login(uid);
+	}
 
-		return resultFactory.success(loginService.login(user.getUid()));
+	public boolean cancelLogin(String token) {
+		return loginService.cancelLogin(token);
 	}
 }

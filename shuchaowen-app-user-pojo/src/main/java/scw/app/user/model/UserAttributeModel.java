@@ -10,6 +10,9 @@ public class UserAttributeModel implements Serializable{
 	private Date birthday;
 	private SexType sex;
 	private int age;
+	private String nickname;
+	private String headImg;
+	
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -27,5 +30,17 @@ public class UserAttributeModel implements Serializable{
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getHeadImg() {
+		return headImg;
+	}
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 }

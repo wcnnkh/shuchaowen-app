@@ -1,10 +1,5 @@
 package scw.app.user.pojo;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import scw.aop.support.FieldSetter;
-import scw.app.user.enums.UnionIdType;
 import scw.app.user.model.UserAttributeModel;
 import scw.sql.orm.annotation.Column;
 import scw.sql.orm.annotation.PrimaryKey;
@@ -18,9 +13,16 @@ public class User extends UserAttributeModel {
 	@PrimaryKey
 	private long uid;
 	private long cts;
-	@Column(length=1000)
-	private Map<UnionIdType, String> unionIdMap;
+	@Column(unique=true, length=32)
+	private String username;
 	private String password;
+	@Column(unique=true, length=16)
+	private String phone;
+	@Column(unique=true, length=64)
+	private String openidForWX;
+	@Column(unique=true, length=64)
+	private String openidForQQ;
+	private int permissionGroupId;//权限组id
 
 	public long getUid() {
 		return uid;
@@ -37,6 +39,38 @@ public class User extends UserAttributeModel {
 	public void setCts(long cts) {
 		this.cts = cts;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getOpenidForWX() {
+		return openidForWX;
+	}
+
+	public void setOpenidForWX(String openidForWX) {
+		this.openidForWX = openidForWX;
+	}
+
+	public String getOpenidForQQ() {
+		return openidForQQ;
+	}
+
+	public void setOpenidForQQ(String openidForQQ) {
+		this.openidForQQ = openidForQQ;
+	}
 
 	public String getPassword() {
 		return password;
@@ -46,19 +80,11 @@ public class User extends UserAttributeModel {
 		this.password = password;
 	}
 
-	public Map<UnionIdType, String> getUnionIdMap() {
-		return unionIdMap;
+	public int getPermissionGroupId() {
+		return permissionGroupId;
 	}
 
-	public void setUnionIdMap(Map<UnionIdType, String> unionIdMap) {
-		this.unionIdMap = unionIdMap;
-	}
-	
-	@FieldSetter("unionIdMap")
-	public void putUnionId(UnionIdType unionIdType, String unionId){
-		if(unionIdMap == null){
-			unionIdMap = new HashMap<UnionIdType, String>(4);
-		}
-		unionIdMap.put(unionIdType, unionId);
+	public void setPermissionGroupId(int permissionGroupId) {
+		this.permissionGroupId = permissionGroupId;
 	}
 }
