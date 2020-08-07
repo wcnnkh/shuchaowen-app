@@ -1,4 +1,4 @@
-package scw.app.common.security;
+package scw.app.user.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

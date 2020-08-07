@@ -1,6 +1,6 @@
 package scw.app.user.service;
 
-import scw.app.common.security.LoginRequired;
+import scw.app.user.security.LoginRequired;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.ResultFactory;

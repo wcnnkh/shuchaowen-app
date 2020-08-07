@@ -17,8 +17,6 @@ import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
-import scw.security.login.LoginService;
-import scw.security.login.UserToken;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
 import scw.sql.SqlUtils;
@@ -29,13 +27,18 @@ import scw.util.Pagination;
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Autowired(required = false)
 	private VerificationCodeService verificationCodeService;
-	private LoginService<Long> loginService;
 	@Autowired
 	private PermissionGroupService permissionGroupService;
 
-	public UserServiceImpl(DB db, ResultFactory resultFactory, LoginService<Long> loginService) {
+	public UserServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
-		this.loginService = loginService;
+		db.createTable(User.class);
+		User user = getUserByUsername(ADMIN_NAME);
+		if (user == null) {
+			UserAttributeModel userAttributeModel = new UserAttributeModel();
+			userAttributeModel.setNickname(NICKNAME);
+			registerByUsername(ADMIN_NAME, PASSWORD, userAttributeModel);
+		}
 	}
 
 	public User getUser(long uid) {
@@ -234,13 +237,5 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			return resultFactory.error("账号或密码错误");
 		}
 		return resultFactory.success();
-	}
-
-	public UserToken<Long> login(long uid) {
-		return loginService.login(uid);
-	}
-
-	public boolean cancelLogin(String token) {
-		return loginService.cancelLogin(token);
 	}
 }
