@@ -23,6 +23,8 @@ public class RedeemCode implements Serializable {
 	private int usableCount;// 最大可使用的次数 -1是不限制次数
 	private long usableBeginTime;// 0表示不限制时间
 	private long usableEndTime;// 0表示不限制时间
+	private long createUid;//创建者
+	private long ownerUid;//拥有者
 
 	public int getType() {
 		return type;
@@ -62,5 +64,21 @@ public class RedeemCode implements Serializable {
 
 	public void setUsableEndTime(long usableEndTime) {
 		this.usableEndTime = usableEndTime;
+	}
+
+	public long getCreateUid() {
+		return createUid;
+	}
+
+	public void setCreateUid(long createUid) {
+		this.createUid = createUid;
+	}
+
+	public long getOwnerUid() {
+		return ownerUid;
+	}
+
+	public void setOwnerUid(long ownerUid) {
+		this.ownerUid = ownerUid;
 	}
 }
