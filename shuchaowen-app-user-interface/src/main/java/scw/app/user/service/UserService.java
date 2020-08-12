@@ -1,68 +1,45 @@
 package scw.app.user.service;
 
-import scw.app.user.enums.UnionIdType;
+import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
-import scw.app.user.pojo.UnionId;
 import scw.app.user.pojo.User;
+import scw.core.GlobalPropertyFactory;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
 import scw.result.Result;
-import scw.security.login.UserToken;
+import scw.util.Pagination;
 
 @Controller(value = "user", methods = { HttpMethod.POST, HttpMethod.GET })
 public interface UserService {
+	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.username", String.class,
+			"admin");
+	public static String PASSWORD = GlobalPropertyFactory.getInstance().getValue("scw.admin.password",
+			String.class, "123456");
+	public static String NICKNAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.nickname",
+			String.class, "超级管理员");
+
+	Pagination<User> getPagination(int permissionGroupId, String username, String nickname, int page, int limit);
+
 	User getUser(long uid);
 
-	UnionId getUnionId(UnionIdType unionIdType, String unionId);
+	User getUserByUsername(String username);
 
-	User getUser(UnionIdType unionIdType, String unionId);
+	User getUserByPhone(String phone);
 
-	DataResult<User> register(UnionIdType unionIdType, String unionId, String password,
-			UserAttributeModel userAttributeModel);
+	User getUserByOpenid(OpenidType type, String openid);
 
-	/**
-	 * 注册
-	 * 
-	 * @param unionIdType
-	 * @param unionId
-	 * @param password
-	 * @return
-	 */
-	DataResult<User> register(long uid, UnionIdType unionIdType, String unionId, String password,
-			UserAttributeModel userAttributeModel);
+	Result checkPassword(long uid, String password);
 
-	DataResult<User> bind(long uid, UnionIdType unionIdType, String unionId);
+	DataResult<User> registerByUsername(String username, String password, UserAttributeModel userAttributeModel);
 
-	Result bind(long uid, UnionIdType unionIdType, String unionId, String code);
+	DataResult<User> registerByPhone(String phone, String password, UserAttributeModel userAttributeModel);
 
-	Result register(UnionIdType unionIdType, String unionId, String password, String code,
-			UserAttributeModel userAttributeModel);
+	DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel);
 
-	/**
-	 * 以验证码方式注册
-	 * 
-	 * @param unionIdType
-	 * @param unionId
-	 * @param password
-	 * @param code
-	 * @return
-	 */
-	Result register(long uid, UnionIdType unionIdType, String unionId, String password, String code,
-			UserAttributeModel userAttributeModel);
+	DataResult<User> bindPhone(long uid, String phone);
 
-	/**
-	 * 修改用户其他属性
-	 * 
-	 * @param uid
-	 * @param userAttributeModel
-	 * @return
-	 */
+	DataResult<User> bindOpenid(long uid, OpenidType type, String openid, UserAttributeModel userAttributeModel);
+
 	Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel);
-
-	@Controller(value = "login")
-	DataResult<UserToken<Long>> login(UnionIdType unionIdType, String unionId, String code);
-	
-	@Controller(value="pwd_login")
-	DataResult<UserToken<Long>> pwdLogin(UnionIdType unionIdType, String unionId, String password);
 }

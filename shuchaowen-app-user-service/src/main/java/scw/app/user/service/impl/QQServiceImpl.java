@@ -2,15 +2,13 @@ package scw.app.user.service.impl;
 
 import scw.app.common.BaseServiceImpl;
 import scw.app.common.enums.SexType;
-import scw.app.user.enums.UnionIdType;
+import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
-import scw.app.user.pojo.QQUserInfo;
 import scw.app.user.pojo.User;
 import scw.app.user.service.QQService;
 import scw.app.user.service.UserService;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
-import scw.mapper.Copy;
 import scw.oauth2.AccessToken;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -40,22 +38,19 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 			throw new RuntimeException("参数错误");
 		}
 
-		User user = userService.getUser(UnionIdType.qq_openid, openid);
+		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
 		if (user == null) {
-			QQUserInfo qqUserInfo = new QQUserInfo();
 			Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
-			Copy.copy(qqUserInfo, userinfo);
-
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
-			userAttributeModel.setSex(SexType.forDescribe(qqUserInfo.getGender()));
-			DataResult<User> dataResult = userService.register(UnionIdType.qq_openid, openid, null, userAttributeModel);
+			userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
+			userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
+			userAttributeModel.setNickname(userinfo.getNickname());
+			DataResult<User> dataResult = userService.registerByOpenid(OpenidType.QQ, openid, userAttributeModel);
 			if (dataResult.isError()) {
 				throw new RuntimeException("register error:" + dataResult);
 			}
-
+			
 			user = dataResult.getData();
-			qqUserInfo.setUid(user.getUid());
-			db.saveOrUpdate(qqUserInfo);
 		}
 		return loginService.login(user.getUid());
 	}
@@ -76,28 +71,17 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 			return resultFactory.parameterError();
 		}
 
-		User user = userService.getUser(UnionIdType.qq_openid, openid);
+		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
 		}
 
-		QQUserInfo qqUserInfo = getUserInfo(uid);
-		if (qqUserInfo == null) {
-			qqUserInfo = new QQUserInfo();
-			qqUserInfo.setUid(uid);
-		}
-
 		Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
-		Copy.copy(qqUserInfo, userinfo);
-		db.saveOrUpdate(userinfo);
-
 		UserAttributeModel userAttributeModel = new UserAttributeModel();
 		userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
-		Result result = userService.updateUserAttribute(uid, userAttributeModel);
-		if (result.isError()) {
-			return result;
-		}
-		return userService.bind(uid, UnionIdType.qq_openid, openid);
+		userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
+		userAttributeModel.setNickname(userinfo.getNickname());
+		return userService.bindOpenid(uid, OpenidType.QQ, openid, userAttributeModel);
 	}
 
 	public Result webBind(long uid, String code, String redirect_uri) {
@@ -109,9 +93,5 @@ public class QQServiceImpl extends BaseServiceImpl implements QQService {
 				redirect_uri, code);
 		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
 		return bind(uid, openid, accessToken.getAccessToken().getToken());
-	}
-
-	public QQUserInfo getUserInfo(long uid) {
-		return db.getById(QQUserInfo.class, uid);
 	}
 }

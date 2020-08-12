@@ -2,16 +2,14 @@ package scw.app.user.service.impl;
 
 import scw.app.common.BaseServiceImpl;
 import scw.app.common.enums.SexType;
-import scw.app.user.enums.UnionIdType;
+import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
-import scw.app.user.pojo.WeiXinUserInfo;
 import scw.app.user.service.UserService;
 import scw.app.user.service.WeiXinService;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
-import scw.mapper.Copy;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -43,63 +41,42 @@ public class WeiXinServiceImpl extends BaseServiceImpl implements WeiXinService 
 		}
 
 		UserAccessToken userAccessToken = userGrantClient.getAccessToken(code, null);
-		User user = userService.getUser(UnionIdType.wx_openid, userAccessToken.getOpenid());
+		User user = userService.getUserByOpenid(OpenidType.WX, userAccessToken.getOpenid());
 		if (user == null) {
-			WeiXinUserInfo weiXinUserInfo = new WeiXinUserInfo();
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
 			if (scope == Scope.USERINFO) {
 				Userinfo userinfo = WeiXinUtils.getUserinfo(userAccessToken.getOpenid(),
 						userAccessToken.getAccessToken().getToken());
-				Copy.copy(weiXinUserInfo, userinfo);
 				userAttributeModel.setSex(SexType.forValue(userinfo.getSex()));
-			} else {
-				weiXinUserInfo.setOpenid(userAccessToken.getOpenid());
+				userAttributeModel.setNickname(userinfo.getNickname());
+				userAttributeModel.setHeadImg(StringUtils.split(userinfo.getHeadimgurl(), ",")[0]);
 			}
 
-			DataResult<User> result = userService.register(UnionIdType.wx_openid, userAccessToken.getOpenid(), null,
+			DataResult<User> result = userService.registerByOpenid(OpenidType.WX, userAccessToken.getOpenid(),
 					userAttributeModel);
 			if (result.isError()) {
 				throw new RuntimeException("register error: " + result);
 			}
 			user = result.getData();
-			weiXinUserInfo.setUid(user.getUid());
-			db.saveOrUpdate(weiXinUserInfo);
 		}
 		return loginService.login(user.getUid());
 	}
 
-	public WeiXinUserInfo getUserInfo(long uid) {
-		return db.getById(WeiXinUserInfo.class, uid);
-	}
-
 	public Result bind(long uid, String code, Scope scope) {
 		UserAccessToken userAccessToken = userGrantClient.getAccessToken(code, null);
-		User user = userService.getUser(UnionIdType.wx_openid, userAccessToken.getOpenid());
+		User user = userService.getUserByOpenid(OpenidType.WX, userAccessToken.getOpenid());
 		if (user == null) {
 			return resultFactory.error("未注册，无法绑定");
-		}
-
-		WeiXinUserInfo weiXinUserInfo = getUserInfo(uid);
-		if (weiXinUserInfo == null) {
-			weiXinUserInfo = new WeiXinUserInfo();
-			weiXinUserInfo.setUid(uid);
 		}
 
 		UserAttributeModel userAttributeModel = new UserAttributeModel();
 		if (scope == Scope.USERINFO) {
 			Userinfo userinfo = WeiXinUtils.getUserinfo(userAccessToken.getOpenid(),
 					userAccessToken.getAccessToken().getToken());
-			Copy.copy(weiXinUserInfo, userinfo);
 			userAttributeModel.setSex(SexType.forValue(userinfo.getSex()));
-			Result result = userService.updateUserAttribute(uid, userAttributeModel);
-			if (result.isError()) {
-				return result;
-			}
-		} else {
-			weiXinUserInfo.setOpenid(userAccessToken.getOpenid());
+			userAttributeModel.setNickname(userinfo.getNickname());
+			userAttributeModel.setHeadImg(StringUtils.split(userinfo.getHeadimgurl(), ",")[0]);
 		}
-		db.saveOrUpdate(weiXinUserInfo);
-		return userService.bind(uid, UnionIdType.wx_openid, weiXinUserInfo.getOpenid()).result();
+		return userService.bindOpenid(uid, OpenidType.WX, userAccessToken.getOpenid(), userAttributeModel).result();
 	}
-
 }
