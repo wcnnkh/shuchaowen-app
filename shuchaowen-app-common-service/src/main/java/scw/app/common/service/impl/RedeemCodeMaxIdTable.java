@@ -12,17 +12,17 @@ public class RedeemCodeMaxIdTable implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
 	private int type;
-	private int maxId;
+	private long maxId;
 	public int getType() {
 		return type;
 	}
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getMaxId() {
+	public long getMaxId() {
 		return maxId;
 	}
-	public void setMaxId(int maxId) {
+	public void setMaxId(long maxId) {
 		this.maxId = maxId;
 	}
 }
