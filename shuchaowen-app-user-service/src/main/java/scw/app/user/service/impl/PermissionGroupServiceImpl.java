@@ -26,6 +26,7 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl implements Permi
 
 	public PermissionGroupServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(PermissionGroup.class, false);
 	}
 
 	public PermissionGroup getById(int id) {

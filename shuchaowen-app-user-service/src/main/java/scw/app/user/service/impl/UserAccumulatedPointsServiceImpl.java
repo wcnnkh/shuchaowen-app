@@ -14,6 +14,7 @@ public class UserAccumulatedPointsServiceImpl extends BaseServiceImpl implements
 
 	public UserAccumulatedPointsServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(UserAccumulatedPoints.class, false);
 	}
 
 	public UserAccumulatedPoints getUserAccumulatedPoints(long uid) {

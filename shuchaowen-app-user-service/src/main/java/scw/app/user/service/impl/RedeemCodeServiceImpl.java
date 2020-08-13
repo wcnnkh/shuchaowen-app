@@ -23,6 +23,8 @@ public class RedeemCodeServiceImpl extends BaseServiceImpl implements RedeemCode
 	public RedeemCodeServiceImpl(DB db, ResultFactory resultFactory, RedeemCodeGenerator redeemCodeGenerator) {
 		super(db, resultFactory);
 		this.redeemCodeGenerator = redeemCodeGenerator;
+		db.createTable(RedeemCode.class, false);
+		db.createTable(UserRedeemCodeLog.class, false);
 	}
 
 	public RedeemCode getRedeemCode(int type, String code) {

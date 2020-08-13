@@ -16,6 +16,7 @@ public class PermissionGroupActionServiceImpl extends BaseServiceImpl implements
 
 	public PermissionGroupActionServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(PermissionGroupAction.class, false);
 	}
 
 	public boolean check(int groupId, String actionId) {

@@ -20,6 +20,7 @@ public class UserVoucherServiceImpl extends BaseServiceImpl implements UserVouch
 	public UserVoucherServiceImpl(DB db, ResultFactory resultFactory, SequenceIdGenerator sequenceIdGenerator) {
 		super(db, resultFactory);
 		this.sequenceIdGenerator = sequenceIdGenerator;
+		db.createTable(UserVoucher.class, false);
 	}
 
 	public UserVoucher getUserVoucher(long uid, long voucherId) {
