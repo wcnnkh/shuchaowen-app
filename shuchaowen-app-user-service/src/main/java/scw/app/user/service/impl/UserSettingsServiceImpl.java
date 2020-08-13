@@ -12,6 +12,7 @@ public class UserSettingsServiceImpl extends BaseServiceImpl implements UserSett
 	
 	public UserSettingsServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(UserSettings.class, false);
 	}
 
 	public UserSettings getUserSettings(long uid) {

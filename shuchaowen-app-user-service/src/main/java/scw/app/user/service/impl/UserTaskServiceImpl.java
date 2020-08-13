@@ -19,6 +19,7 @@ public class UserTaskServiceImpl extends BaseServiceImpl implements UserTaskServ
 
 	public UserTaskServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(UserTask.class, false);
 	}
 
 	public List<UserTask> getUserTaskList(long uid) {

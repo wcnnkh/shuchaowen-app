@@ -15,6 +15,7 @@ public class UserRelationshipServiceImpl extends BaseServiceImpl implements User
 
 	public UserRelationshipServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(UserRelationship.class, false);
 	}
 
 	public Result create(long uid, int type, long toUid, boolean mutual) {

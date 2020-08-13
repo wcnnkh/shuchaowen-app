@@ -24,6 +24,8 @@ public class UserSignInServiceImpl extends BaseServiceImpl implements UserSignIn
 
 	public UserSignInServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
+		db.createTable(UserSignInLogTable.class, false);
+		db.createTable(UserSignIn.class, false);
 	}
 
 	protected KeyValuePair<Integer, UserSignInLogTable> getContinuousSignInCount(long uid, int type, int initCount,

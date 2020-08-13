@@ -32,7 +32,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	public UserServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
-		db.createTable(User.class);
+		db.createTable(User.class, false);
 		User user = getUserByUsername(ADMIN_NAME);
 		if (user == null) {
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
