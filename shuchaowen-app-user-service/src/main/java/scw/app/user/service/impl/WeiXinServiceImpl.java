@@ -49,7 +49,9 @@ public class WeiXinServiceImpl extends BaseServiceImpl implements WeiXinService 
 						userAccessToken.getAccessToken().getToken());
 				userAttributeModel.setSex(SexType.forValue(userinfo.getSex()));
 				userAttributeModel.setNickname(userinfo.getNickname());
-				userAttributeModel.setHeadImg(StringUtils.split(userinfo.getHeadimgurl(), ",")[0]);
+				if(StringUtils.isNotEmpty(userinfo.getHeadimgurl())){
+					userAttributeModel.setHeadImg(StringUtils.split(userinfo.getHeadimgurl(), ",")[0]);
+				}
 			}
 
 			DataResult<User> result = userService.registerByOpenid(OpenidType.WX, userAccessToken.getOpenid(),
