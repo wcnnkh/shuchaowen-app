@@ -3,7 +3,6 @@ package scw.app.user.service;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
-import scw.core.GlobalPropertyFactory;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
@@ -12,16 +11,16 @@ import scw.util.Pagination;
 
 @Controller(value = "user", methods = { HttpMethod.POST, HttpMethod.GET })
 public interface UserService {
-	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.username", String.class,
-			"admin");
-	public static String PASSWORD = GlobalPropertyFactory.getInstance().getValue("scw.admin.password",
-			String.class, "123456");
-	public static String NICKNAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.nickname",
-			String.class, "超级管理员");
-
 	Pagination<User> getPagination(int permissionGroupId, String username, String nickname, int page, int limit);
 
 	User getUser(long uid);
+	
+	/**
+	 * 是否是超级管理员
+	 * @param uid
+	 * @return
+	 */
+	boolean isSuperAdmin(long uid);
 
 	User getUserByUsername(String username);
 

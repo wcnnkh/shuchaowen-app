@@ -8,6 +8,7 @@ import scw.app.user.pojo.User;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.core.GlobalPropertyFactory;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
@@ -25,6 +26,13 @@ import scw.util.Pagination;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
+	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.username", String.class,
+			"admin");
+	public static String PASSWORD = GlobalPropertyFactory.getInstance().getValue("scw.admin.password",
+			String.class, "123456");
+	public static String NICKNAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.nickname",
+			String.class, "超级管理员");
+	
 	@Autowired(required = false)
 	private VerificationCodeService verificationCodeService;
 	@Autowired
@@ -237,5 +245,18 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			return resultFactory.error("账号或密码错误");
 		}
 		return resultFactory.success();
+	}
+
+	public boolean isSuperAdmin(long uid) {
+		User user = getUser(uid);
+		if(user == null){
+			return false;
+		}
+		
+		if(ADMIN_NAME.equals(user.getUsername())){
+			return true;
+		}
+		
+		return false;
 	}
 }

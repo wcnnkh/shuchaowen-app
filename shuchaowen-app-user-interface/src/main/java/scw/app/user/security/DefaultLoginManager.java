@@ -12,15 +12,15 @@ public class DefaultLoginManager implements LoginManager {
 		this.loginService = loginService;
 	}
 
-	public UserToken<Long> login(LoginType type, long uid) {
+	public UserToken<Long> login(long uid) {
 		return loginService.login(uid);
 	}
 
-	public UserToken<Long> getToken(LoginType type, String token) {
+	public UserToken<Long> getToken(String token) {
 		return loginService.getUserToken(token);
 	}
 
-	public boolean cancelLogin(LoginType type, String token) {
+	public boolean cancelLogin(String token) {
 		return loginService.cancelLogin(token);
 	}
 

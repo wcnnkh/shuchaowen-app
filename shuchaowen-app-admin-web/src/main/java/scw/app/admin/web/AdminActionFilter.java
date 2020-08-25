@@ -8,6 +8,7 @@ import scw.core.instance.annotation.Configuration;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.mvc.action.ActionFilter;
+import scw.mvc.action.ActionFilterChain;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.ResultFactory;
@@ -25,8 +26,9 @@ public class AdminActionFilter implements ActionFilter {
 	private AdminRoleGroupActionService adminRoleGroupActionService;
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
-
-	public Object doFilter(Action action, HttpChannel httpChannel) throws Throwable {
+	
+	public Object doFilter(HttpChannel httpChannel, Action action, Object[] args, ActionFilterChain filterChain)
+			throws Throwable {
 		AdminLoginRequired adminLoginRequired = action.getAnnotatedElement().getAnnotation(AdminLoginRequired.class);
 		ActionAuthority actionAuthority = action.getMethodAnnotatedElement().getAnnotation(ActionAuthority.class);
 		if (adminLoginRequired != null || actionAuthority != null) {
@@ -36,24 +38,24 @@ public class AdminActionFilter implements ActionFilter {
 			}
 
 			if (adminRole.getUserName().equals(AdminRoleService.DEFAULT_ADMIN_NAME)) {
-				return action.doAction(httpChannel);
+				return filterChain.doFilter(httpChannel, action, args);
 			}
 
 			if (actionAuthority != null) {
 				HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
 				if (httpAuthority == null) {
 					httpChannel.getLogger().warn("not found autority: {}", action);
-					return action.doAction(httpChannel);
+					return filterChain.doFilter(httpChannel, action, args);
 				}
 				// 权限判断
 				if (adminRoleGroupActionService.check(adminRole.getGroupId(), httpAuthority.getId())) {
-					return action.doAction(httpChannel);
+					return filterChain.doFilter(httpChannel, action, args);
 				}
 
 				return resultFactory.error("权限不足");
 			}
 		}
-		return action.doAction(httpChannel);
+		return filterChain.doFilter(httpChannel, action, args);
 	}
 
 }
