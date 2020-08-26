@@ -7,15 +7,16 @@ import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
-import scw.mvc.action.ActionFilter;
-import scw.mvc.action.ActionFilterChain;
+import scw.mvc.action.ActionInterceptor;
+import scw.mvc.action.ActionInterceptorChain;
+import scw.mvc.action.ActionParameters;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
 
 @Configuration
-public class AdminActionFilter implements ActionFilter {
+public class AdminActionInterceptor implements ActionInterceptor {
 	public static final String ROUTE_ATTR_NAME = "route";
 
 	@Autowired
@@ -27,7 +28,7 @@ public class AdminActionFilter implements ActionFilter {
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 	
-	public Object doFilter(HttpChannel httpChannel, Action action, Object[] args, ActionFilterChain filterChain)
+	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters, ActionInterceptorChain chain)
 			throws Throwable {
 		AdminLoginRequired adminLoginRequired = action.getAnnotatedElement().getAnnotation(AdminLoginRequired.class);
 		ActionAuthority actionAuthority = action.getMethodAnnotatedElement().getAnnotation(ActionAuthority.class);
@@ -38,24 +39,24 @@ public class AdminActionFilter implements ActionFilter {
 			}
 
 			if (adminRole.getUserName().equals(AdminRoleService.DEFAULT_ADMIN_NAME)) {
-				return filterChain.doFilter(httpChannel, action, args);
+				return chain.intercept(httpChannel, action, parameters);
 			}
 
 			if (actionAuthority != null) {
 				HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
 				if (httpAuthority == null) {
 					httpChannel.getLogger().warn("not found autority: {}", action);
-					return filterChain.doFilter(httpChannel, action, args);
+					return chain.intercept(httpChannel, action, parameters);
 				}
 				// 权限判断
 				if (adminRoleGroupActionService.check(adminRole.getGroupId(), httpAuthority.getId())) {
-					return filterChain.doFilter(httpChannel, action, args);
+					return chain.intercept(httpChannel, action, parameters);
 				}
 
 				return resultFactory.error("权限不足");
 			}
 		}
-		return filterChain.doFilter(httpChannel, action, args);
+		return chain.intercept(httpChannel, action, parameters);
 	}
 
 }

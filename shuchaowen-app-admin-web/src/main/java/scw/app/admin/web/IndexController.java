@@ -135,30 +135,30 @@ public class IndexController {
 		return resultFactory.success(object);
 	}
 
-	@Controller(value = "welcome", filters = AdminFilter.class)
+	@Controller(value = "welcome", interceptors = AdminFilter.class)
 	public View welcome(AdminToken adminToken) {
 		Jsp jsp = new Jsp("welcome.jsp");
 		return jsp;
 	}
 
-	@Controller(value = "cancel_login", filters = AdminFilter.class)
+	@Controller(value = "cancel_login", interceptors = AdminFilter.class)
 	public View cacelLogin(AdminToken adminToken) {
 		adminService.cacelLogin(adminToken.getAdmin());
 		return new Redirect(adminToken.getRequest().getRequest().getContextPath() + AdminFilter.LOGIN_EXPIRED_URL);
 	}
 
-	@Controller(value = "signout_login", filters = AdminFilter.class)
+	@Controller(value = "signout_login", interceptors = AdminFilter.class)
 	public Result signoutLogin(AdminToken adminToken) {
 		adminService.cacelLogin(adminToken.getAdmin());
 		return resultFactory.success();
 	}
 
-	@Controller(value = "update_pwd", filters = AdminFilter.class)
+	@Controller(value = "update_pwd", interceptors = AdminFilter.class)
 	public View update_pwd(AdminToken adminToken) {
 		return new Jsp("update_pwd.jsp");
 	}
 
-	@Controller(value = "update_pwd", filters = AdminFilter.class, methods = HttpMethod.POST)
+	@Controller(value = "update_pwd", interceptors = AdminFilter.class, methods = HttpMethod.POST)
 	public Result update_pwd(AdminToken adminToken, String oldPwd, String newPwd) {
 		if (StringUtils.isNull(oldPwd, newPwd)) {
 			return resultFactory.parameterError();

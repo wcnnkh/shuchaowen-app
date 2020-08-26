@@ -7,8 +7,9 @@ import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
-import scw.mvc.action.ActionFilter;
-import scw.mvc.action.ActionFilterChain;
+import scw.mvc.action.ActionInterceptor;
+import scw.mvc.action.ActionInterceptorChain;
+import scw.mvc.action.ActionParameters;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.ResultFactory;
@@ -16,7 +17,7 @@ import scw.security.authority.http.HttpAuthority;
 import scw.security.login.UserToken;
 
 @Configuration
-public class SecurityActionFilter implements ActionFilter {
+public class SecurityActionInterceptor implements ActionInterceptor {
 	@Autowired
 	private LoginManager loginManager;
 	@Autowired
@@ -28,7 +29,7 @@ public class SecurityActionFilter implements ActionFilter {
 	@Autowired
 	private UserService userService;
 	
-	public Object doFilter(HttpChannel httpChannel, Action action, Object[] args, ActionFilterChain filterChain)
+	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters, ActionInterceptorChain chain)
 			throws Throwable {
 		LoginRequired required = action.getAnnotatedElement().getAnnotation(LoginRequired.class);
 		ActionAuthority actionAuthority = action.getMethodAnnotatedElement().getAnnotation(ActionAuthority.class);
@@ -65,6 +66,6 @@ public class SecurityActionFilter implements ActionFilter {
 				}
 			}
 		}
-		return filterChain.doFilter(httpChannel, action, args);
+		return chain.intercept(httpChannel, action, parameters);
 	}
 }

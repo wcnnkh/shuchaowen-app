@@ -7,7 +7,7 @@ import scw.app.admin.pojo.AdminRole;
 import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleService;
-import scw.app.admin.web.AdminActionFilter;
+import scw.app.admin.web.AdminActionInterceptor;
 import scw.app.admin.web.AdminLoginRequired;
 import scw.beans.annotation.Autowired;
 import scw.core.annotation.KeyValuePair;
@@ -18,7 +18,6 @@ import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
 import scw.mvc.annotation.ResultFactory;
-import scw.mvc.exception.TapeDescriptionException;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.DataResult;
 import scw.security.authority.AuthorityTree;
@@ -38,13 +37,13 @@ public class AdminRoleController {
 	@Autowired
 	private AdminRoleGroupActionService adminRoleGroupActionService;
 
-	@ActionAuthority(value = "管理员列表", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementList") })
+	@ActionAuthority(value = "管理员列表", menu = true, attributes = { @KeyValuePair(key = AdminActionInterceptor.ROUTE_ATTR_NAME, value = "ManagementList") })
 	@Controller("list")
 	public Pagination<AdminRole> list(String userName, String nickName,
 			int uid, @DefaultValue("1")Integer page, @DefaultValue("10") Integer limit) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {
-			throw new TapeDescriptionException("系统错误，用户不存在");
+			throw new RuntimeException("系统错误，用户不存在");
 		}
 
 		Pagination<AdminRole> pagination = adminRoleService.getAdminRolePagination(adminRole.getGroupId(),

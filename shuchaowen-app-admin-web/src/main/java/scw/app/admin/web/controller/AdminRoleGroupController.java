@@ -12,7 +12,7 @@ import scw.app.admin.pojo.AdminRoleGroupAction;
 import scw.app.admin.service.AdminRoleGroupActionService;
 import scw.app.admin.service.AdminRoleGroupService;
 import scw.app.admin.service.AdminRoleService;
-import scw.app.admin.web.AdminActionFilter;
+import scw.app.admin.web.AdminActionInterceptor;
 import scw.app.admin.web.AdminLoginRequired;
 import scw.app.common.model.ElementUiTree;
 import scw.beans.annotation.Autowired;
@@ -24,7 +24,6 @@ import scw.mvc.annotation.ActionAuthorityParent;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
 import scw.mvc.annotation.ResultFactory;
-import scw.mvc.exception.TapeDescriptionException;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -47,12 +46,12 @@ public class AdminRoleGroupController {
 	@Autowired
 	private scw.result.ResultFactory resultFactory;
 
-	@ActionAuthority(value = "管理员权限组", menu = true, attributes = { @KeyValuePair(key = AdminActionFilter.ROUTE_ATTR_NAME, value = "ManagementAuthority") })
+	@ActionAuthority(value = "管理员权限组", menu = true, attributes = { @KeyValuePair(key = AdminActionInterceptor.ROUTE_ATTR_NAME, value = "ManagementAuthority") })
 	@Controller(value = "list")
 	public Collection<AdminRoleGroup> list(int uid, int parentGroupId) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {
-			throw new TapeDescriptionException("系统错误，用户不存在");
+			throw new RuntimeException("系统错误，用户不存在");
 		}
 
 		return adminRoleGroupService.getSubList(parentGroupId == 0 ? adminRole
@@ -64,7 +63,7 @@ public class AdminRoleGroupController {
 	public List<ElementUiTree<Integer>> getAdminRoleGroupTreeList(int uid) {
 		AdminRole adminRole = adminRoleService.getById(uid);
 		if (adminRole == null) {
-			throw new TapeDescriptionException("系统错误，用户不存在");
+			throw new RuntimeException("系统错误，用户不存在");
 		}
 
 		return adminRoleGroupService.getAdminRoleGroupTreeList(adminRole

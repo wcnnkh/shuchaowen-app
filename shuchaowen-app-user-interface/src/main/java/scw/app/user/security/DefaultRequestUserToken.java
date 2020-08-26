@@ -2,13 +2,13 @@ package scw.app.user.security;
 
 import scw.core.GlobalPropertyFactory;
 import scw.core.instance.annotation.Configuration;
+import scw.event.support.DynamicValue;
 import scw.http.HttpCookie;
 import scw.http.HttpUtils;
 import scw.mvc.HttpChannel;
 import scw.security.login.UserToken;
 import scw.value.StringValue;
 import scw.value.Value;
-import scw.value.property.PropertyFactory.DynamicValue;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class DefaultRequestUserToken implements RequestUserToken {
