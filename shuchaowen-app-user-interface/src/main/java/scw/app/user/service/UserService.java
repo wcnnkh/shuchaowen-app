@@ -29,6 +29,8 @@ public interface UserService {
 	User getUserByOpenid(OpenidType type, String openid);
 
 	Result checkPassword(long uid, String password);
+	
+	Result updatePassword(long uid, String password);
 
 	DataResult<User> registerByUsername(String username, String password, UserAttributeModel userAttributeModel);
 

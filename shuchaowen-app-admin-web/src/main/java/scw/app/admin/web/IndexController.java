@@ -9,6 +9,7 @@ import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.security.RequestUserToken;
+import scw.app.user.security.SecurityActionInterceptor;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
@@ -21,6 +22,7 @@ import scw.mvc.annotation.Controller;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
 import scw.mvc.security.HttpActionAuthorityManager;
+import scw.mvc.view.Redirect;
 import scw.mvc.view.View;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -47,22 +49,26 @@ public class IndexController {
 	@LoginRequired
 	@Controller(value = "menus")
 	@scw.mvc.annotation.ResultFactory
-	public List<AuthorityTree<HttpAuthority>> getMenus(RequestUserToken requestUserToken) {
+	public List<AuthorityTree<HttpAuthority>> getMenus(
+			RequestUserToken requestUserToken) {
 		if (userService.isSuperAdmin(requestUserToken.getUid())) {
-			return httpActionAuthorityManager.getAuthorityTreeList(null, new MenuAuthorityFilter<HttpAuthority>());
+			return httpActionAuthorityManager.getAuthorityTreeList(null,
+					new MenuAuthorityFilter<HttpAuthority>());
 		} else {
 			User user = userService.getUser(requestUserToken.getUid());
 			List<PermissionGroupAction> actions = permissionGroupActionService
 					.getActionList(user.getPermissionGroupId());
-			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(actions, "actionId");
-			return httpActionAuthorityManager.getRelationAuthorityTreeList(actionIds,
-					new MenuAuthorityFilter<HttpAuthority>());
+			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(
+					actions, "actionId");
+			return httpActionAuthorityManager.getRelationAuthorityTreeList(
+					actionIds, new MenuAuthorityFilter<HttpAuthority>());
 		}
 	}
 
 	@Controller
 	@LoginRequired
-	public Page index(RequestUserToken requestUserToken, ServerHttpRequest request) {
+	public Page index(RequestUserToken requestUserToken,
+			ServerHttpRequest request) {
 		Page page = pageFactory.getPage("/ftl/index.ftl");
 		StringBuilder sb = new StringBuilder(4096);
 		appendMenuHtml(sb, getMenus(requestUserToken), request.getContextPath());
@@ -71,7 +77,8 @@ public class IndexController {
 		return page;
 	}
 
-	private void appendMenuHtml(StringBuilder sb, List<AuthorityTree<HttpAuthority>> authorityTrees,
+	private void appendMenuHtml(StringBuilder sb,
+			List<AuthorityTree<HttpAuthority>> authorityTrees,
 			String contextPath) {
 		if (authorityTrees == null || authorityTrees.isEmpty()) {
 			return;
@@ -99,7 +106,8 @@ public class IndexController {
 			if (StringUtils.isNotEmpty(icon)) {
 				sb.append("<i class='iconfont'>").append(icon).append("</i>");
 			}
-			sb.append("<cite>").append(httpAuthority.getName()).append("</cite>");
+			sb.append("<cite>").append(httpAuthority.getName())
+					.append("</cite>");
 			if (isSub) {
 				sb.append("<i class='iconfont nav_right'>&#xe697;</i>");
 			}
@@ -144,5 +152,40 @@ public class IndexController {
 		map.put("token", userToken.getToken());
 		map.put("uid", user.getUid());
 		return resultFactory.success(map);
+	}
+
+	@LoginRequired
+	@Controller(value = "welcome")
+	public Page welcome() {
+		return pageFactory.getPage("/ftl/welcome.ftl");
+	}
+
+	@LoginRequired
+	@Controller(value = "update_pwd")
+	public View update_pwd() {
+		return pageFactory.getPage("/ftl/update_pwd.ftl");
+	}
+
+	@LoginRequired
+	@Controller(value = "update_pwd", methods = HttpMethod.POST)
+	public Result update_pwd(RequestUserToken requestUserToken, String oldPwd,
+			String newPwd) {
+		if (StringUtils.isNull(oldPwd, newPwd)) {
+			return resultFactory.parameterError();
+		}
+
+		Result result = userService.checkPassword(requestUserToken.getUid(),
+				oldPwd);
+		if (result.isError()) {
+			return resultFactory.error("旧密码错误");
+		}
+
+		return userService.updatePassword(requestUserToken.getUid(), newPwd);
+	}
+	
+	@Controller(value = "cancel_login")
+	public View cacelLogin(RequestUserToken requestUserToken, ServerHttpRequest request) {
+		loginManager.cancelLogin(requestUserToken.getToken());
+		return new Redirect(request.getContextPath() + SecurityActionInterceptor.ADMIN_LOGIN_PATH);
 	}
 }

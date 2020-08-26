@@ -16,6 +16,7 @@ public class User extends UserAttributeModel {
 	@Column(unique=true, length=32)
 	private String username;
 	private String password;
+	private long lastUpdatePasswordTime;
 	@Column(unique=true, length=16)
 	private String phone;
 	@Column(unique=true, length=64)
@@ -86,5 +87,13 @@ public class User extends UserAttributeModel {
 
 	public void setPermissionGroupId(int permissionGroupId) {
 		this.permissionGroupId = permissionGroupId;
+	}
+
+	public long getLastUpdatePasswordTime() {
+		return lastUpdatePasswordTime;
+	}
+
+	public void setLastUpdatePasswordTime(long lastUpdatePasswordTime) {
+		this.lastUpdatePasswordTime = lastUpdatePasswordTime;
 	}
 }

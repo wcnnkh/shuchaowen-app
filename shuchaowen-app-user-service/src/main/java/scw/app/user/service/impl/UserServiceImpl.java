@@ -246,6 +246,22 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 		return resultFactory.success();
 	}
+	
+	public Result updatePassword(long uid, String password) {
+		if (StringUtils.isEmpty(password)) {
+			return resultFactory.parameterError();
+		}
+
+		User user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("账号不存在");
+		}
+
+		user.setPassword(formatPassword(password));
+		user.setLastUpdatePasswordTime(System.currentTimeMillis());
+		db.update(user);
+		return resultFactory.success();
+	}
 
 	public boolean isSuperAdmin(long uid) {
 		User user = getUser(uid);
