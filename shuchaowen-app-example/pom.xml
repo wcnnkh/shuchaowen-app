@@ -18,8 +18,8 @@
 			<artifactId>shuchaowen-app-admin-service</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-db</artifactId>
+			<groupId>shuchaowen-app</groupId>
+			<artifactId>shuchaowen-app-user-service</artifactId>
 		</dependency>
 	</dependencies>
 	
