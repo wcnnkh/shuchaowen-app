@@ -1,6 +1,7 @@
 package scw.app.user.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import scw.app.common.BaseServiceImpl;
@@ -40,6 +41,8 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl implements Permi
 			adminRoleGroup.setId(adminRoleGroupInfo.getId());
 		}
 		adminRoleGroup.setName(adminRoleGroupInfo.getName());
+		adminRoleGroup.setDisable(adminRoleGroupInfo.isDisable());
+		adminRoleGroup.setParentId(adminRoleGroupInfo.getParentId());
 		db.saveOrUpdate(adminRoleGroup);
 		Result result = adminRoleGroupActionService.setActions(adminRoleGroup.getId(),
 				adminRoleGroupInfo.getAuthorityIds());
@@ -51,22 +54,27 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl implements Permi
 		return result.dataResult();
 	}
 
-	public List<PermissionGroup> getSubList(int id) {
-		return db.select(PermissionGroup.class, new SimpleSql("select * from admin_role_group where parentId=?", id));
-	}
-
-	public Result disableGroup(int groupId, boolean disable) {
-		PermissionGroup adminRoleGroup = getById(groupId);
-		if (adminRoleGroup == null) {
-			return resultFactory.error("分组不存在");
+	public List<PermissionGroup> getSubList(int id, boolean ergodic) {
+		List<PermissionGroup> subList = db.select(PermissionGroup.class,
+				new SimpleSql("select * from permission_group where parentId=?", id));
+		if (!ergodic) {
+			return subList;
 		}
 
-		adminRoleGroup.setDisable(disable);
-		return resultFactory.success();
+		if (CollectionUtils.isEmpty(subList)) {
+			return Collections.emptyList();
+		}
+
+		List<PermissionGroup> list = new ArrayList<PermissionGroup>();
+		for (PermissionGroup permissionGroup : subList) {
+			list.add(permissionGroup);
+			list.addAll(getSubList(permissionGroup.getId(), ergodic));
+		}
+		return list;
 	}
 
 	public List<ElementUiTree<Integer>> getPermissionGroupTreeList(int parentGroupId) {
-		List<PermissionGroup> adminRoleGroups = getSubList(parentGroupId);
+		List<PermissionGroup> adminRoleGroups = getSubList(parentGroupId, false);
 		if (CollectionUtils.isEmpty(adminRoleGroups)) {
 			return null;
 		}
@@ -78,24 +86,5 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl implements Permi
 			elementUiTrees.add(tree);
 		}
 		return elementUiTrees;
-	}
-
-	public List<Integer> getAllSubList(int groupId) {
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(groupId);
-		appendSubList(list, groupId);
-		return list;
-	}
-
-	public void appendSubList(List<Integer> list, int groupId) {
-		List<PermissionGroup> groups = getSubList(groupId);
-		if (CollectionUtils.isEmpty(groups)) {
-			return;
-		}
-
-		for (PermissionGroup group : groups) {
-			list.add(group.getId());
-			appendSubList(list, group.getId());
-		}
 	}
 }

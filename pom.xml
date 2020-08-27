@@ -11,24 +11,15 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>shuchaowen-app-common</module>
-		<module>shuchaowen-app-common-pojo</module>
-		<module>shuchaowen-app-common-interface</module>
-		<module>shuchaowen-app-user-pojo</module>
 		<module>shuchaowen-app-user-service</module>
-		<module>shuchaowen-app-user-interface</module>
-		<module>shuchaowen-app-admin-pojo</module>
-		<module>shuchaowen-app-admin-interface</module>
-		<module>shuchaowen-app-admin-service</module>
 		<module>shuchaowen-app-admin-web</module>
 		<module>shuchaowen-app-payment</module>
 		<module>shuchaowen-app-example</module>
-		<module>shuchaowen-app-product-pojo</module>
-		<module>shuchaowen-app-product-interface</module>
 		<module>shuchaowen-app-product-service</module>
-		<module>shuchaowen-app-cms-pojo</module>
-		<module>shuchaowen-app-cms-interface</module>
 		<module>shuchaowen-app-cms-service</module>
 		<module>shuchaowen-app-common-service</module>
+		<module>shuchaowen-app-pojo</module>
+		<module>shuchaowen-app-interface</module>
 	</modules>
 
 	<properties>
@@ -60,16 +51,6 @@
 			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-product-pojo</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-product-interface</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-product-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
@@ -85,12 +66,12 @@
 			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-user-pojo</artifactId>
+				<artifactId>shuchaowen-app-pojo</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-user-interface</artifactId>
+				<artifactId>shuchaowen-app-interface</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
@@ -100,55 +81,14 @@
 			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-admin-pojo</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-admin-interface</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-admin-web</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-admin-service</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-cms-pojo</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-cms-interface</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
 				<artifactId>shuchaowen-app-cms-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
-
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-common-pojo</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-common-interface</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
 			<dependency>
 				<groupId>com.aliyun</groupId>
 				<artifactId>aliyun-java-sdk-core</artifactId>

@@ -9,7 +9,7 @@
   <dependencies>
   	<dependency>
   		<groupId>shuchaowen-app</groupId>
-  		<artifactId>shuchaowen-app-product-interface</artifactId>
+  		<artifactId>shuchaowen-app-interface</artifactId>
   	</dependency>
   </dependencies>
 </project>

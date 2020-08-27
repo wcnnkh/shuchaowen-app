@@ -6,11 +6,16 @@
 		<artifactId>shuchaowen-app</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>shuchaowen-app-cms-service</artifactId>
+	<artifactId>shuchaowen-app-pojo</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-interface</artifactId>
+			<artifactId>shuchaowen-app-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-tencent</artifactId>
 		</dependency>
 	</dependencies>
 </project>

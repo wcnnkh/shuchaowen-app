@@ -7,6 +7,6 @@ import scw.http.server.resource.StaticResourceHttpServiceHandler;
 public class AdminWebResourceHttpServiceHandler extends StaticResourceHttpServiceHandler {
 
 	public AdminWebResourceHttpServiceHandler() {
-		super("/", "/js/*", "/css/*", "/fonts/*", "/images/*", "/lib/*");
+		super("/", "/admin/js/*", "/admin/css/*", "/admin/fonts/*", "/admin/images/*", "/admin/lib/*");
 	}
 }
