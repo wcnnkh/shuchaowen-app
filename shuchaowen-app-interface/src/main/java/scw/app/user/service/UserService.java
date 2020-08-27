@@ -14,6 +14,14 @@ import scw.util.Pagination;
 
 @Controller(value = "user", methods = { HttpMethod.POST, HttpMethod.GET })
 public interface UserService {
+	/**
+	 * 搜索permissionGroupId>0的用户
+	 * @param permissionGroupIds
+	 * @param search
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
 	Pagination<User> search(Collection<Integer> permissionGroupIds, String search, int page, int limit);
 
 	User getUser(long uid);

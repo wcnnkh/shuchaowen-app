@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
@@ -11,6 +12,7 @@ import scw.app.user.security.LoginRequired;
 import scw.app.user.security.RequestUser;
 import scw.app.user.security.SecurityActionInterceptor;
 import scw.app.user.service.PermissionGroupActionService;
+import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.CollectionUtils;
@@ -42,6 +44,8 @@ public class AdminIndexController {
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 	@Autowired
 	private PermissionGroupActionService permissionGroupActionService;
+	@Autowired
+	private PermissionGroupService permissionGroupService;
 	@Autowired
 	private PageFactory pageFactory;
 	@Autowired
@@ -129,6 +133,13 @@ public class AdminIndexController {
 
 		if (user == null) {
 			return resultFactory.error("账号或密码错误");
+		}
+
+		if (!userService.isSuperAdmin(user.getUid())) {
+			PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
+			if (group == null) {
+				return resultFactory.error("权限不足，无法登录，请联系管理员");
+			}
 		}
 
 		Result result = userService.checkPassword(user.getUid(), password);

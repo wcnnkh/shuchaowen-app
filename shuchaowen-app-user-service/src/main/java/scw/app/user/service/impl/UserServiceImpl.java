@@ -39,7 +39,6 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Autowired
 	private PermissionGroupService permissionGroupService;
 	
-	private long adminUid;
 	public UserServiceImpl(DB db, ResultFactory resultFactory, PropertyFactory propertyFactory) {
 		super(db, resultFactory);
 		db.createTable(User.class, false);
@@ -49,10 +48,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			adminUserModel.setUsername(ADMIN_NAME);
 			adminUserModel.setNickname(propertyFactory.getValue("scw.admin.nickname", String.class, "超级管理员"));
 			adminUserModel.setPassword(propertyFactory.getValue("scw.admin.password", String.class, "123456"));
-			DataResult<User> dataResult = createOrUpdateAdminUser(0, adminUserModel);
-			adminUid = dataResult.getData().getUid();
-		}else{
-			adminUid = user.getUid();
+			createOrUpdateAdminUser(0, adminUserModel);
 		}
 	}
 
@@ -267,11 +263,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	public Pagination<User> search(Collection<Integer> permissionGroupIds, String search, int page, int limit) {
 		WhereSql sql = new WhereSql();
+		sql.and("permissionGroupId>0");
 		if (!CollectionUtils.isEmpty(permissionGroupIds)) {
 			sql.andIn("permissionGroupId", permissionGroupIds);
 		}
 
-		sql.and("uid !=?", adminUid);
 		if (StringUtils.isNotEmpty(search)) {
 			String value = SqlUtils.toLikeValue(search);
 			sql.and("(uid=? or phone like ? or username like ? or nickname like ?)", search, value, value, value);

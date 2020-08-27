@@ -65,25 +65,29 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 				if (!userService.isSuperAdmin(userToken.getUid())) {
 					HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
 					if (httpAuthority == null) {
-						httpChannel.getLogger().warn("not found autority: {}", action);
-					} else {
-						User user = userService.getUser(userToken.getUid());
-						if (user == null) {
-							return authorizationFailure(httpChannel, action);
-						}
-						
-						if(user.isDisable()){
-							return error(httpChannel, action, resultFactory.error("账号已禁用，如有问题请联系管理员!"));
-						}
+						return error(httpChannel, action, resultFactory.error("权限不足(1)"));
+					}
 
-						PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
-						if (group != null && group.isDisable()) {
-							return error(httpChannel, action, resultFactory.error("账号分组已禁用，如有问题请联系管理员!"));
-						}
+					User user = userService.getUser(userToken.getUid());
+					if (user == null) {
+						return authorizationFailure(httpChannel, action);
+					}
 
-						if (!permissionGroupActionService.check(user.getPermissionGroupId(), httpAuthority.getId())) {
-							return error(httpChannel, action, resultFactory.error("权限不足"));
-						}
+					if (user.isDisable()) {
+						return error(httpChannel, action, resultFactory.error("账号已禁用，如有问题请联系管理员!"));
+					}
+
+					PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
+					if (group == null) {
+						return error(httpChannel, action, resultFactory.error("权限不足(2)"));
+					}
+
+					if (group.isDisable()) {
+						return error(httpChannel, action, resultFactory.error("账号分组已禁用，如有问题请联系管理员!"));
+					}
+
+					if (!permissionGroupActionService.check(user.getPermissionGroupId(), httpAuthority.getId())) {
+						return error(httpChannel, action, resultFactory.error("权限不足"));
 					}
 				}
 			}
