@@ -10,16 +10,16 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>shuchaowen</groupId>
+			<artifactId>shuchaowen-integration</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>shuchaowen-app</groupId>
 			<artifactId>shuchaowen-app-admin-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-admin-service</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-db</artifactId>
+			<artifactId>shuchaowen-app-user-service</artifactId>
 		</dependency>
 	</dependencies>
 	
