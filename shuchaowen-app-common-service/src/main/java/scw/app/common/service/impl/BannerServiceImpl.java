@@ -2,10 +2,10 @@ package scw.app.common.service.impl;
 
 import java.util.List;
 
-import scw.app.common.BaseServiceImpl;
 import scw.app.common.model.BannerModel;
 import scw.app.common.pojo.Banner;
 import scw.app.common.service.BannerService;
+import scw.app.util.BaseServiceImpl;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.result.DataResult;

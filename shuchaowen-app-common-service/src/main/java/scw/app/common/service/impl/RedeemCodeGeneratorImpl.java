@@ -4,8 +4,8 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.binary.Base32;
 
-import scw.app.common.BaseServiceImpl;
 import scw.app.common.service.RedeemCodeGenerator;
+import scw.app.util.BaseServiceImpl;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.ResultFactory;

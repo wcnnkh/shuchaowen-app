@@ -2,14 +2,14 @@ package scw.app.user.service.impl;
 
 import java.util.Collection;
 
-import scw.app.common.BaseServiceImpl;
-import scw.app.common.vc.VerificationCodeService;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
+import scw.app.util.BaseServiceImpl;
+import scw.app.vc.service.VerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.GlobalPropertyFactory;
 import scw.core.instance.annotation.Configuration;

@@ -10,7 +10,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-interface</artifactId>
+			<artifactId>shuchaowen-app-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>

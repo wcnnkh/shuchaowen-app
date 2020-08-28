@@ -3,9 +3,9 @@ package scw.app.user.service.impl;
 import java.util.Collection;
 import java.util.List;
 
-import scw.app.common.BaseServiceImpl;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.service.PermissionGroupActionService;
+import scw.app.util.BaseServiceImpl;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;

@@ -1,12 +1,12 @@
 package scw.app.user.service.impl;
 
-import scw.app.common.BaseServiceImpl;
-import scw.app.common.enums.SexType;
+import scw.app.enums.SexType;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.service.QQService;
 import scw.app.user.service.UserService;
+import scw.app.util.BaseServiceImpl;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.oauth2.AccessToken;

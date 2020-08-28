@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import scw.app.common.BaseServiceImpl;
-import scw.app.common.model.ElementUiTree;
+import scw.app.model.ElementUiTree;
 import scw.app.user.model.PermissionGroupInfo;
 import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.PermissionGroupService;
+import scw.app.util.BaseServiceImpl;
 import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;

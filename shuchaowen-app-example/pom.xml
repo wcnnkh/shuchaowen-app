@@ -15,14 +15,10 @@
 		</dependency>
 		<dependency>
 			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-admin-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-user-service</artifactId>
+			<artifactId>shuchaowen-app-integration</artifactId>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

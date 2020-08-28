@@ -1,8 +1,8 @@
 package scw.app.user.service.impl;
 
-import scw.app.common.BaseServiceImpl;
 import scw.app.user.pojo.UserSettings;
 import scw.app.user.service.UserSettingsService;
+import scw.app.util.BaseServiceImpl;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.ResultFactory;
