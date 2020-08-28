@@ -2,20 +2,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>shuchaowen-app</groupId>
-		<artifactId>shuchaowen-app</artifactId>
+		<groupId>scw-app</groupId>
+		<artifactId>scw-app</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>shuchaowen-app-example</artifactId>
+	<artifactId>scw-app-example</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>shuchaowen</groupId>
-			<artifactId>shuchaowen-integration</artifactId>
+			<groupId>scw</groupId>
+			<artifactId>scw-integration</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-integration</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-integration</artifactId>
 		</dependency>
 	</dependencies>
 

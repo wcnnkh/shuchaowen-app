@@ -2,32 +2,32 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>shuchaowen-app</groupId>
-		<artifactId>shuchaowen-app</artifactId>
+		<groupId>scw-app</groupId>
+		<artifactId>scw-app</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>shuchaowen-app-integration</artifactId>
+	<artifactId>scw-app-integration</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-admin-web</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-admin-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-user-service</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-user-service</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
+			<groupId>scw-app</groupId>
 			<artifactId>scw-app-vc-service</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-common-service</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-common-service</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>shuchaowen-app</groupId>
-			<artifactId>shuchaowen-app-discount-service</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-discount-service</artifactId>
 		</dependency>
 	</dependencies>
 </project>

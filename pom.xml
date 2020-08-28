@@ -2,25 +2,25 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>shuchaowen</groupId>
-		<artifactId>shuchaowen</artifactId>
+		<groupId>scw</groupId>
+		<artifactId>scw</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<groupId>shuchaowen-app</groupId>
-	<artifactId>shuchaowen-app</artifactId>
+	<groupId>scw-app</groupId>
+	<artifactId>scw-app</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>shuchaowen-app-user-service</module>
-		<module>shuchaowen-app-admin-web</module>
-		<module>shuchaowen-app-payment</module>
-		<module>shuchaowen-app-example</module>
-		<module>shuchaowen-app-product-service</module>
-		<module>shuchaowen-app-cms-service</module>
-		<module>shuchaowen-app-common-service</module>
-		<module>shuchaowen-app-core</module>
-		<module>shuchaowen-app-integration</module>
+		<module>scw-app-user-service</module>
+		<module>scw-app-admin-web</module>
+		<module>scw-app-payment</module>
+		<module>scw-app-example</module>
+		<module>scw-app-product-service</module>
+		<module>scw-app-cms-service</module>
+		<module>scw-app-common-service</module>
+		<module>scw-app-core</module>
+		<module>scw-app-integration</module>
 		<module>scw-app-vc-service</module>
-		<module>shuchaowen-app-discount-service</module>
+		<module>scw-app-discount-service</module>
 	</modules>
 
 	<properties>
@@ -30,58 +30,58 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-payment</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-payment</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-product-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-product-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-common-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-common-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-core</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-core</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-user-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-user-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-admin-web</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-admin-web</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-cms-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-cms-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
+				<groupId>scw-app</groupId>
 				<artifactId>scw-app-vc-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-integration</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-integration</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-cms-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-cms-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>shuchaowen-app</groupId>
-				<artifactId>shuchaowen-app-discount-service</artifactId>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-discount-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
@@ -99,6 +99,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<!-- <repositories> <repository> <id>scw</id> <name>scw</name> <url>http://maven.shuchaowen.com</url> 
+	<!-- <repositories> <repository> <id>scw</id> <name>scw</name> <url>http://maven.scw.com</url> 
 		</repository> </repositories> -->
 </project>
