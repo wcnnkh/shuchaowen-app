@@ -6,7 +6,7 @@
 	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 
-<link rel="shortcut icon" href="${_contextPath}/admin/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="${_contextPath}/admin/images/favicon.svg" type="image/svg+xml" />
 <link href="${_contextPath}/admin/lib/lightbox/lightbox.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${_contextPath}/admin/css/font.css">
 <link rel="stylesheet" href="${_contextPath}/admin/css/xadmin.css">
@@ -18,7 +18,6 @@
 <script src="${_contextPath}/admin/lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="${_contextPath}/admin/js/xadmin.js"></script>
 <script type="text/javascript" src="${_contextPath}/admin/js/base.js"></script>
-<script src="${_contextPath}/admin/js/ajaxfileupload.js"></script>
 <link rel="stylesheet"
 	href="${_contextPath}/admin/lib/ztree/css/zTreeStyle/zTreeStyle.css">
 <script type="text/javascript"
