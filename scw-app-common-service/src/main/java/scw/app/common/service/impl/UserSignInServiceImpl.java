@@ -7,7 +7,7 @@ import scw.app.common.pojo.UserSignInLogTable;
 import scw.app.common.service.UserSignInService;
 import scw.app.enums.ContinuityStatus;
 import scw.app.enums.ContinuityStatus.ContinuityCycle;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.IteratorCallback;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
@@ -20,7 +20,7 @@ import scw.util.KeyValuePair;
 import scw.util.Pagination;
 
 @Configuration(order=Integer.MIN_VALUE)
-public class UserSignInServiceImpl extends BaseServiceImpl implements UserSignInService {
+public class UserSignInServiceImpl extends BaseServiceConfiguration implements UserSignInService {
 
 	public UserSignInServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);

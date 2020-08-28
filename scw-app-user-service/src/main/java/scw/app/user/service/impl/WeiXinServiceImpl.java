@@ -6,7 +6,7 @@ import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.service.UserService;
 import scw.app.user.service.WeiXinService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
@@ -22,7 +22,7 @@ import scw.tencent.wx.Userinfo;
 import scw.tencent.wx.WeiXinUtils;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class WeiXinServiceImpl extends BaseServiceImpl implements WeiXinService {
+public class WeiXinServiceImpl extends BaseServiceConfiguration implements WeiXinService {
 	protected final UserGrantClient userGrantClient;
 	private UserService userService;
 	private LoginService<Long> loginService;

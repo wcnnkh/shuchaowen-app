@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.discount.pojo.UserVoucher;
 import scw.app.discount.pojo.UserVoucherLog;
 import scw.app.discount.service.UserVoucherService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.data.generator.SequenceId;
 import scw.data.generator.SequenceIdGenerator;
@@ -14,7 +14,7 @@ import scw.result.Result;
 import scw.result.ResultFactory;
 
 @Configuration(order=Integer.MIN_VALUE)
-public class UserVoucherServiceImpl extends BaseServiceImpl implements UserVoucherService {
+public class UserVoucherServiceImpl extends BaseServiceConfiguration implements UserVoucherService {
 	protected final SequenceIdGenerator sequenceIdGenerator;
 
 	public UserVoucherServiceImpl(DB db, ResultFactory resultFactory, SequenceIdGenerator sequenceIdGenerator) {

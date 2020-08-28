@@ -7,7 +7,7 @@ import scw.app.common.pojo.RedeemCode;
 import scw.app.common.pojo.UserRedeemCodeLog;
 import scw.app.common.service.RedeemCodeGenerator;
 import scw.app.common.service.RedeemCodeService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.DataResult;
@@ -17,7 +17,7 @@ import scw.sql.WhereSql;
 import scw.util.Pagination;
 
 @Configuration(order=Integer.MIN_VALUE)
-public class RedeemCodeServiceImpl extends BaseServiceImpl implements RedeemCodeService {
+public class RedeemCodeServiceImpl extends BaseServiceConfiguration implements RedeemCodeService {
 	private RedeemCodeGenerator redeemCodeGenerator;
 
 	public RedeemCodeServiceImpl(DB db, ResultFactory resultFactory, RedeemCodeGenerator redeemCodeGenerator) {

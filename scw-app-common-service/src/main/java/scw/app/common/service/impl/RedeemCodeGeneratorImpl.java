@@ -5,13 +5,13 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base32;
 
 import scw.app.common.service.RedeemCodeGenerator;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.ResultFactory;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class RedeemCodeGeneratorImpl extends BaseServiceImpl implements RedeemCodeGenerator {
+public class RedeemCodeGeneratorImpl extends BaseServiceConfiguration implements RedeemCodeGenerator {
 	static final Base32 BASE32 = new Base32();
 	private int baseValue = 10;
 
