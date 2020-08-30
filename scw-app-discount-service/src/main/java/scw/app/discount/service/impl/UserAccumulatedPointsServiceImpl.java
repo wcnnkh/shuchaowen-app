@@ -3,14 +3,14 @@ package scw.app.discount.service.impl;
 import scw.app.discount.pojo.UserAccumulatedPoints;
 import scw.app.discount.pojo.UserAccumulatedPointsLog;
 import scw.app.discount.service.UserAccumulatedPointsService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
 @Configuration(order=Integer.MIN_VALUE)
-public class UserAccumulatedPointsServiceImpl extends BaseServiceImpl implements UserAccumulatedPointsService {
+public class UserAccumulatedPointsServiceImpl extends BaseServiceConfiguration implements UserAccumulatedPointsService {
 
 	public UserAccumulatedPointsServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);

@@ -8,7 +8,7 @@ import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.app.vc.service.VerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.GlobalPropertyFactory;
@@ -30,7 +30,7 @@ import scw.util.Pagination;
 import scw.value.property.PropertyFactory;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class UserServiceImpl extends BaseServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceConfiguration implements UserService {
 	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance().getValue("scw.admin.username", String.class,
 			"admin");
 

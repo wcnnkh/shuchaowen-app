@@ -5,14 +5,14 @@ import java.util.List;
 
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.service.PermissionGroupActionService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class PermissionGroupActionServiceImpl extends BaseServiceImpl implements PermissionGroupActionService {
+public class PermissionGroupActionServiceImpl extends BaseServiceConfiguration implements PermissionGroupActionService {
 
 	public PermissionGroupActionServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);

@@ -97,7 +97,7 @@ public class AdminIndexController {
 				sb.append("'");
 			}
 			sb.append(">");
-			String icon = httpAuthority.getAttributeMap().get("icon");
+			String icon = httpAuthority.getAttributeMap().get(AdminConstants.ICON_ATTR_NAME);
 			if (StringUtils.isNotEmpty(icon)) {
 				sb.append("<i class='iconfont'>").append(icon).append("</i>");
 			}

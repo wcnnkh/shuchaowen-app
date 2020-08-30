@@ -7,6 +7,11 @@
 		<version>1.0.0</version>
 	</parent>
 	<artifactId>scw-app-admin-web</artifactId>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>scw-app</groupId>

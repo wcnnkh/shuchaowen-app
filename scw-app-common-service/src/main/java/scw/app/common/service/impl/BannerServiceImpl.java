@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.common.model.BannerModel;
 import scw.app.common.pojo.Banner;
 import scw.app.common.service.BannerService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.result.DataResult;
@@ -13,7 +13,7 @@ import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.sql.WhereSql;
 
-public class BannerServiceImpl extends BaseServiceImpl implements BannerService {
+public class BannerServiceImpl extends BaseServiceConfiguration implements BannerService {
 
 	public BannerServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);

@@ -6,7 +6,7 @@ import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.service.QQService;
 import scw.app.user.service.UserService;
-import scw.app.util.BaseServiceImpl;
+import scw.app.util.BaseServiceConfiguration;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.oauth2.AccessToken;
@@ -20,7 +20,7 @@ import scw.tencent.qq.QQUtils;
 import scw.tencent.qq.Userinfo;
 
 @scw.core.instance.annotation.Configuration(order = Integer.MIN_VALUE)
-public class QQServiceImpl extends BaseServiceImpl implements QQService {
+public class QQServiceImpl extends BaseServiceConfiguration implements QQService {
 	private final Configuration configuration;
 	private final UserService userService;
 	private final LoginService<Long> loginService;

@@ -14,7 +14,6 @@ import scw.mvc.action.ActionInterceptor;
 import scw.mvc.action.ActionInterceptorChain;
 import scw.mvc.action.ActionParameters;
 import scw.mvc.annotation.ActionAuthority;
-import scw.mvc.page.PageFactory;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.mvc.view.Redirect;
 import scw.result.ResultFactory;
@@ -31,15 +30,17 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
-	private PermissionGroupActionService permissionGroupActionService;
-	@Autowired
-	private PermissionGroupService permissionGroupService;
-	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
-	@Autowired
+	
+	private PermissionGroupActionService permissionGroupActionService;
+	private PermissionGroupService permissionGroupService;
 	private UserService userService;
-	@Autowired
-	private PageFactory pageFactory;
+	
+	public SecurityActionInterceptor(UserService userService, PermissionGroupService permissionGroupService, PermissionGroupActionService permissionGroupActionService){
+		this.userService = userService;
+		this.permissionGroupService = permissionGroupService;
+		this.permissionGroupActionService = permissionGroupActionService;
+	}
 
 	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters,
 			ActionInterceptorChain chain) throws Throwable {

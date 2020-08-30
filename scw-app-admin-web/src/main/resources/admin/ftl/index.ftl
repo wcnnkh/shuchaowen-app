@@ -50,7 +50,12 @@
     <!-- 中部结束 -->
     <!-- 底部开始 -->
     <div class="footer">
-        <div class="copyright">Copyight ©wcnnkh</div>  
-    </div> -->
+        <div class="copyright">Copyight ©<a target="_black" href="https://github.com/wcnnkh/scw-app">https://github.com/wcnnkh/scw-app</a></div>  
+    </div>
+    <style>
+    	.copyright a{
+    		color: #fff;
+    	}
+    </style>
 </body>
 </html>
