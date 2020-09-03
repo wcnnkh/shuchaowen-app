@@ -76,11 +76,6 @@
 			</dependency>
 			<dependency>
 				<groupId>scw-app</groupId>
-				<artifactId>scw-app-cms-service</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>scw-app</groupId>
 				<artifactId>scw-app-discount-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>

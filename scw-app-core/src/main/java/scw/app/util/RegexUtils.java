@@ -314,4 +314,17 @@ public final class RegexUtils {
 			return "";
 		return Pattern.compile(regex).matcher(input).replaceAll(replacement);
 	}
+	
+	/**
+	 * 检测字符串,只能中\英文\数字
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static boolean checkName(String name, int len) {
+		String reg = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]{1," + len + "}$";
+		Pattern p = Pattern.compile(reg);
+		Matcher m = p.matcher(name);
+		return m.matches();
+	}
 }
