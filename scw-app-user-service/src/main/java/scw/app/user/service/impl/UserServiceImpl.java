@@ -9,7 +9,7 @@ import scw.app.user.pojo.User;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.app.util.BaseServiceConfiguration;
-import scw.app.vc.service.VerificationCodeService;
+import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.GlobalPropertyFactory;
 import scw.core.instance.annotation.Configuration;
@@ -35,7 +35,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 			"admin");
 
 	@Autowired(required = false)
-	private VerificationCodeService verificationCodeService;
+	private PhoneVerificationCodeService verificationCodeService;
 	@Autowired
 	private PermissionGroupService permissionGroupService;
 	

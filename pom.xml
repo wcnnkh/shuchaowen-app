@@ -21,6 +21,7 @@
 		<module>scw-app-integration</module>
 		<module>scw-app-vc-service</module>
 		<module>scw-app-discount-service</module>
+		<module>scw-app-address-service</module>
 	</modules>
 
 	<properties>
@@ -80,6 +81,12 @@
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-address-service</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			
+			<dependency>
 				<groupId>com.aliyun</groupId>
 				<artifactId>aliyun-java-sdk-core</artifactId>
 				<version>4.5.1</version>
@@ -107,21 +114,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<compilerArgs>
-						<!-- 将参数名编译进去 -->
-						<arg>-parameters</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 </project>

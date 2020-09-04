@@ -27,6 +27,7 @@ public class User extends UserAttributeModel {
 	private int permissionGroupId;// 权限组id
 	private boolean disable;// 是否禁用
 	private long lastLoginTime;
+	private long defaultAddressId;//用户默认收货地址
 
 	public long getUid() {
 		return uid;
@@ -122,5 +123,13 @@ public class User extends UserAttributeModel {
 
 	public String getLastLoginTimeDescribe() {
 		return XTime.format(lastLoginTime, "yyyy-MM-dd HH:mm:ss");
+	}
+
+	public long getDefaultAddressId() {
+		return defaultAddressId;
+	}
+
+	public void setDefaultAddressId(long defaultAddressId) {
+		this.defaultAddressId = defaultAddressId;
 	}
 }

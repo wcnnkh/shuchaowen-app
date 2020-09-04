@@ -1,7 +1,6 @@
 package scw.app.vc.service;
 
 import scw.app.vc.enums.VerificationCodeType;
-import scw.mvc.annotation.Controller;
 import scw.result.Result;
 
 /**
@@ -10,8 +9,7 @@ import scw.result.Result;
  * @author shuchaowen
  *
  */
-@Controller(value = "/phone/code")
-public interface VerificationCodeService {
+public interface PhoneVerificationCodeService {
 	/**
 	 * 发送验证码
 	 * 
@@ -19,7 +17,6 @@ public interface VerificationCodeService {
 	 * @param verificationCodeType
 	 * @return
 	 */
-	@Controller(value = "send")
 	Result send(String phone, VerificationCodeType verificationCodeType);
 
 	/**
@@ -30,6 +27,5 @@ public interface VerificationCodeService {
 	 * @param verificationCodeType
 	 * @return
 	 */
-	@Controller(value = "code")
 	Result check(String phone, String code, VerificationCodeType verificationCodeType);
 }
