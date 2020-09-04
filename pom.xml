@@ -21,6 +21,7 @@
 		<module>scw-app-integration</module>
 		<module>scw-app-vc-service</module>
 		<module>scw-app-discount-service</module>
+		<module>scw-app-address-service</module>
 	</modules>
 
 	<properties>
@@ -79,6 +80,12 @@
 				<artifactId>scw-app-discount-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
+			<dependency>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-address-service</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>com.aliyun</groupId>
 				<artifactId>aliyun-java-sdk-core</artifactId>

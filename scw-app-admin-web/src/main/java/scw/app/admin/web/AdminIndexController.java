@@ -17,6 +17,7 @@ import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
+import scw.http.HttpCookie;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
@@ -154,6 +155,12 @@ public class AdminIndexController {
 		map.put("uid", user.getUid());
 		httpResponse.addCookie(RequestUser.UID_NAME, user.getUid() + "");
 		httpResponse.addCookie(RequestUser.TOKEN_NAME, userToken.getToken());
+		HttpCookie uidCookie = new HttpCookie(RequestUser.UID_NAME, user.getUid() + "");
+		uidCookie.setPath("/");
+		HttpCookie tokenCookie = new HttpCookie(RequestUser.TOKEN_NAME, userToken.getToken() + "");
+		tokenCookie.setPath("/");
+		httpResponse.addCookie(uidCookie);
+		httpResponse.addCookie(tokenCookie);
 		return resultFactory.success(map);
 	}
 

@@ -29,5 +29,9 @@
 			<groupId>scw-app</groupId>
 			<artifactId>scw-app-discount-service</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-address-service</artifactId>
+		</dependency>
 	</dependencies>
 </project>
