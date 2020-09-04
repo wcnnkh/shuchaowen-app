@@ -6,13 +6,10 @@ import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
-import scw.http.HttpMethod;
-import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.util.Pagination;
 
-@Controller(value = "user", methods = { HttpMethod.POST, HttpMethod.GET })
 public interface UserService {
 	/**
 	 * 搜索permissionGroupId>0的用户
