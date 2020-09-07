@@ -2,6 +2,7 @@ package scw.app.address.service;
 
 import java.util.List;
 
+import scw.app.address.model.UserAddressInfo;
 import scw.app.address.model.UserAddressModel;
 import scw.app.address.pojo.UserAddress;
 import scw.result.DataResult;
@@ -13,13 +14,15 @@ import scw.result.DataResult;
  */
 public interface UserAddressService {
 	UserAddress getById(long id);
+	
+	UserAddressInfo getUserAddressInfo(long id);
 
 	/**
 	 * 获取用户地址列表
 	 * @param uid
 	 * @return
 	 */
-	List<UserAddress> getUserAddressList(long uid);
+	List<UserAddressInfo> getUserAddressList(long uid);
 
 	/**
 	 * 创建一个用户地址
@@ -27,7 +30,7 @@ public interface UserAddressService {
 	 * @param userAddressModel
 	 * @return
 	 */
-	DataResult<UserAddress> create(long uid, UserAddressModel userAddressModel);
+	DataResult<UserAddressInfo> create(long uid, UserAddressModel userAddressModel);
 
 	/**
 	 * 此方法未检验uid
@@ -35,5 +38,5 @@ public interface UserAddressService {
 	 * @param userAddressModel
 	 * @return
 	 */
-	DataResult<UserAddress> update(long id, UserAddressModel userAddressModel);
+	DataResult<UserAddressInfo> update(long id, UserAddressModel userAddressModel);
 }

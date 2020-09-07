@@ -54,4 +54,6 @@ public interface UserService {
 	DataResult<User> bindOpenid(long uid, OpenidType type, String openid, UserAttributeModel userAttributeModel);
 
 	Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel);
+	
+	Result updateDefaultAddressId(long uid, long addressId);
 }
