@@ -1,32 +1,40 @@
 package scw.app.address.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import scw.app.address.model.AddressTree;
 import scw.app.address.pojo.Address;
 import scw.app.address.service.AddressService;
 import scw.beans.annotation.Value;
 import scw.beans.ioc.value.JsonFileValueProcesser;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
+import scw.io.Resource;
+import scw.io.ResourceUtils;
 import scw.json.JsonArray;
 import scw.json.JsonElement;
 import scw.json.JsonObject;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
+import scw.mapper.Copy;
 
 @Configuration
 public class LocalAddressServiceImpl implements AddressService {
+	private static final String RESOURCE = "classpath:/scw/app/address/service/address.json";
+
 	private static Logger logger = LoggerFactory.getLogger(LocalAddressServiceImpl.class);
 	private volatile Map<Integer, Address> addressMap = Collections.emptyMap();
 	private volatile List<Address> rootAddressList = Collections.emptyList();
 	private volatile Map<Integer, List<Address>> subListMap = Collections.emptyMap();
 
-	@Value(value = "classpath:/scw/app/address/service/address.json", processer = JsonFileValueProcesser.class)
+	@Value(value = RESOURCE, processer = JsonFileValueProcesser.class)
 	public void setLocalAddressJson(JsonObject jsonObject) {
 		List<Address> list = parseAddressList(jsonObject);
 		if (CollectionUtils.isEmpty(list)) {
@@ -42,7 +50,7 @@ public class LocalAddressServiceImpl implements AddressService {
 		}
 
 		for (Address address : list) {
-			if (addressMap.containsKey(address.getParentId())) {
+			if (!addressMap.containsKey(address.getParentId())) {
 				rootAddressList.add(address);
 			}
 		}
@@ -163,5 +171,47 @@ public class LocalAddressServiceImpl implements AddressService {
 
 	public List<Address> getRootAddressList() {
 		return Collections.unmodifiableList(rootAddressList);
+	}
+
+	public List<Address> getAddressList() {
+		Collection<Address> addresses = addressMap.values();
+		if (CollectionUtils.isEmpty(addresses)) {
+			return Collections.emptyList();
+		}
+
+		return new ArrayList<Address>(addresses);
+	}
+
+	private List<AddressTree> getAddressTree(List<Address> addresses) {
+		if (CollectionUtils.isEmpty(addresses)) {
+			return Collections.emptyList();
+		}
+
+		List<AddressTree> addressTrees = new ArrayList<AddressTree>(addresses.size());
+		for (Address address : addresses) {
+			AddressTree tree = new AddressTree();
+			Copy.copy(tree, address);
+			tree.setSubList(getAddressTree(getAddressSubList(tree.getId())));
+			addressTrees.add(tree);
+		}
+		return addressTrees;
+	}
+
+	public List<AddressTree> getAddressTrees() {
+		return getAddressTree(getRootAddressList());
+	}
+
+	public long lastModified() {
+		Resource resource = ResourceUtils.getResourceOperations().getResource(RESOURCE);
+		if (resource == null || !resource.exists()) {
+			return -1;
+		}
+
+		try {
+			return resource.lastModified();
+		} catch (IOException e) {
+			logger.error(e, resource.getDescription());
+			return -1;
+		}
 	}
 }

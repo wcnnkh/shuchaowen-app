@@ -38,12 +38,12 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 	private PhoneVerificationCodeService verificationCodeService;
 	@Autowired
 	private PermissionGroupService permissionGroupService;
-	
+
 	public UserServiceImpl(DB db, ResultFactory resultFactory, PropertyFactory propertyFactory) {
 		super(db, resultFactory);
 		db.createTable(User.class, false);
 		User user = getUserByUsername(ADMIN_NAME);
-		if(user == null){
+		if (user == null) {
 			AdminUserModel adminUserModel = new AdminUserModel();
 			adminUserModel.setUsername(ADMIN_NAME);
 			adminUserModel.setNickname(propertyFactory.getValue("scw.admin.nickname", String.class, "超级管理员"));
@@ -279,30 +279,29 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		if (StringUtils.isEmpty(adminUserModel.getUsername(), adminUserModel.getNickname())) {
 			return resultFactory.error("参数错误");
 		}
-		
-		
+
 		User username = getUserByUsername(adminUserModel.getUsername());
 		User user = getUser(uid);
 		if (user == null) {
 			if (username != null) {
 				return resultFactory.error("账号已经存在");
 			}
-			
+
 			user = new User();
 			if (StringUtils.isEmpty(adminUserModel.getPassword())) {
 				return resultFactory.error("密码不能为空");
 			}
 			user.setPassword(formatPassword(adminUserModel.getPassword()));
 			user.setUsername(adminUserModel.getUsername());
-		}else{
-			if(!adminUserModel.getUsername().equals(user.getUsername())){
+		} else {
+			if (!adminUserModel.getUsername().equals(user.getUsername())) {
 				if (username != null) {
 					return resultFactory.error("账号已经存在");
 				}
-				
+
 				user.setUsername(adminUserModel.getUsername());
 			}
-			
+
 			if (StringUtils.isNotEmpty(adminUserModel.getPassword())) {
 				user.setPassword(formatPassword(adminUserModel.getPassword()));
 			}
@@ -313,5 +312,16 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setPermissionGroupId(adminUserModel.getGroupId());
 		db.saveOrUpdate(user);
 		return resultFactory.success(user);
+	}
+
+	public Result updateDefaultAddressId(long uid, long addressId) {
+		User user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("启用不存在");
+		}
+
+		user.setDefaultAddressId(addressId);
+		db.update(user);
+		return resultFactory.success();
 	}
 }
