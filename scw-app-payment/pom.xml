@@ -12,6 +12,21 @@
 			<groupId>scw</groupId>
 			<artifactId>scw-mvc</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-apple</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-tencent</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-alibaba</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
