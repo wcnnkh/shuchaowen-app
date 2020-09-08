@@ -3,7 +3,6 @@ package scw.app.user.controller;
 import scw.app.user.pojo.UserSettings;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.service.UserSettingsService;
-import scw.beans.annotation.Autowired;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.ResultFactory;
 
@@ -11,8 +10,11 @@ import scw.mvc.annotation.ResultFactory;
 @LoginRequired
 @ResultFactory
 public class UserSettingsController {
-	@Autowired
 	private UserSettingsService userSettingsService;
+	
+	public UserSettingsController(UserSettingsService userSettingsService) {
+		this.userSettingsService = userSettingsService;
+	}
 
 	@Controller(value = "info")
 	public UserSettings getUserSettings(long uid) {
