@@ -1,8 +1,10 @@
 package scw.app.payment;
 
+import scw.core.instance.annotation.Configuration;
 import scw.event.support.DefaultBasicEventDispatcher;
 
-public class DefaultPaymentEventDispatcher extends DefaultBasicEventDispatcher<PaymentEvent> {
+@Configuration(order=Integer.MIN_VALUE)
+public class DefaultPaymentEventDispatcher extends DefaultBasicEventDispatcher<PaymentEvent> implements PaymentEventDispatcher{
 
 	public DefaultPaymentEventDispatcher() {
 		super(true);
