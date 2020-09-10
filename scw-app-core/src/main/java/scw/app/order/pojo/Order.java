@@ -1,6 +1,7 @@
 package scw.app.order.pojo;
 
 import scw.app.address.model.UserAddressModel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 
 public class Order extends UserAddressModel {
@@ -122,5 +123,10 @@ public class Order extends UserAddressModel {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

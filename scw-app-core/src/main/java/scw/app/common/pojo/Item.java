@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import scw.app.common.model.ItemDrop;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -46,5 +47,10 @@ public class Item implements Serializable {
 
 	public void setDescribe(String describe) {
 		this.describe = describe;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

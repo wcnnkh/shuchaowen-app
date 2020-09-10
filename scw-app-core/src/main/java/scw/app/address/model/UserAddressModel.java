@@ -2,6 +2,8 @@ package scw.app.address.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 /**
  * 用户地址模版
  * 
@@ -12,8 +14,8 @@ public class UserAddressModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int addressId;
 	private String detailedAddress;// 详细地址
-	private String contactPhone;//联系人手机号
-	private String contactName;//联系人名称
+	private String contactPhone;// 联系人手机号
+	private String contactName;// 联系人名称
 
 	public int getAddressId() {
 		return addressId;
@@ -45,5 +47,10 @@ public class UserAddressModel implements Serializable {
 
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
+	}
+
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

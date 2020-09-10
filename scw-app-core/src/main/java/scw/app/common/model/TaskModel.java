@@ -3,6 +3,8 @@ package scw.app.common.model;
 import java.io.Serializable;
 import java.util.List;
 
+import scw.mapper.MapperUtils;
+
 public class TaskModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private boolean hidden;
@@ -40,5 +42,10 @@ public class TaskModel implements Serializable {
 
 	public void setTastInfos(List<TastInfo> tastInfos) {
 		this.tastInfos = tastInfos;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

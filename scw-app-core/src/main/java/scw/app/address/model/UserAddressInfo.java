@@ -4,6 +4,7 @@ import java.util.List;
 
 import scw.app.address.pojo.Address;
 import scw.app.address.pojo.UserAddress;
+import scw.mapper.MapperUtils;
 
 public class UserAddressInfo extends UserAddress {
 	private static final long serialVersionUID = 1L;
@@ -23,5 +24,10 @@ public class UserAddressInfo extends UserAddress {
 
 	public void setAddresses(List<Address> addresses) {
 		this.addresses = addresses;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

@@ -1,6 +1,7 @@
 package scw.app.common.pojo;
 
 import scw.app.common.model.TaskModel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -25,4 +26,8 @@ public class Task extends TaskModel {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
+	};
 }

@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -51,5 +52,10 @@ public class UserSignIn implements Serializable {
 
 	public void setLastSignInTime(long lastSignInTime) {
 		this.lastSignInTime = lastSignInTime;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

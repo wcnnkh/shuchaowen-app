@@ -2,6 +2,8 @@ package scw.app.common.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 public class TastInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
@@ -30,5 +32,10 @@ public class TastInfo implements Serializable {
 
 	public void setCondition(int condition) {
 		this.condition = condition;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

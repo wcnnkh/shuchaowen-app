@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -52,5 +53,10 @@ public class UserRedeemCodeLog implements Serializable {
 
 	public void setCts(long cts) {
 		this.cts = cts;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

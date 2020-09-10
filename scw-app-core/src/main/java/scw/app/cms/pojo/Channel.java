@@ -1,6 +1,7 @@
 package scw.app.cms.pojo;
 
 import scw.app.cms.model.BasicChannel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -52,5 +53,10 @@ public class Channel extends BasicChannel {
 
 	public void setLastUpdateUid(long lastUpdateUid) {
 		this.lastUpdateUid = lastUpdateUid;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

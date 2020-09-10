@@ -2,6 +2,7 @@ package scw.app.user.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -27,5 +28,10 @@ public class PermissionGroupAction implements Serializable {
 
 	public void setActionId(String actionId) {
 		this.actionId = actionId;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

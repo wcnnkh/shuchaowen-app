@@ -2,6 +2,7 @@ package scw.app.product.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -36,5 +37,10 @@ public class ProductSkuAttrValue implements Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

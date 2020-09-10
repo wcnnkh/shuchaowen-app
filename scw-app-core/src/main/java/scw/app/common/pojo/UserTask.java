@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -35,5 +36,10 @@ public class UserTask implements Serializable{
 	}
 	public void setProgress(int progress) {
 		this.progress = progress;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

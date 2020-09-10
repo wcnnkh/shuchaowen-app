@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import scw.app.common.pojo.Task;
 import scw.app.common.pojo.UserTask;
+import scw.mapper.MapperUtils;
 
 public class UserTaskInfo implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -21,5 +22,10 @@ public class UserTaskInfo implements Serializable{
 	}
 	public void setUserTask(UserTask userTask) {
 		this.userTask = userTask;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

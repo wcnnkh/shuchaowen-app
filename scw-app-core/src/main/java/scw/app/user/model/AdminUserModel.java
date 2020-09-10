@@ -2,6 +2,8 @@ package scw.app.user.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 public class AdminUserModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String username;
@@ -48,5 +50,10 @@ public class AdminUserModel implements Serializable {
 
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

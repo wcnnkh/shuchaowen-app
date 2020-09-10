@@ -2,6 +2,7 @@ package scw.app.discount.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Counter;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -29,5 +30,10 @@ public class UserAccumulatedPoints implements Serializable{
 	}
 	public void setAccumulatedPoints(int accumulatedPoints) {
 		this.accumulatedPoints = accumulatedPoints;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

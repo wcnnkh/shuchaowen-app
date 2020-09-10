@@ -1,6 +1,7 @@
 package scw.app.cms.pojo;
 
 import scw.app.cms.model.BasicContent;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.PrimaryKey;
 
@@ -61,5 +62,10 @@ public class Content extends BasicContent {
 
 	public void setLastUpdateUid(long lastUpdateUid) {
 		this.lastUpdateUid = lastUpdateUid;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

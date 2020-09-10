@@ -2,6 +2,7 @@ package scw.app.discount.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Index;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -84,5 +85,10 @@ public class UserAccumulatedPointsLog implements Serializable {
 
 	public void setGroup(int group) {
 		this.group = group;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

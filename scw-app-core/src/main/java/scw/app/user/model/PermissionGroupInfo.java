@@ -2,6 +2,8 @@ package scw.app.user.model;
 
 import java.util.Collection;
 
+import scw.mapper.MapperUtils;
+
 public class PermissionGroupInfo extends PermissionGroupModel{
 	private static final long serialVersionUID = 1L;
 	private int id;
@@ -17,5 +19,10 @@ public class PermissionGroupInfo extends PermissionGroupModel{
 	}
 	public void setAuthorityIds(Collection<String> authorityIds) {
 		this.authorityIds = authorityIds;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

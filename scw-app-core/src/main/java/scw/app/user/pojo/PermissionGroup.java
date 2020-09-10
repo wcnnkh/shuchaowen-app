@@ -1,6 +1,7 @@
 package scw.app.user.pojo;
 
 import scw.app.user.model.PermissionGroupModel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -18,5 +19,10 @@ public class PermissionGroup extends PermissionGroupModel {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }
