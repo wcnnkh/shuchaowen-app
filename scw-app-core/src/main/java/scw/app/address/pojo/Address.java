@@ -1,6 +1,7 @@
 package scw.app.address.pojo;
 
 import scw.app.address.model.AddressModel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
@@ -35,5 +36,10 @@ public class Address extends AddressModel implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

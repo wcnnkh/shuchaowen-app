@@ -1,6 +1,7 @@
 package scw.app.address.pojo;
 
 import scw.app.address.model.UserAddressModel;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.Index;
 import scw.sql.orm.annotation.PrimaryKey;
@@ -47,5 +48,10 @@ public class UserAddress extends UserAddressModel {
 
 	public void setLastUpdateTime(long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

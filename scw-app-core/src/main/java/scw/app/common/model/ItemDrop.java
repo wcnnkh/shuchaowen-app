@@ -2,6 +2,8 @@ package scw.app.common.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 /**
  * 如果itemId相同，那么两个对象相等
  * 
@@ -31,7 +33,7 @@ public class ItemDrop implements Serializable {
 
 	@Override
 	public String toString() {
-		return "itemid=" + itemId + ", weight=" + weight;
+		return MapperUtils.getMapper().toString(this);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package scw.app.common.pojo;
 import java.io.Serializable;
 
 import scw.app.common.model.UserSignInLog;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 import scw.util.CalendarUtils;
@@ -58,5 +59,10 @@ public class UserSignInLogTable implements Serializable, UserSignInLog {
 	
 	public boolean isSupplementary(){
 		return CalendarUtils.getDayBeginCalendar(signInTime).getTimeInMillis() < CalendarUtils.getDayBeginCalendar(createTime).getTimeInMillis();
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

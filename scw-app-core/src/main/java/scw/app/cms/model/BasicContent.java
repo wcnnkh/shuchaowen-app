@@ -2,6 +2,7 @@ package scw.app.cms.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Index;
 
 public class BasicContent implements Serializable {
@@ -105,5 +106,10 @@ public class BasicContent implements Serializable {
 
 	public void setCollectionCount(int collectionCount) {
 		this.collectionCount = collectionCount;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

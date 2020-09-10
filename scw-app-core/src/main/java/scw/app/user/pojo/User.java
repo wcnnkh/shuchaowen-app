@@ -2,6 +2,7 @@ package scw.app.user.pojo;
 
 import scw.app.user.model.UserAttributeModel;
 import scw.core.utils.XTime;
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Column;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -131,5 +132,10 @@ public class User extends UserAttributeModel {
 
 	public void setDefaultAddressId(long defaultAddressId) {
 		this.defaultAddressId = defaultAddressId;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

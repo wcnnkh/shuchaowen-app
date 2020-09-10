@@ -2,6 +2,7 @@ package scw.app.cms.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Index;
 
 public class BasicChannel implements Serializable {
@@ -60,5 +61,10 @@ public class BasicChannel implements Serializable {
 
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

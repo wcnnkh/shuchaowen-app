@@ -3,6 +3,8 @@ package scw.app.common.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import scw.mapper.MapperUtils;
+
 public class BannerModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String title;
@@ -60,5 +62,10 @@ public class BannerModel implements Serializable{
 	}
 	public void setTags(Set<String> tags) {
 		this.tags = tags;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

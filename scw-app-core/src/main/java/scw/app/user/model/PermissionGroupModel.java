@@ -2,6 +2,8 @@ package scw.app.user.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 public class PermissionGroupModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int parentId;
@@ -30,5 +32,10 @@ public class PermissionGroupModel implements Serializable {
 
 	public void setDisable(boolean disable) {
 		this.disable = disable;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

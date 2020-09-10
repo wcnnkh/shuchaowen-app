@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import scw.app.enums.SexType;
+import scw.mapper.MapperUtils;
 
 public class UserAttributeModel implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -42,5 +43,10 @@ public class UserAttributeModel implements Serializable{
 	}
 	public void setHeadImg(String headImg) {
 		this.headImg = headImg;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

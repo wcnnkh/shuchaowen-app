@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.oauth2.AccessToken;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -42,5 +43,10 @@ public class WeChatSubscription implements Serializable {
 
 	public void setAccessToken(AccessToken accessToken) {
 		this.accessToken = accessToken;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

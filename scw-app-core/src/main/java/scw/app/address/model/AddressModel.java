@@ -2,6 +2,7 @@ package scw.app.address.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Column;
 
 public class AddressModel implements Serializable, Cloneable {
@@ -34,5 +35,10 @@ public class AddressModel implements Serializable, Cloneable {
 
 	public void setLatitude(float latitude) {
 		this.latitude = latitude;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

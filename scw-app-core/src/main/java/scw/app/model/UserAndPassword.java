@@ -2,6 +2,8 @@ package scw.app.model;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
+
 public class UserAndPassword implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String user;
@@ -21,5 +23,10 @@ public class UserAndPassword implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

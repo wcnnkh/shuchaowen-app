@@ -2,6 +2,7 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
 
 /**
@@ -50,5 +51,10 @@ public class UserRelationship implements Serializable {
 
 	public void setCts(long cts) {
 		this.cts = cts;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }

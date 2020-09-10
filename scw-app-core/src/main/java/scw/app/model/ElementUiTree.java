@@ -3,6 +3,8 @@ package scw.app.model;
 import java.io.Serializable;
 import java.util.Collection;
 
+import scw.mapper.MapperUtils;
+
 /**
  * element ui需要的树结构
  * @author shuchaowen
@@ -31,5 +33,10 @@ public class ElementUiTree<V> implements Serializable {
 
 	public Collection<ElementUiTree<V>> getChildren() {
 		return children;
+	}
+	
+	@Override
+	public String toString() {
+		return MapperUtils.getMapper().toString(this);
 	}
 }
