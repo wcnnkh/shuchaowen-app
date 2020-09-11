@@ -14,18 +14,18 @@ public interface PhoneVerificationCodeService {
 	 * 发送验证码
 	 * 
 	 * @param phone
-	 * @param verificationCodeType
+	 * @param type
 	 * @return
 	 */
-	Result send(String phone, VerificationCodeType verificationCodeType);
+	Result send(String phone, VerificationCodeType type);
 
 	/**
 	 * 检查验证码
 	 * 
 	 * @param phone
 	 * @param code
-	 * @param verificationCodeType
+	 * @param type
 	 * @return
 	 */
-	Result check(String phone, String code, VerificationCodeType verificationCodeType);
+	Result check(String phone, String code, VerificationCodeType type);
 }
