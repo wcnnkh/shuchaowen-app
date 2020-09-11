@@ -3,8 +3,10 @@ package scw.app.user.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
+import scw.app.user.security.LoginRequired;
 import scw.app.user.security.RequestUser;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
@@ -13,6 +15,7 @@ import scw.http.HttpCookie;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
+import scw.mvc.annotation.RequestBody;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.login.UserToken;
@@ -66,5 +69,11 @@ public class UserController {
 		response.addCookie(uidCookie);
 		response.addCookie(tokenCookie);
 		return map;
+	}
+
+	@Controller(value = "update")
+	@LoginRequired
+	public Result updateUserInfo(RequestUser requestUser, @RequestBody UserAttributeModel userAttributeModel) {
+		return userService.updateUserAttribute(requestUser.getUid(), userAttributeModel);
 	}
 }
