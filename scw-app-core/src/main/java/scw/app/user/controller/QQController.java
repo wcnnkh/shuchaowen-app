@@ -24,14 +24,14 @@ import scw.tencent.qq.Userinfo;
 @scw.mvc.annotation.ResultFactory
 public class QQController {
 	private final Configuration configuration;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private LoginManager loginManager;
 	@Autowired
 	private ResultFactory resultFactory;
 
-	public QQController(Configuration configuration) {
+	public QQController(UserService userService, Configuration configuration) {
+		this.userService = userService;
 		this.configuration = configuration;
 	}
 
