@@ -42,16 +42,7 @@ public class KindController {
 
 	@Controller(value = "upload", methods = { HttpMethod.POST, HttpMethod.PUT })
 	public Object upload(RequestUser requestUser, MultiPartServerHttpRequest request, KindDirType dir) {
-		FileItem fileItem = null;
-		for (FileItem item : request.getMultiPartList()) {
-			if (item.isFormField()) {
-				continue;
-			}
-
-			fileItem = item;
-			break;
-		}
-
+		FileItem fileItem = request.getFirstFile();
 		if (fileItem == null) {
 			return error("请选择文件");
 		}
