@@ -32,6 +32,14 @@ public class KindController {
 		this.group = group;
 	}
 
+	public String getRequestGroup(RequestUser requestUser) {
+		String group = getGroup();
+		if (group == null && requestUser.isLogin()) {
+			group = requestUser.getUid() + "";
+		}
+		return group;
+	}
+
 	@Controller(value = "upload", methods = { HttpMethod.POST, HttpMethod.PUT })
 	public Object upload(RequestUser requestUser, MultiPartServerHttpRequest request, KindDirType dir) {
 		FileItem fileItem = null;
@@ -48,13 +56,8 @@ public class KindController {
 			return error("请选择文件");
 		}
 
-		String group = getGroup();
-		if (group == null) {
-			group = requestUser.getUid() + "";
-		}
-
 		try {
-			String url = kindEditor.upload(group, dir, new UploadFileItem(fileItem));
+			String url = kindEditor.upload(getRequestGroup(requestUser), dir, new UploadFileItem(fileItem));
 			return success(url);
 		} catch (UploadException e) {
 			return error(e.getMessage());
@@ -67,12 +70,7 @@ public class KindController {
 
 	@Controller(value = "manager", methods = { HttpMethod.GET })
 	public Object manager(RequestUser requestUser, KindDirType dir, String path, KindOrderType order) {
-		String group = getGroup();
-		if (group == null) {
-			group = requestUser.getUid() + "";
-		}
-
-		return kindEditor.manager(group, dir, path, order);
+		return kindEditor.manager(getRequestGroup(requestUser), dir, path, order);
 	}
 
 	private Object success(String url) {
