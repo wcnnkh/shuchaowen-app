@@ -32,7 +32,7 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 	@Autowired
-	private LoginRequiredAccessor loginRequiredAccessor;
+	private LoginRequiredRegistry loginRequiredRegistry;
 
 	private PermissionGroupActionService permissionGroupActionService;
 	private PermissionGroupService permissionGroupService;
@@ -51,7 +51,7 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		if (actionAuthority != null || (required != null && required.value())
-				|| loginRequiredAccessor.isLoginRequried(httpChannel.getRequest())) {
+				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest())) {
 			RequestUser requestUser = httpChannel.getBean(RequestUser.class);
 			if (requestUser == null) {
 				return authorizationFailure(httpChannel, action);
