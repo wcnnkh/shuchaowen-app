@@ -1,10 +1,7 @@
 package scw.app.admin.web;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
@@ -17,10 +14,8 @@ import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
-import scw.http.HttpCookie;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
-import scw.http.server.ServerHttpResponse;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.Controller;
 import scw.mvc.page.Page;
@@ -33,7 +28,6 @@ import scw.result.ResultFactory;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
-import scw.security.login.UserToken;
 
 @Controller(value = "admin")
 public class AdminIndexController {
@@ -119,49 +113,6 @@ public class AdminIndexController {
 	@Controller(value = "login")
 	public View login() {
 		return pageFactory.getPage("/admin/ftl/login.ftl");
-	}
-
-	@Controller(value = "login", methods = HttpMethod.POST)
-	public Result login(String username, String password, ServerHttpResponse httpResponse) {
-		if (StringUtils.isEmpty(username, password)) {
-			return resultFactory.parameterError();
-		}
-
-		User user = userService.getUserByUsername(username);
-		if (user == null) {
-			user = userService.getUserByPhone(username);
-		}
-
-		if (user == null) {
-			return resultFactory.error("账号或密码错误");
-		}
-
-		if (!userService.isSuperAdmin(user.getUid())) {
-			PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
-			if (group == null) {
-				return resultFactory.error("权限不足，无法登录，请联系管理员");
-			}
-		}
-
-		Result result = userService.checkPassword(user.getUid(), password);
-		if (result.isError()) {
-			return result;
-		}
-
-		UserToken<Long> userToken = loginManager.login(user.getUid());
-		Map<String, Object> map = new HashMap<String, Object>(8);
-		map.put("user", user);
-		map.put("token", userToken.getToken());
-		map.put("uid", user.getUid());
-		httpResponse.addCookie(RequestUser.UID_NAME, user.getUid() + "");
-		httpResponse.addCookie(RequestUser.TOKEN_NAME, userToken.getToken());
-		HttpCookie uidCookie = new HttpCookie(RequestUser.UID_NAME, user.getUid() + "");
-		uidCookie.setPath("/");
-		HttpCookie tokenCookie = new HttpCookie(RequestUser.TOKEN_NAME, userToken.getToken() + "");
-		tokenCookie.setPath("/");
-		httpResponse.addCookie(uidCookie);
-		httpResponse.addCookie(tokenCookie);
-		return resultFactory.success(map);
 	}
 
 	@LoginRequired

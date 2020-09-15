@@ -25,14 +25,14 @@ import scw.tencent.wx.WeiXinUtils;
 @scw.mvc.annotation.ResultFactory
 public class WeiXinController {
 	protected final UserGrantClient userGrantClient;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private LoginManager loginManager;
 	@Autowired
 	private ResultFactory resultFactory;
 
-	public WeiXinController(UserGrantClient userGrantClient) {
+	public WeiXinController(UserService userService, UserGrantClient userGrantClient) {
+		this.userService = userService;
 		this.userGrantClient = userGrantClient;
 	}
 

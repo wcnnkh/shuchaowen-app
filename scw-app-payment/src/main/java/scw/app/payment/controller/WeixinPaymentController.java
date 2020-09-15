@@ -33,23 +33,23 @@ public class WeixinPaymentController {
 
 	public BaseResult check(Map<String, String> map) {
 		if (!SUCCESS_TEXT.equals(map.get("return_code"))) {
-			return new BaseResult().setMsg(map.get("return_msg"));
+			return new BaseResult(false).setMsg(map.get("return_msg"));
 		}
 
 		if (!SUCCESS_TEXT.equals(map.get("result_code"))) {
-			return new BaseResult().setMsg(map.get("err_code") + "(" + map.get("err_code_des") + ")");
+			return new BaseResult(false).setMsg(map.get("err_code") + "(" + map.get("err_code_des") + ")");
 		}
 
 		boolean success = weixinPay.checkSign(map);
 		if (!success) {
-			return new BaseResult().setMsg("签名错误");
+			return new BaseResult(false).setMsg("签名错误");
 		}
 
 		String out_trade_no = map.get("out_trade_no");
 		if (StringUtils.isEmpty(out_trade_no)) {
-			return new BaseResult().setMsg("订单号错误");
+			return new BaseResult(false).setMsg("订单号错误");
 		}
-		return new BaseResult().setSuccess(true);
+		return new BaseResult(true);
 	}
 
 	@Controller(value = "success")

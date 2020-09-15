@@ -1,40 +1,37 @@
-package scw.app.vc.service.impl;
+package scw.app.vc.service;
 
-import java.io.Serializable;
-
-import scw.core.Assert;
+import scw.app.vc.enums.VerificationCodeType;
+import scw.app.vc.model.VerificationCodeInfo;
+import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.data.TemporaryCache;
+import scw.logger.Level;
+import scw.logger.Logger;
+import scw.logger.LoggerFactory;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.util.RandomUtils;
 
-public class DefaultVerificationCodeService implements VerificationCodeService {
+public abstract class AbstractVerificationCodeService {
 	private static final int ONE_DAY = (int) (XTime.ONE_DAY / 1000);
+	private static Logger logger = LoggerFactory.getLogger(PhoneVerificationCodeService.class);
+
 	private TemporaryCache temporaryCache;
 	private int everyDayMaxSize = 10;// 每天发送限制
 	private int maxTimeInterval = 30;// 两次发送时间限制(秒)
 	private int maxActiveTime = 300;// 验证码有效时间(秒)
-
-	private final VerificationCodeSender sender;
 	// 验证码长度
 	private int codeLength = 6;
-	protected ResultFactory resultFactory;
-	private final String prefix;
+	private boolean test = false;// 是否是测试模式，测试模式不真实发送
+	private ResultFactory resultFactory;
 
-	public DefaultVerificationCodeService(ResultFactory resultFactory, VerificationCodeSender sender, TemporaryCache temporaryCache, String prefix) {
-		this.sender = sender;
+	public AbstractVerificationCodeService(TemporaryCache temporaryCache, ResultFactory resultFactory) {
 		this.temporaryCache = temporaryCache;
-		this.prefix = prefix;
 		this.resultFactory = resultFactory;
 	}
 
-	public int getCodeLength() {
-		return codeLength;
-	}
-
-	public void setCodeLength(int codeLength) {
-		this.codeLength = codeLength;
+	protected String getCacheKey(String user, VerificationCodeType type) {
+		return getClass().getName() + ":" + type + ":" + user;
 	}
 
 	public TemporaryCache getTemporaryCache() {
@@ -69,16 +66,34 @@ public class DefaultVerificationCodeService implements VerificationCodeService {
 		this.maxActiveTime = maxActiveTime;
 	}
 
-	protected String getCacheKey(String user) {
-		return getClass().getName() + "&" + prefix + "&" + user;
+	public int getCodeLength() {
+		return codeLength;
 	}
 
-	public Result send(String user) {
-		Assert.requiredArgument(resultFactory != null, "resultFactory");
+	public void setCodeLength(int codeLength) {
+		this.codeLength = codeLength;
+	}
 
-		String key = getCacheKey(user);
+	public boolean isTest() {
+		return test;
+	}
+
+	public void setTest(boolean test) {
+		this.test = test;
+	}
+
+	public ResultFactory getResultFactory() {
+		return resultFactory;
+	}
+
+	public void setResultFactory(ResultFactory resultFactory) {
+		this.resultFactory = resultFactory;
+	}
+
+	public Result send(String user, VerificationCodeType type) {
+		String key = getCacheKey(user, type);
 		VerificationCodeInfo info = temporaryCache.getAndTouch(key, ONE_DAY);
-		if (info == null) {
+		if (info == null || isTest()) {
 			info = new VerificationCodeInfo();
 		}
 
@@ -93,9 +108,17 @@ public class DefaultVerificationCodeService implements VerificationCodeService {
 		}
 
 		String code = RandomUtils.getNumCode(getCodeLength());
-		Result result = sender.send(user, code);
-		if (result.isError()) {
-			return result;
+		Result result = resultFactory.success();
+		Level level = isTest() ? Level.INFO : Level.DEBUG;
+		if (logger.isLogEnable(level)) {
+			logger.log(level, (isTest() ? "测试模式" : "") + "向用户[{}]发送验证码[{}]", user, code);
+		}
+
+		if (!isTest()) {
+			result = sendInternal(user, code, type);
+			if (result.isError()) {
+				return result;
+			}
 		}
 
 		if (System.currentTimeMillis() - info.getLastSendTime() > XTime.ONE_DAY) {
@@ -110,12 +133,14 @@ public class DefaultVerificationCodeService implements VerificationCodeService {
 		return result;
 	}
 
-	public Result check(String user, String code) {
-		if (code == null || user == null) {
+	protected abstract Result sendInternal(String user, String code, VerificationCodeType type);
+
+	public Result check(String user, String code, VerificationCodeType type) {
+		if (StringUtils.isEmpty(user, code)) {
 			return resultFactory.parameterError();
 		}
 
-		String key = getCacheKey(user);
+		String key = getCacheKey(user, type);
 		VerificationCodeInfo info = temporaryCache.get(key);
 		if (info == null) {
 			return resultFactory.error("验证码错误(not sent)");
@@ -135,34 +160,4 @@ public class DefaultVerificationCodeService implements VerificationCodeService {
 		return resultFactory.success();
 	}
 
-	public static final class VerificationCodeInfo implements Serializable {
-		private static final long serialVersionUID = 1L;
-		private long lastSendTime;
-		private String code;
-		private int count;
-
-		public long getLastSendTime() {
-			return lastSendTime;
-		}
-
-		public void setLastSendTime(long lastSendTime) {
-			this.lastSendTime = lastSendTime;
-		}
-
-		public String getCode() {
-			return code;
-		}
-
-		public void setCode(String code) {
-			this.code = code;
-		}
-
-		public int getCount() {
-			return count;
-		}
-
-		public void setCount(int count) {
-			this.count = count;
-		}
-	}
 }

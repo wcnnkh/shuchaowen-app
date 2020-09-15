@@ -29,7 +29,7 @@
               //监听提交
               form.on('submit(login)', function(data){
             	$.ajax({
-            		"url": "login",
+            		"url": "/user/login",
             		"method":"POST",
             		"dataType":"json",
             		"data":data.field,

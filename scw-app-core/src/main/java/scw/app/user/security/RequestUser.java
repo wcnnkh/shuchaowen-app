@@ -13,6 +13,8 @@ public interface RequestUser extends Accept<UserToken<Long>> {
 	Long getUid();
 
 	String getToken();
+	
+	boolean isLogin();
 
 	boolean accept(UserToken<Long> userToken);
 }

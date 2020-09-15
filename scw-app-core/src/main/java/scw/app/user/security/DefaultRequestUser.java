@@ -12,6 +12,7 @@ import scw.value.Value;
 public class DefaultRequestUser implements RequestUser {
 	private Long uid;
 	private String token;
+	private boolean login = false;
 
 	public DefaultRequestUser(HttpChannel httpChannel) {
 		Value uid = getParameter(httpChannel, UID_NAME);
@@ -60,6 +61,12 @@ public class DefaultRequestUser implements RequestUser {
 		if (uid == null) {
 			this.uid = userToken.getUid();
 		}
+		
+		login = true;
 		return true;
+	}
+	
+	public boolean isLogin() {
+		return login;
 	}
 }
