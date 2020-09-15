@@ -18,26 +18,13 @@ import scw.upload.kind.KindOrderType;
 @Controller(value = "kind")
 public class KindController {
 	private KindEditor kindEditor;
-	private String group;
 
 	public KindController(KindEditor kindEditor) {
 		this.kindEditor = kindEditor;
 	}
 
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
 	public String getRequestGroup(RequestUser requestUser) {
-		String group = getGroup();
-		if (group == null && requestUser.isLogin()) {
-			group = requestUser.getUid() + "";
-		}
-		return group;
+		return requestUser.isLogin() ? (requestUser.getUid() + "") : null;
 	}
 
 	@Controller(value = "upload", methods = { HttpMethod.POST, HttpMethod.PUT })
