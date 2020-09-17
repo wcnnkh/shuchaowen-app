@@ -168,158 +168,6 @@ function fileInputNotNull(fileInput) {
 	return !b;
 }
 
-/**
- * 检查文件大小
- * 
- * @param fileInput
- * @param maxSize
- * @returns
- */
-function checkFileSize(fileInput, maxSize) {
-	var b = true;
-	$(fileInput).each(function() {
-		if (!b) {
-			return false;
-		}
-
-		if (!isNull($(this).val()) && $(this)[0].files[0].size > maxSize) {
-			b = false;
-		}
-	})
-	return b;
-}
-
-function checkImageFileSize(fileInput) {
-	return checkFileSize(fileInput, IMAGE_MAX_SIZE);
-}
-
-function checkVideoFileSize(fileInput) {
-	return checkFileSize(fileInput, VIDEO_MAX_SIZE);
-}
-
-var IMAGE_MAX_SIZE = 1024 * 1024;
-var VIDEO_MAX_SIZE = 300 * 1024 * 1024;
-
-function uploadImages(signUrl, fileInputs, successCall) {
-	var i = 0;
-	var uriArr = new Array();
-	(function upload() {
-		if (i >= fileInputs.length) {
-			successCall(uriArr);
-			return;
-		}
-
-		var fileInput = $(fileInputs).eq(i);
-		if (!isNull(fileInput.attr("data-url"))) {
-			uriArr.push(fileInput.attr("data-url"));
-			i++;
-			upload();
-		} else {
-			if (isNull(fileInput.val())) {
-				i++;
-				upload();
-				return;
-			}
-
-			uploadSiMingTangImgToOss(signUrl, fileInput, function(src) {
-				uriArr.push(src);
-				i++;
-				upload();
-			})
-		}
-	})();
-}
-
-function uploadFiles(signUrl, fileInputs, successCall) {
-	var i = 0;
-	var uriArr = new Array();
-	(function upload() {
-		if (i >= fileInputs.length) {
-			successCall(uriArr);
-			return;
-		}
-
-		var fileInput = $(fileInputs).eq(i);
-		if (!isNull(fileInput.attr("data-url"))) {
-			uriArr.push(fileInput.attr("data-url"));
-			i++;
-			upload();
-		} else {
-			if (isNull(fileInput.val())) {
-				i++;
-				upload();
-				return;
-			}
-
-			uploadSiMingTangFileToOss(signUrl, fileInput, function(src) {
-				uriArr.push(src);
-				i++;
-				upload();
-			})
-		}
-	})();
-}
-
-function uploadSiMingTangImgToOss(signUrl, fileInput, successCall) {
-	uploadToOss(signUrl, "//simingtang-img.oss-cn-shanghai.aliyuncs.com",
-			fileInput, "http://img.simingtang.com/", successCall);
-}
-
-function uploadSiMingTangVideoToOss(signUrl, fileInput, successCall) {
-	uploadToOss(signUrl, "//simingtang-video.oss-cn-shanghai.aliyuncs.com",
-			fileInput, "http://video.simingtang.com/", successCall);
-}
-
-function uploadSiMingTangFileToOss(signUrl, fileInput, successCall) {
-	uploadToOss(signUrl, "//simingtang-file.oss-cn-shanghai.aliyuncs.com",
-			fileInput, "http://file.simingtang.com/", successCall);
-}
-
-function uploadSiMingTangPrivateToOss(signUrl, fileInput, successCall) {
-	uploadToOss(signUrl, "//simingtang-private.oss-cn-shanghai.aliyuncs.com",
-			fileInput, "", successCall);
-}
-
-function uploadToOss(signUrl, ossUrl, fileInput, urlPrefix, successCall) {
-	var dataUrl = $(fileInput).attr("data-url");
-	if (dataUrl && dataUrl.length > 0) {
-		successCall(dataUrl);
-	} else {
-		var index = layer.load(1, {
-			shade : [ 0.8, '#fff' ]
-		});
-
-		var requestData = {};
-		var fileName = $(fileInput)[0].value;
-		var lastIndex = fileName.lastIndexOf(".");
-		if (lastIndex != -1) {
-			fileName = fileName.substring(lastIndex + 1).toLowerCase();
-			requestData.suffix = fileName;
-		}
-
-		$.getJSON(signUrl, requestData, function(sign) {
-			var form = new FormData();
-			form.append("key", sign.key);
-			form.append("OSSAccessKeyId", sign.OSSAccessKeyId);
-			form.append("policy", sign.policy);
-			form.append("Signature", sign.Signature);
-			form.append("file", $(fileInput)[0].files[0]);
-			$.ajax({
-				url : ossUrl,
-				data : form,
-				processData : false,
-				contentType : false,
-				type : 'POST'
-			}).done(function() {
-				layer.close(index);
-				var imgUrl = urlPrefix + sign.key;
-				$(fileInput).attr("data-url", imgUrl);
-				successCall(imgUrl);
-			});
-		})
-	}
-}
-
 function previewImg(input, pic) {
 	var file = $(input)[0];
 	if (!file || !file.value || file.value.length == 0) {
@@ -402,6 +250,42 @@ function previewImg(input, pic) {
 				$(pic).html(img);
 			}
 		}
+	}
+}
+
+
+function clearFileInputDataUrl(fileInput){
+	$(fileInput).attr("data-url", "");
+}
+
+function uploadImg(url, fileInput, successCall) {
+	var dataUrl = $(fileInput).attr("data-url");
+	if (dataUrl && dataUrl.length > 0) {
+		successCall(dataUrl);
+	} else {
+		$.ajaxFileUpload({
+			url : url, //用于文件上传的服务器端请求地址
+			secureuri : false, //一般设置为false
+			fileInput : "#" + $(fileInput).attr("id"), //文件上传空间的id属性  <input type="file" id="file" name="file" />
+			dataType : 'JSON', //返回值类型 一般设置为json
+			success : function(data, status) //服务器成功响应处理函数
+			{
+				var json = JSON.parse(data);
+				if (json.error == 0) {
+					var uri = json.data;
+					$(fileInput).attr("data-url", uri);
+					successCall(uri);
+				} else {
+					alert(json.data);
+				}
+			},
+			error : function(data, status, e)//服务器响应失败处理函数
+			{
+				console.log(data);
+				console.log(e);
+				alert("系统错误");
+			}
+		})
 	}
 }
 

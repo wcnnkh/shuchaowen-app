@@ -231,38 +231,3 @@ jQuery.extend({
     }
 })
 
-function clearFileInputDataUrl(fileInput){
-	$(fileInput).attr("data-url", "");
-}
-
-function uploadImg(url, fileInput, successCall) {
-	var dataUrl = $(fileInput).attr("data-url");
-	if (dataUrl && dataUrl.length > 0) {
-		successCall(dataUrl);
-	} else {
-		$.ajaxFileUpload({
-			url : url, //用于文件上传的服务器端请求地址
-			secureuri : false, //一般设置为false
-			fileInput : "#" + $(fileInput).attr("id"), //文件上传空间的id属性  <input type="file" id="file" name="file" />
-			dataType : 'JSON', //返回值类型 一般设置为json
-			success : function(data, status) //服务器成功响应处理函数
-			{
-				var json = JSON.parse(data);
-				if (json.error == 0) {
-					var uri = json.data;
-					$(fileInput).attr("data-url", uri);
-					successCall(uri);
-				} else {
-					alert(json.data);
-				}
-			},
-			error : function(data, status, e)//服务器响应失败处理函数
-			{
-				console.log(data);
-				console.log(e);
-				alert("系统错误");
-			}
-		})
-	}
-}
-
