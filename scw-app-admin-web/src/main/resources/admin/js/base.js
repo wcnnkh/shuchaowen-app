@@ -20,9 +20,12 @@ $(function() {
 			return;
 		} else {
 			$(this).parent().find('input').val('');
-			$(this).parent().find('.show-img').attr("src", "");
+			var showImg = $(this).parent().find('.show-img');
+			showImg.removeAttr("src");
 			// IE9以下
-			$(this).parent().find('.show-img').css("filter", "");
+			showImg.css("filter", "");
+			showImg.hide();
+			
 			$(this).parent().find('.add-img').show();
 
 			var isAutoAdd = $(this).parent().attr("data-auto-add");
@@ -31,11 +34,11 @@ $(function() {
 			}
 		}
 
-		$(this).parent().find('input').attr("data-url", "");
+		$(this).parent().find('input').removeAttr("data-url");
 	})
 
 	$("input[type='file']").change(function() {
-		$(this).attr("data-url", "");
+		$(this).removeAttr("data-url");
 	})
 
 	$("div.upload-img input[type='file']")
@@ -84,8 +87,6 @@ $(function() {
 												'src',
 												'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
 							}
-							addImg.hide();
-							deleteImg.show();
 						} else {
 							var file = file.files[0];
 							var reader = new FileReader();
@@ -93,10 +94,10 @@ $(function() {
 							reader.onload = function(e) {
 								pic.attr("src", this.result);
 							}
-							addImg.hide();
-							deleteImg.show();
 						}
-
+						addImg.hide();
+						deleteImg.show();
+						pic.show();
 						var isAutoAdd = $(this).parent().attr("data-auto-add");
 						if (isAutoAdd) {
 							var uploadDiv = $(this).parent();

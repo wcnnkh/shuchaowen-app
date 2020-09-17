@@ -18,6 +18,7 @@
 <script src="${_contextPath}/admin/lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="${_contextPath}/admin/js/xadmin.js"></script>
 <script type="text/javascript" src="${_contextPath}/admin/js/base.js"></script>
+<script type="text/javascript" src="${_contextPath}/admin/js/ajaxfileupload.js"></script>
 <link rel="stylesheet"
 	href="${_contextPath}/admin/lib/ztree/css/zTreeStyle/zTreeStyle.css">
 <script type="text/javascript"
