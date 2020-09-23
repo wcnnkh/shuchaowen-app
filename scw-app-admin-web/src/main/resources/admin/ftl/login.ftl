@@ -38,7 +38,7 @@
             				layer.msg(response.msg, {icon: 5});
             				return ;
             			}
-            			window.location.href = "${_contextPath}/admin";
+            			window.location.href = "${_request.contextPath}/admin";
             		},
             		error:function(){
             			layer.msg("网络或系统错误，请稍后重试", {icon: 5});
