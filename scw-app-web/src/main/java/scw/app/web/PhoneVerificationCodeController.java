@@ -1,8 +1,7 @@
-package scw.app.vc.controller;
+package scw.app.web;
 
 import java.util.Map;
 
-import scw.app.user.controller.UserController;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;

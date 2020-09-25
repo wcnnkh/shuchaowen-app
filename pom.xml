@@ -12,7 +12,6 @@
 	<modules>
 		<module>scw-app-user-service</module>
 		<module>scw-app-admin-web</module>
-		<module>scw-app-payment</module>
 		<module>scw-app-example</module>
 		<module>scw-app-product-service</module>
 		<module>scw-app-cms-service</module>
@@ -22,15 +21,11 @@
 		<module>scw-app-vc-service</module>
 		<module>scw-app-discount-service</module>
 		<module>scw-app-address-service</module>
+		<module>scw-app-web</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>scw-app</groupId>
-				<artifactId>scw-app-payment</artifactId>
-				<version>1.0.0</version>
-			</dependency>
 			<dependency>
 				<groupId>scw-app</groupId>
 				<artifactId>scw-app-product-service</artifactId>
@@ -81,7 +76,12 @@
 				<artifactId>scw-app-address-service</artifactId>
 				<version>1.0.0</version>
 			</dependency>
-			
+			<dependency>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-web</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.aliyun</groupId>
 				<artifactId>aliyun-java-sdk-core</artifactId>
@@ -93,6 +93,12 @@
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>1.10</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alipay.sdk</groupId>
+				<artifactId>alipay-sdk-java</artifactId>
+				<version>3.7.26.ALL</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -1,4 +1,4 @@
-package scw.app.order.pojo;
+package scw.app.payment.pojo;
 
 import scw.app.address.model.UserAddressModel;
 import scw.mapper.MapperUtils;
@@ -8,7 +8,6 @@ public class Order extends UserAddressModel {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
 	private String id;
-	private String parentId;// 父级订单编号
 	private String name;// 订单名称
 	private String img;// 订单图片
 	private long uid;// 订单所属用户
@@ -27,14 +26,6 @@ public class Order extends UserAddressModel {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
 	}
 
 	public String getName() {

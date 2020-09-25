@@ -1,4 +1,4 @@
-package scw.app.user.controller;
+package scw.app.web;
 
 import scw.app.enums.SexType;
 import scw.app.user.enums.OpenidType;

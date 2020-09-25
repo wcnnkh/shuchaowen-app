@@ -1,4 +1,4 @@
-package scw.app.user.controller;
+package scw.app.web;
 
 import java.util.HashMap;
 import java.util.Map;

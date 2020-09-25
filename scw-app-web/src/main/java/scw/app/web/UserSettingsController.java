@@ -1,4 +1,4 @@
-package scw.app.user.controller;
+package scw.app.web;
 
 import scw.app.user.pojo.UserSettings;
 import scw.app.user.security.LoginRequired;
