@@ -12,11 +12,11 @@ import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
+import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
 import scw.result.Result;
 import scw.result.ResultFactory;
-import scw.security.login.UserToken;
 
 @Controller(value = "/phone/code", methods = { HttpMethod.GET, HttpMethod.POST })
 public class PhoneVerificationCodeController {
@@ -26,6 +26,8 @@ public class PhoneVerificationCodeController {
 	private ResultFactory resultFactory;
 	@Autowired
 	private LoginManager loginManager;
+	@Autowired
+	private UserControllerService userControllerService;
 
 	public PhoneVerificationCodeController(PhoneVerificationCodeService phoneVerificationCodeService,
 			UserService userService) {
@@ -35,6 +37,21 @@ public class PhoneVerificationCodeController {
 
 	@Controller(value = "send")
 	public Result send(String phone, VerificationCodeType type) {
+		if (type == null || StringUtils.isEmpty(phone)) {
+			return resultFactory.parameterError();
+		}
+
+		switch (type) {
+		case REGISTER:
+		case BIND:
+			if (userService.getUserByPhone(phone) != null) {
+				return resultFactory.error("该账号已注册");
+			}
+			break;
+		default:
+			break;
+		}
+
 		return phoneVerificationCodeService.send(phone, type);
 	}
 
@@ -44,7 +61,7 @@ public class PhoneVerificationCodeController {
 	}
 
 	@Controller(value = "login")
-	public Result login(String phone, String code, ServerHttpResponse response) {
+	public Result login(String phone, String code, ServerHttpRequest request, ServerHttpResponse response) {
 		if (StringUtils.isEmpty(phone, code)) {
 			return resultFactory.parameterError();
 		}
@@ -58,11 +75,9 @@ public class PhoneVerificationCodeController {
 		if (user == null) {
 			return resultFactory.error("用户不存在");
 		}
-
-		UserToken<Long> userToken = loginManager.login(user.getUid());
-		Map<String, Object> map = UserController.login(userToken, response);
-		map.put("user", user);
-		return resultFactory.success(map);
+		
+		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		return resultFactory.success(infoMap);
 	}
 
 	@Controller(value = "update_pwd")
@@ -101,11 +116,11 @@ public class PhoneVerificationCodeController {
 
 	@Controller(value = "register")
 	public Result register(String phone, String code, String password) {
-		if (StringUtils.isEmpty(phone, code)) {
+		if (StringUtils.isEmpty(phone, code, password)) {
 			return resultFactory.parameterError();
 		}
 
-		Result result = phoneVerificationCodeService.check(phone, code, VerificationCodeType.BIND);
+		Result result = phoneVerificationCodeService.check(phone, code, VerificationCodeType.REGISTER);
 		if (result.isError()) {
 			return result;
 		}

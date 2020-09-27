@@ -130,7 +130,7 @@ public abstract class AbstractVerificationCodeService {
 		info.setCode(code);
 		info.setLastSendTime(System.currentTimeMillis());
 		temporaryCache.set(key, ONE_DAY, info);
-		return result;
+		return isTest() ? resultFactory.success(code) : resultFactory.success();
 	}
 
 	protected abstract Result sendInternal(String user, String code, VerificationCodeType type);
@@ -143,7 +143,7 @@ public abstract class AbstractVerificationCodeService {
 		String key = getCacheKey(user, type);
 		VerificationCodeInfo info = temporaryCache.get(key);
 		if (info == null) {
-			return resultFactory.error("验证码错误(not sent)");
+			return resultFactory.error("验证码错误(Not sent)");
 		}
 
 		if (getMaxActiveTime() > 0
