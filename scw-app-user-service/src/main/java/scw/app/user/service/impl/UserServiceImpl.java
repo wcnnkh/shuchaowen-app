@@ -165,7 +165,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 			return resultFactory.error("账号不存在");
 		}
 
-		if (user.getPhone().equals(phone)) {
+		if (phone.equals(user.getPhone())) {
 			return resultFactory.error("与原绑定手机号一致");
 		}
 
@@ -202,9 +202,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 
 		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
-			db.save(userAttributeModel);
+			db.update(user);
 		}
-
 		return resultFactory.success();
 	}
 

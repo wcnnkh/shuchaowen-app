@@ -24,7 +24,7 @@ import scw.tencent.qq.QQUtils;
 import scw.tencent.qq.Userinfo;
 
 @Controller(value = "qq", methods = { HttpMethod.GET, HttpMethod.POST })
-@scw.mvc.annotation.ResultFactory
+@scw.mvc.annotation.FactoryResult
 public class QQController {
 	private final Configuration configuration;
 	private UserService userService;

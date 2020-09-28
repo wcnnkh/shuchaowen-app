@@ -106,7 +106,7 @@ public class UserAttributeModel implements Serializable {
 		}
 
 		if (age != 0 && age != userAttributeModel.getAge()) {
-			userAttributeModel.setAge(userAttributeModel.getAge());
+			userAttributeModel.setAge(age);
 		}
 
 		if (StringUtils.isNotEmpty(nickname)) {

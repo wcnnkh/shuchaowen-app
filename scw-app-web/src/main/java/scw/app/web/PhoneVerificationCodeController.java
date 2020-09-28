@@ -15,6 +15,7 @@ import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
+import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
@@ -73,7 +74,12 @@ public class PhoneVerificationCodeController {
 
 		User user = userService.getUserByPhone(phone);
 		if (user == null) {
-			return resultFactory.error("用户不存在");
+			DataResult<User> dataResult = userService.registerByPhone(phone, null, null);
+			if(dataResult.isError()){
+				return dataResult;
+			}
+			
+			user = dataResult.getData();
 		}
 		
 		Map<String, Object> infoMap = userControllerService.login(user, request, response);

@@ -25,7 +25,7 @@ import scw.tencent.wx.Userinfo;
 import scw.tencent.wx.WeiXinUtils;
 
 @Controller(value = "weixin", methods = { HttpMethod.GET, HttpMethod.POST })
-@scw.mvc.annotation.ResultFactory
+@scw.mvc.annotation.FactoryResult
 public class WeiXinController {
 	protected final UserGrantClient userGrantClient;
 	private UserService userService;
