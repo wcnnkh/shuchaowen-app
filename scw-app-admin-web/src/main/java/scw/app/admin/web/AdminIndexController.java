@@ -48,7 +48,7 @@ public class AdminIndexController {
 
 	@LoginRequired
 	@Controller(value = "menus")
-	@scw.mvc.annotation.ResultFactory
+	@scw.mvc.annotation.FactoryResult
 	public List<AuthorityTree<HttpAuthority>> getMenus(RequestUser requestUser) {
 		if (userService.isSuperAdmin(requestUser.getUid())) {
 			return httpActionAuthorityManager.getAuthorityTreeList(new MenuAuthorityFilter<HttpAuthority>());

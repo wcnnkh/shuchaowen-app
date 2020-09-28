@@ -6,32 +6,28 @@
 		<artifactId>scw-app</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>scw-app-payment</artifactId>
+	<artifactId>scw-app-web</artifactId>
 	<dependencies>
+		<dependency>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-mvc</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>scw</groupId>
-			<artifactId>scw-apple</artifactId>
+			<artifactId>scw-upload</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-tencent</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-alibaba</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alipay.sdk</groupId>
-			<artifactId>alipay-sdk-java</artifactId>
-			<version>3.7.26.ALL</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

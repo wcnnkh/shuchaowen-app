@@ -1,4 +1,4 @@
-package scw.app.user.controller;
+package scw.app.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpCookie;
 import scw.http.HttpMethod;
+import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
@@ -27,13 +28,15 @@ public class UserController {
 	private ResultFactory resultFactory;
 	@Autowired
 	private LoginManager loginManager;
+	@Autowired
+	private UserControllerService userControllerService;
 
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
 	@Controller(value = "login")
-	public Result login(String username, String password, ServerHttpResponse response) {
+	public Result login(String username, String password, ServerHttpRequest request, ServerHttpResponse response) {
 		if (StringUtils.isEmpty(username, password)) {
 			return resultFactory.parameterError();
 		}
@@ -52,10 +55,8 @@ public class UserController {
 			return result;
 		}
 
-		UserToken<Long> userToken = loginManager.login(user.getUid());
-		Map<String, Object> map = login(userToken, response);
-		map.put("user", user);
-		return resultFactory.success(map);
+		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		return resultFactory.success(infoMap);
 	}
 
 	public static Map<String, Object> login(UserToken<Long> userToken, ServerHttpResponse response) {
@@ -75,5 +76,14 @@ public class UserController {
 	@LoginRequired
 	public Result updateUserInfo(RequestUser requestUser, @RequestBody UserAttributeModel userAttributeModel) {
 		return userService.updateUserAttribute(requestUser.getUid(), userAttributeModel);
+	}
+
+	@Controller(value = "register")
+	public Result register(String username, String password, @RequestBody UserAttributeModel userAttributeModel) {
+		if (StringUtils.isEmpty(username, password)) {
+			return resultFactory.parameterError();
+		}
+
+		return userService.registerByUsername(username, password, userAttributeModel);
 	}
 }

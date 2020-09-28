@@ -1,4 +1,4 @@
-package scw.app.payment.controller;
+package scw.app.web;
 
 import java.util.Map;
 

@@ -17,7 +17,6 @@ import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.lang.NotSupportedException;
-import scw.mapper.Copy;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -101,8 +100,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setPassword(formatPassword(password));
 		user.setCts(System.currentTimeMillis());
 
-		if (userAttributeModel != null) {
-			Copy.copy(user, userAttributeModel);
+		if(userAttributeModel != null){
+			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
 		return resultFactory.success(user);
@@ -119,8 +118,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setPassword(formatPassword(password));
 		user.setCts(System.currentTimeMillis());
 
-		if (userAttributeModel != null) {
-			Copy.copy(user, userAttributeModel);
+		if(userAttributeModel != null){
+			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
 		return resultFactory.success(user);
@@ -148,8 +147,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user = new User();
 		user.setCts(System.currentTimeMillis());
 		setOpenid(user, type, openid);
-		if (userAttributeModel != null) {
-			Copy.copy(user, userAttributeModel);
+		if(userAttributeModel != null){
+			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
 		return resultFactory.success(user);
@@ -166,7 +165,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 			return resultFactory.error("账号不存在");
 		}
 
-		if (user.getPhone().equals(phone)) {
+		if (phone.equals(user.getPhone())) {
 			return resultFactory.error("与原绑定手机号一致");
 		}
 
@@ -188,6 +187,9 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		}
 
 		setOpenid(user, type, openid);
+		if(userAttributeModel != null){
+			userAttributeModel.writeTo(user);
+		}
 		db.update(user);
 		return resultFactory.success(user);
 	}
@@ -199,20 +201,9 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		}
 
 		if (userAttributeModel != null) {
-			if (userAttributeModel.getBirthday() != null) {
-				user.setBirthday(userAttributeModel.getBirthday());
-			}
-
-			if (userAttributeModel.getSex() != null) {
-				user.setSex(userAttributeModel.getSex());
-			}
-
-			if (userAttributeModel.getAge() != 0 && userAttributeModel.getAge() != user.getAge()) {
-				user.setAge(userAttributeModel.getAge());
-			}
-			db.save(userAttributeModel);
+			userAttributeModel.writeTo(user);
+			db.update(user);
 		}
-
 		return resultFactory.success();
 	}
 

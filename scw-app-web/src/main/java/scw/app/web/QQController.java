@@ -1,4 +1,6 @@
-package scw.app.user.controller;
+package scw.app.web;
+
+import java.util.Map;
 
 import scw.app.enums.SexType;
 import scw.app.user.enums.OpenidType;
@@ -10,18 +12,19 @@ import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
+import scw.http.server.ServerHttpRequest;
+import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
 import scw.oauth2.AccessToken;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
-import scw.security.login.UserToken;
 import scw.tencent.qq.Configuration;
 import scw.tencent.qq.QQUtils;
 import scw.tencent.qq.Userinfo;
 
 @Controller(value = "qq", methods = { HttpMethod.GET, HttpMethod.POST })
-@scw.mvc.annotation.ResultFactory
+@scw.mvc.annotation.FactoryResult
 public class QQController {
 	private final Configuration configuration;
 	private UserService userService;
@@ -29,6 +32,8 @@ public class QQController {
 	private LoginManager loginManager;
 	@Autowired
 	private ResultFactory resultFactory;
+	@Autowired
+	private UserControllerService userControllerService;
 
 	public QQController(UserService userService, Configuration configuration) {
 		this.userService = userService;
@@ -36,43 +41,39 @@ public class QQController {
 	}
 
 	@Controller(value = "login")
-	public UserToken<Long> login(String openid, String accessToken) {
+	public Result login(String openid, String accessToken, ServerHttpRequest request, ServerHttpResponse response) {
 		if (StringUtils.isEmpty(openid, accessToken)) {
-			throw new RuntimeException("参数错误");
+			return resultFactory.parameterError();
 		}
 
 		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
 		if (user == null) {
-			Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(),
-					accessToken, openid);
+			Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
-			userAttributeModel
-					.setSex(SexType.forDescribe(userinfo.getGender()));
+			userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
 			userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
 			userAttributeModel.setNickname(userinfo.getNickname());
-			DataResult<User> dataResult = userService.registerByOpenid(
-					OpenidType.QQ, openid, userAttributeModel);
+			DataResult<User> dataResult = userService.registerByOpenid(OpenidType.QQ, openid, userAttributeModel);
 			if (dataResult.isError()) {
-				throw new RuntimeException("register error:" + dataResult);
+				return dataResult;
 			}
 
 			user = dataResult.getData();
 		}
-		return loginManager.login(user.getUid());
+		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		return resultFactory.success(infoMap);
 	}
 
 	@Controller(value = "web_login")
-	public UserToken<Long> webLogin(String code, String redirect_uri) {
+	public Result webLogin(String code, String redirect_uri, ServerHttpRequest request, ServerHttpResponse response) {
 		if (StringUtils.isEmpty(code, redirect_uri)) {
-			throw new RuntimeException("参数错误");
+			return resultFactory.parameterError();
 		}
 
-		AccessToken accessToken = QQUtils.getAccessToken(
-				configuration.getAppId(), configuration.getAppKey(),
+		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
 				redirect_uri, code);
-		String openid = QQUtils.getOpenId(accessToken.getAccessToken()
-				.getToken());
-		return login(openid, accessToken.getAccessToken().getToken());
+		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
+		return login(openid, accessToken.getAccessToken().getToken(), request, response);
 	}
 
 	@LoginRequired
@@ -87,14 +88,12 @@ public class QQController {
 			return resultFactory.error("用户不存在");
 		}
 
-		Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(),
-				accessToken, openid);
+		Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
 		UserAttributeModel userAttributeModel = new UserAttributeModel();
 		userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
 		userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
 		userAttributeModel.setNickname(userinfo.getNickname());
-		return userService.bindOpenid(uid, OpenidType.QQ, openid,
-				userAttributeModel);
+		return userService.bindOpenid(uid, OpenidType.QQ, openid, userAttributeModel);
 	}
 
 	@Controller(value = "web_bind")
@@ -104,11 +103,9 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		AccessToken accessToken = QQUtils.getAccessToken(
-				configuration.getAppId(), configuration.getAppKey(),
+		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
 				redirect_uri, code);
-		String openid = QQUtils.getOpenId(accessToken.getAccessToken()
-				.getToken());
+		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
 		return bind(uid, openid, accessToken.getAccessToken().getToken());
 	}
 }

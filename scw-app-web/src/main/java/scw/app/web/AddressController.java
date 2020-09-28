@@ -1,4 +1,4 @@
-package scw.app.address.controller;
+package scw.app.web;
 
 import java.util.Collections;
 import java.util.List;
