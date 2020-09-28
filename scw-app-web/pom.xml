@@ -22,10 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
-			<artifactId>scw-freemarker</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>scw</groupId>
 			<artifactId>scw-tencent</artifactId>
 		</dependency>
 		<dependency>
