@@ -327,4 +327,14 @@ public final class RegexUtils {
 		Matcher m = p.matcher(name);
 		return m.matches();
 	}
+	
+	/**
+	 * 隐藏部分手机号
+	 * 
+	 * @param phone
+	 * @return
+	 */
+	public static String hidePhone(String phone) {
+		return phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+	}
 }
