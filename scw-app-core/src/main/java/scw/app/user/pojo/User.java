@@ -1,6 +1,8 @@
 package scw.app.user.pojo;
 
 import scw.app.user.model.UserAttributeModel;
+import scw.app.util.RegexUtils;
+import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Column;
@@ -28,7 +30,7 @@ public class User extends UserAttributeModel {
 	private int permissionGroupId;// 权限组id
 	private boolean disable;// 是否禁用
 	private long lastLoginTime;
-	private long defaultAddressId;//用户默认收货地址
+	private long defaultAddressId;// 用户默认收货地址
 
 	public long getUid() {
 		return uid;
@@ -133,7 +135,22 @@ public class User extends UserAttributeModel {
 	public void setDefaultAddressId(long defaultAddressId) {
 		this.defaultAddressId = defaultAddressId;
 	}
-	
+
+	public String getAvailableNickname() {
+		if (StringUtils.isNotEmpty(getNickname())) {
+			return getNickname();
+		}
+
+		if (StringUtils.isNotEmpty(phone)) {
+			return RegexUtils.hidePhone(phone);
+		}
+
+		if (StringUtils.isNotEmpty(username)) {
+			return getUsername();
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return MapperUtils.getMapper().toString(this);

@@ -2,6 +2,8 @@ package scw.app.user.service.impl;
 
 import java.util.Collection;
 
+import scw.app.event.AppEvent;
+import scw.app.event.AppEventDispatcher;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
@@ -16,6 +18,7 @@ import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
+import scw.event.support.EventType;
 import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -37,6 +40,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 	private PhoneVerificationCodeService verificationCodeService;
 	@Autowired
 	private PermissionGroupService permissionGroupService;
+	@Autowired
+	private AppEventDispatcher appEventDispatcher;
 
 	public UserServiceImpl(DB db, ResultFactory resultFactory, PropertyFactory propertyFactory) {
 		super(db, resultFactory);
@@ -100,10 +105,11 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setPassword(formatPassword(password));
 		user.setCts(System.currentTimeMillis());
 
-		if(userAttributeModel != null){
+		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
 		return resultFactory.success(user);
 	}
 
@@ -118,10 +124,11 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setPassword(formatPassword(password));
 		user.setCts(System.currentTimeMillis());
 
-		if(userAttributeModel != null){
+		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
 		return resultFactory.success(user);
 	}
 
@@ -147,10 +154,11 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user = new User();
 		user.setCts(System.currentTimeMillis());
 		setOpenid(user, type, openid);
-		if(userAttributeModel != null){
+		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
 		return resultFactory.success(user);
 	}
 
@@ -187,7 +195,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		}
 
 		setOpenid(user, type, openid);
-		if(userAttributeModel != null){
+		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
 		db.update(user);

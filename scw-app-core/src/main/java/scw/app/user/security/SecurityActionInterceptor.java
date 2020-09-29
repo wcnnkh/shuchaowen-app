@@ -66,6 +66,13 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 				return authorizationFailure(httpChannel, action);
 			}
 
+			if (httpChannel.getRequest().getPath().startsWith(ADMIN_PATH_PREFIX)) {
+				User user = userService.getUser(requestUser.getUid());
+				if (user == null) {
+					return authorizationFailure(httpChannel, action);
+				}
+			}
+
 			if (actionAuthority != null) {
 				if (!userService.isSuperAdmin(userToken.getUid())) {
 					HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);

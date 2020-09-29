@@ -54,6 +54,9 @@ public class AdminIndexController {
 			return httpActionAuthorityManager.getAuthorityTreeList(new MenuAuthorityFilter<HttpAuthority>());
 		} else {
 			User user = userService.getUser(requestUser.getUid());
+			if(user == null){
+				throw new RuntimeException("用户不存在");
+			}
 			List<PermissionGroupAction> actions = permissionGroupActionService
 					.getActionList(user.getPermissionGroupId());
 			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(actions, "actionId");
