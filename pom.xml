@@ -22,6 +22,7 @@
 		<module>scw-app-discount-service</module>
 		<module>scw-app-address-service</module>
 		<module>scw-app-web</module>
+		<module>scw-app-payment-service</module>
 	</modules>
 
 	<dependencyManagement>

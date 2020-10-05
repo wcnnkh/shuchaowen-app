@@ -21,7 +21,7 @@ public class UserAccumulatedPointsServiceImpl extends BaseServiceConfiguration i
 		return db.getById(UserAccumulatedPoints.class, uid);
 	}
 
-	public String change(long uid, int group, int change, String describe) {
+	public String change(long uid, int change, String describe) {
 		UserAccumulatedPoints userAccumulatedPoints = db.getById(UserAccumulatedPoints.class, uid);
 		if (userAccumulatedPoints == null) {
 			userAccumulatedPoints = new UserAccumulatedPoints();
@@ -38,7 +38,6 @@ public class UserAccumulatedPointsServiceImpl extends BaseServiceConfiguration i
 		UserAccumulatedPointsLog log = new UserAccumulatedPointsLog();
 		log.setUid(uid);
 		log.setDescribe(describe);
-		log.setGroup(group);
 		log.setAccumulatedPointsChange(change);
 		db.save(log);
 		return log.getId();

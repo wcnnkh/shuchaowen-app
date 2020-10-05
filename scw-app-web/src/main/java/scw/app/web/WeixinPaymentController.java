@@ -2,12 +2,8 @@ package scw.app.web;
 
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-
-import scw.app.payment.PaymentEvent;
-import scw.app.payment.PaymentEventDispatcher;
-import scw.app.payment.PaymentMethod;
 import scw.app.payment.PaymentStatus;
+import scw.app.payment.service.OrderService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
@@ -16,16 +12,18 @@ import scw.logger.LoggerFactory;
 import scw.mvc.annotation.Controller;
 import scw.mvc.parameter.XmlMap;
 import scw.result.BaseResult;
+import scw.result.Result;
 import scw.tencent.wx.WeiXinPay;
+
+import com.alibaba.fastjson.JSONObject;
 
 @Controller(value = "/payment/weixin", methods = HttpMethod.POST)
 public class WeixinPaymentController {
 	private static Logger logger = LoggerFactory.getLogger(WeixinPaymentController.class);
 	private static final String SUCCESS_TEXT = "SUCCESS";
-	@Autowired
-	private PaymentEventDispatcher paymentEventDispatcher;
-
 	private WeiXinPay weixinPay;
+	@Autowired
+	private OrderService orderService;
 
 	public WeixinPaymentController(WeiXinPay weiXinPay) {
 		this.weixinPay = weiXinPay;
@@ -63,8 +61,10 @@ public class WeixinPaymentController {
 		}
 
 		String out_trade_no = map.get("out_trade_no");
-		PaymentEvent paymentEvent = new PaymentEvent(out_trade_no, PaymentMethod.WX_APP, PaymentStatus.SUCCESS);
-		paymentEventDispatcher.publishEvent(paymentEvent);
-		return SUCCESS_TEXT;
+		Result result = orderService.updateStatus(out_trade_no, PaymentStatus.SUCCESS);
+		if(result.isSuccess()){
+			return SUCCESS_TEXT;
+		}
+		return result.toString();
 	}
 }

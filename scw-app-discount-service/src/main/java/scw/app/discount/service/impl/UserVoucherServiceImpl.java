@@ -7,23 +7,19 @@ import scw.app.discount.pojo.UserVoucherLog;
 import scw.app.discount.service.UserVoucherService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
-import scw.data.generator.SequenceId;
-import scw.data.generator.SequenceIdGenerator;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
 @Configuration(order=Integer.MIN_VALUE)
 public class UserVoucherServiceImpl extends BaseServiceConfiguration implements UserVoucherService {
-	protected final SequenceIdGenerator sequenceIdGenerator;
 
-	public UserVoucherServiceImpl(DB db, ResultFactory resultFactory, SequenceIdGenerator sequenceIdGenerator) {
+	public UserVoucherServiceImpl(DB db, ResultFactory resultFactory) {
 		super(db, resultFactory);
-		this.sequenceIdGenerator = sequenceIdGenerator;
 		db.createTable(UserVoucher.class, false);
 	}
 
-	public UserVoucher getUserVoucher(long uid, long voucherId) {
+	public UserVoucher getUserVoucher(long uid, int voucherId) {
 		return db.getById(UserVoucher.class, uid, voucherId);
 	}
 
@@ -31,7 +27,7 @@ public class UserVoucherServiceImpl extends BaseServiceConfiguration implements 
 		return db.getByIdList(UserVoucher.class, uid);
 	}
 
-	public String change(long uid, long voucherId, int count, int group, String msg) {
+	public String change(long uid, int voucherId, int count, String msg) {
 		UserVoucher userVoucher = getUserVoucher(uid, voucherId);
 		if (userVoucher == null) {
 			if (count < 0) {
@@ -54,13 +50,9 @@ public class UserVoucherServiceImpl extends BaseServiceConfiguration implements 
 		}
 
 		UserVoucherLog log = new UserVoucherLog();
-		SequenceId sequenceId = sequenceIdGenerator.next();
-		log.setId(sequenceId.getId());
-		log.setCts(sequenceId.getTimestamp());
 		log.setUid(uid);
 		log.setVoucherId(voucherId);
 		log.setCount(count);
-		log.setGroup(group);
 		db.save(log);
 		return log.getId();
 	}

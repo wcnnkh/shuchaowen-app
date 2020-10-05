@@ -23,8 +23,6 @@ public class UserAccumulatedPointsLog implements Serializable {
 	private String id;
 	@Index
 	private long uid;
-	@Index
-	private int group;
 	private int accumulatedPointsChange;// 积分变更 正数为加负数为减
 	@CreateTime
 	private long cts;
@@ -77,14 +75,6 @@ public class UserAccumulatedPointsLog implements Serializable {
 
 	public void setCancel(boolean cancel) {
 		this.cancel = cancel;
-	}
-
-	public int getGroup() {
-		return group;
-	}
-
-	public void setGroup(int group) {
-		this.group = group;
 	}
 	
 	@Override

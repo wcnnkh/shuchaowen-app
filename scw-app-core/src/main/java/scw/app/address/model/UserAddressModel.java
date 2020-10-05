@@ -48,7 +48,7 @@ public class UserAddressModel implements Serializable {
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
 	}
-
+	
 	@Override
 	public String toString() {
 		return MapperUtils.getMapper().toString(this);
