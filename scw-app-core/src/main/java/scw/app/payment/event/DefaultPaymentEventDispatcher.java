@@ -1,4 +1,4 @@
-package scw.app.payment;
+package scw.app.payment.event;
 
 import scw.core.instance.annotation.Configuration;
 import scw.event.support.DefaultBasicEventDispatcher;

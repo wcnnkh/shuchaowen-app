@@ -1,5 +1,6 @@
 package scw.app.payment.pojo;
 
+import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.model.BasePaymentInfo;
 import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
@@ -33,6 +34,10 @@ public class Order extends BasePaymentInfo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public PaymentStatus getPaymentStatus(){
+		return PaymentStatus.forStatus(status);
 	}
 
 	public String getPointLogId() {

@@ -1,8 +1,8 @@
-package scw.app.web;
+package scw.app.payment.controller;
 
 import java.util.Map;
 
-import scw.app.payment.PaymentStatus;
+import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.service.OrderService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
@@ -17,7 +17,7 @@ import scw.tencent.wx.WeiXinPay;
 
 import com.alibaba.fastjson.JSONObject;
 
-@Controller(value = "/payment/weixin", methods = HttpMethod.POST)
+@Controller(value = NotifyUrlControllerConfig.WEIXIN_PREFIX, methods = HttpMethod.POST)
 public class WeixinPaymentController {
 	private static Logger logger = LoggerFactory.getLogger(WeixinPaymentController.class);
 	private static final String SUCCESS_TEXT = "SUCCESS";
@@ -50,7 +50,7 @@ public class WeixinPaymentController {
 		return new BaseResult(true);
 	}
 
-	@Controller(value = "success")
+	@Controller(value = NotifyUrlControllerConfig.SUCCESS_CONTROLLER)
 	public String success(XmlMap map) {
 		logger.info("收到微信支付回调:");
 		logger.info(JSONObject.toJSONString(map));
@@ -62,7 +62,25 @@ public class WeixinPaymentController {
 
 		String out_trade_no = map.get("out_trade_no");
 		Result result = orderService.updateStatus(out_trade_no, PaymentStatus.SUCCESS);
-		if(result.isSuccess()){
+		if (result.isSuccess()) {
+			return SUCCESS_TEXT;
+		}
+		return result.toString();
+	}
+
+	@Controller(value = NotifyUrlControllerConfig.REFUND_CONTROLLER)
+	public String refund(XmlMap map) {
+		logger.info("收到微信退款回调:");
+		logger.info(JSONObject.toJSONString(map));
+		BaseResult baseResult = check(map);
+		if (!baseResult.isError()) {
+			logger.error("微信退款回调失败：{}", baseResult.getMsg());
+			return baseResult.getMsg();
+		}
+
+		String out_trade_no = map.get("out_trade_no");
+		Result result = orderService.updateStatus(out_trade_no, PaymentStatus.REFUND);
+		if (result.isSuccess()) {
 			return SUCCESS_TEXT;
 		}
 		return result.toString();

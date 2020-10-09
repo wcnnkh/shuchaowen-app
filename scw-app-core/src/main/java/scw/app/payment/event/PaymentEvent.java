@@ -1,5 +1,6 @@
-package scw.app.payment;
+package scw.app.payment.event;
 
+import scw.app.payment.enums.PaymentStatus;
 import scw.event.support.BasicEvent;
 
 public class PaymentEvent extends BasicEvent {

@@ -79,6 +79,11 @@
 			</dependency>
 			<dependency>
 				<groupId>scw-app</groupId>
+				<artifactId>scw-app-payment-service</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>scw-app</groupId>
 				<artifactId>scw-app-web</artifactId>
 				<version>1.0.0</version>
 			</dependency>

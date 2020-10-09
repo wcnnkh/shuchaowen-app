@@ -1,10 +1,11 @@
 package scw.app.payment.service.impl;
 
+import scw.app.address.model.UserAddressModel;
 import scw.app.discount.service.UserAccumulatedPointsService;
 import scw.app.discount.service.UserVoucherService;
-import scw.app.payment.PaymentEvent;
-import scw.app.payment.PaymentEventDispatcher;
-import scw.app.payment.PaymentStatus;
+import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.event.PaymentEvent;
+import scw.app.payment.event.PaymentEventDispatcher;
 import scw.app.payment.model.PaymentRequest;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.service.OrderService;
@@ -18,18 +19,14 @@ import scw.result.Result;
 import scw.result.ResultFactory;
 
 @Configuration(order = Integer.MIN_VALUE)
-public class OrderServiceImpl extends BaseServiceConfiguration implements
-		OrderService {
+public class OrderServiceImpl extends BaseServiceConfiguration implements OrderService {
 	private UserAccumulatedPointsService userAccumulatedPointsService;
 	private UserVoucherService userVoucherService;
 	private PaymentEventDispatcher paymentEventDispatcher;
 
-	public OrderServiceImpl(
-			DB db,
-			ResultFactory resultFactory,
+	public OrderServiceImpl(DB db, ResultFactory resultFactory,
 			@Nullable UserAccumulatedPointsService userAccumulatedPointsService,
-			@Nullable UserVoucherService userVoucherService,
-			PaymentEventDispatcher paymentEventDispatcher) {
+			@Nullable UserVoucherService userVoucherService, PaymentEventDispatcher paymentEventDispatcher) {
 		super(db, resultFactory);
 		this.userAccumulatedPointsService = userAccumulatedPointsService;
 		this.userVoucherService = userVoucherService;
@@ -42,8 +39,7 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements
 	}
 
 	public DataResult<Order> create(PaymentRequest request) {
-		if (request.getAccumulatedPoints() > 0
-				&& userAccumulatedPointsService == null) {
+		if (request.getAccumulatedPoints() > 0 && userAccumulatedPointsService == null) {
 			return resultFactory.error("不支持积分服务");
 		}
 
@@ -54,8 +50,7 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements
 		Order order = new Order();
 		Copy.copy(order, request);
 		if (request.getAccumulatedPoints() > 0) {
-			String logId = userAccumulatedPointsService.change(
-					request.getUid(), -request.getAccumulatedPoints(), "消费");
+			String logId = userAccumulatedPointsService.change(request.getUid(), -request.getAccumulatedPoints(), "消费");
 			if (logId == null) {
 				return resultFactory.error("积分不足");
 			}
@@ -64,8 +59,7 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements
 		}
 
 		if (request.getVoucterId() > 0) {
-			String logId = userVoucherService.change(request.getUid(),
-					request.getVoucterId(), -1, "消费");
+			String logId = userVoucherService.change(request.getUid(), request.getVoucterId(), -1, "消费");
 			if (logId == null) {
 				return resultFactory.error("代金券不足");
 			}
@@ -87,8 +81,7 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements
 			return resultFactory.error("订单不存在");
 		}
 
-		PaymentStatus paymentStatus = PaymentStatus
-				.forStatus(order.getStatus());
+		PaymentStatus paymentStatus = PaymentStatus.forStatus(order.getStatus());
 		if (paymentStatus == null) {
 			return resultFactory.error("不存在的状态");
 		}
@@ -100,6 +93,17 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements
 		order.setStatus(status.getStatus());
 		db.update(order);
 		paymentEventDispatcher.publishEvent(new PaymentEvent(orderId, status));
+		return resultFactory.success();
+	}
+
+	public Result updateAddress(String orderId, UserAddressModel addressModel) {
+		Order order = getById(orderId);
+		if (order == null) {
+			return resultFactory.error("订单不存在");
+		}
+
+		Copy.copy(order, addressModel);
+		db.update(order);
 		return resultFactory.success();
 	}
 

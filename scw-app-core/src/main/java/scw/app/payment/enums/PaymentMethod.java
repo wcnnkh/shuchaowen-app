@@ -1,7 +1,9 @@
-package scw.app.payment;
+package scw.app.payment.enums;
 
 public enum PaymentMethod {
 	WX_APP(100, "微信APP支付"),
+	
+	WX_WEB(101, "微信WEB支付"),
 	
 	ALI_APP(200, "支付宝APP支付"),
 	
