@@ -1,16 +1,17 @@
 package scw.app.payment.model;
 
 import scw.app.address.model.UserAddressModel;
+import scw.app.payment.enums.PaymentMethod;
 
 public class BasePaymentInfo extends UserAddressModel {
 	private static final long serialVersionUID = 1L;
 	private String name;// 订单名称
-	private String detail;//详情
+	private String detail;// 详情
 	private long uid;// 订单所属用户
 	private int payChannel;// 支付方式
 	private int price;// 实付价格
 	private String ip;// 创建订单的ip
-	private String wxOpenid;//如果是微信支付，那么应该存在openid
+	private String wxOpenid;// 如果是微信支付，那么应该存在openid
 
 	public String getName() {
 		return name;
@@ -34,6 +35,10 @@ public class BasePaymentInfo extends UserAddressModel {
 
 	public void setPayChannel(int payChannel) {
 		this.payChannel = payChannel;
+	}
+
+	public PaymentMethod getPaymentMethod() {
+		return PaymentMethod.forChannel(payChannel);
 	}
 
 	public int getPrice() {

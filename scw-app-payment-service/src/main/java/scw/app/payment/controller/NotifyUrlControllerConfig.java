@@ -1,9 +1,11 @@
 package scw.app.payment.controller;
 
+import scw.beans.annotation.AopEnable;
 import scw.core.Assert;
 import scw.core.utils.StringUtils;
 import scw.net.InetUtils;
 
+@AopEnable(false)
 public class NotifyUrlControllerConfig {
 	public static final String WEIXIN_PREFIX = "/payment/weixin";
 	public static final String ALI_PREFIX = "/payment/ali";
