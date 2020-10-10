@@ -8,4 +8,6 @@ import scw.http.server.ServerHttpResponse;
 
 public interface UserControllerService {
 	Map<String, Object> login(User user, ServerHttpRequest request, ServerHttpResponse response);
+	
+	Map<String, Object> info(User user);
 }

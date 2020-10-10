@@ -18,7 +18,7 @@ public class UserVoucher implements Serializable{
 	@PrimaryKey
 	private long uid;
 	@PrimaryKey
-	private long voucherId;
+	private int voucherId;
 	@Counter
 	private int count;
 	
@@ -28,10 +28,10 @@ public class UserVoucher implements Serializable{
 	public void setUid(long uid) {
 		this.uid = uid;
 	}
-	public long getVoucherId() {
+	public int getVoucherId() {
 		return voucherId;
 	}
-	public void setVoucherId(long voucherId) {
+	public void setVoucherId(int voucherId) {
 		this.voucherId = voucherId;
 	}
 	public int getCount() {

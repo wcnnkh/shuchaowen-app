@@ -11,6 +11,7 @@ import scw.core.instance.annotation.Configuration;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.mvc.action.ActionInterceptor;
+import scw.mvc.action.ActionInterceptorAccept;
 import scw.mvc.action.ActionInterceptorChain;
 import scw.mvc.action.ActionParameters;
 import scw.mvc.annotation.ActionAuthority;
@@ -21,7 +22,7 @@ import scw.security.authority.http.HttpAuthority;
 import scw.security.login.UserToken;
 
 @Configuration
-public class SecurityActionInterceptor implements ActionInterceptor {
+public class SecurityActionInterceptor implements ActionInterceptor, ActionInterceptorAccept {
 	public static final String ADMIN_LOGIN_PATH = "/admin/to_login";
 	public static final String ADMIN_PATH_PREFIX = "/admin";
 
@@ -43,6 +44,14 @@ public class SecurityActionInterceptor implements ActionInterceptor {
 		this.userService = userService;
 		this.permissionGroupService = permissionGroupService;
 		this.permissionGroupActionService = permissionGroupActionService;
+	}
+	
+	public boolean isAccept(HttpChannel httpChannel, Action action, ActionParameters parameters) {
+		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getSourceClass(),
+				action.getAnnotatedElement());
+		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
+		return actionAuthority != null || (required != null && required.value())
+				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest());
 	}
 
 	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters,

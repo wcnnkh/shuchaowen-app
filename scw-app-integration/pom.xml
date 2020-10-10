@@ -14,6 +14,14 @@
 			<artifactId>scw-embed</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-tencent</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-upload</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
@@ -44,6 +52,10 @@
 		<dependency>
 			<groupId>scw-app</groupId>
 			<artifactId>scw-app-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-payment-service</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -19,14 +19,11 @@
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-upload</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-tencent</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>scw</groupId>
-			<artifactId>scw-alibaba</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -1,16 +1,14 @@
-package scw.app.web;
+package scw.app.payment.controller;
 
 import java.util.Map;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 
-import scw.alibaba.pay.AlipayConfig;
 import scw.alibaba.pay.TradeStatus;
-import scw.app.payment.PaymentEvent;
-import scw.app.payment.PaymentEventDispatcher;
-import scw.app.payment.PaymentMethod;
-import scw.app.payment.PaymentStatus;
+import scw.app.payment.AlipayConfig;
+import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.service.OrderService;
 import scw.beans.annotation.Autowired;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
@@ -19,20 +17,22 @@ import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mvc.MVCUtils;
 import scw.mvc.annotation.Controller;
+import scw.result.Result;
 
-@Controller(value = "/payment/weixin", methods = HttpMethod.POST)
+@Controller(value = NotifyUrlControllerConfig.ALI_PREFIX, methods = HttpMethod.POST)
 public class AliPaymentController {
 	private static Logger logger = LoggerFactory.getLogger(AliPaymentController.class);
 	private static final String SUCCESS_TEXT = "SUCCESS";
 
 	private AlipayConfig alipayConfig;
 	@Autowired
-	private PaymentEventDispatcher paymentEventDispatcher;
+	private OrderService orderService;
 
 	public AliPaymentController(AlipayConfig alipayConfig) {
 		this.alipayConfig = alipayConfig;
 	}
 
+	@Controller(value = NotifyUrlControllerConfig.SUCCESS_CONTROLLER)
 	public String succes(ServerHttpRequest request) throws AlipayApiException {
 		logger.info("收到支付宝回调-----");
 		Map<String, String> params = MVCUtils.getRequestParameterAndAppendValues(request, ",");
@@ -53,8 +53,10 @@ public class AliPaymentController {
 
 		TradeStatus tradeStatus = TradeStatus.forName(status);
 		if (TradeStatus.TRADE_SUCCESS == tradeStatus) {
-			paymentEventDispatcher
-					.publishEvent(new PaymentEvent(out_trade_no, PaymentMethod.ALI_APP, PaymentStatus.SUCCESS));
+			Result result = orderService.updateStatus(out_trade_no, PaymentStatus.SUCCESS);
+			if (result.isError()) {
+				return result.toString();
+			}
 		}
 		return SUCCESS_TEXT;
 	}

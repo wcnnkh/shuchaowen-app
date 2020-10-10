@@ -6,15 +6,16 @@ import scw.app.discount.pojo.UserVoucher;
 import scw.result.Result;
 import scw.tcc.annotation.Tcc;
 import scw.tcc.annotation.TccStage;
+import scw.tcc.annotation.TryResult;
 
 public interface UserVoucherService {
-	UserVoucher getUserVoucher(long uid, long voucherId);
+	UserVoucher getUserVoucher(long uid, int voucherId);
 	
 	List<UserVoucher> getUserVoucherList(long uid);
 
 	@Tcc(cancel="cancelChange")
-	String change(long uid, long voucherId, int count, int group, String msg);
+	String change(long uid, int voucherId, int count, String msg);
 	
 	@TccStage
-	Result cancelChange(String logId);
+	Result cancelChange(@TryResult String logId);
 }

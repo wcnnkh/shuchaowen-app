@@ -1,4 +1,4 @@
-package scw.app.payment;
+package scw.app.payment.event;
 
 import scw.event.BasicEventDispatcher;
 

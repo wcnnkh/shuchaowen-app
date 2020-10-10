@@ -22,7 +22,7 @@ public interface UserAccumulatedPointsService {
 	 * @return 修改失败返回空，修改成功返回日志id
 	 */
 	@Tcc(cancel="cancelChange")
-	String change(long uid, int group, int change, String describe);
+	String change(long uid, int change, String describe);
 	
 	/**
 	 * 取消修改

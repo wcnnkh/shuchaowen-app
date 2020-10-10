@@ -1,24 +1,24 @@
 package scw.app.payment.pojo;
 
-import scw.app.address.model.UserAddressModel;
+import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.model.BasePaymentInfo;
 import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.PrimaryKey;
+import scw.sql.orm.annotation.Table;
+import scw.sql.orm.support.generation.annotation.CreateTime;
+import scw.sql.orm.support.generation.annotation.SequenceId;
 
-public class Order extends UserAddressModel {
+@Table
+public class Order extends BasePaymentInfo {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
+	@SequenceId
 	private String id;
-	private String name;// 订单名称
-	private String img;// 订单图片
-	private long uid;// 订单所属用户
-	private int payChannel;// 支付方式
 	private int status;// 订单状态
-	private int price;// 实付价格
 	private String pointLogId;// 积分使用日志id
 	private String voucherLogId;// 代金券使用日志id
-	private int itemType;// 购买的物品类型
-	private long itemId;// 购买的物品id
-	private String ip;// 创建订单的ip
+	@CreateTime
+	private long cts;
 
 	public String getId() {
 		return id;
@@ -28,38 +28,6 @@ public class Order extends UserAddressModel {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-
-	public long getUid() {
-		return uid;
-	}
-
-	public void setUid(long uid) {
-		this.uid = uid;
-	}
-
-	public int getPayChannel() {
-		return payChannel;
-	}
-
-	public void setPayChannel(int payChannel) {
-		this.payChannel = payChannel;
-	}
-
 	public int getStatus() {
 		return status;
 	}
@@ -67,13 +35,9 @@ public class Order extends UserAddressModel {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
+	
+	public PaymentStatus getPaymentStatus(){
+		return PaymentStatus.forStatus(status);
 	}
 
 	public String getPointLogId() {
@@ -92,30 +56,14 @@ public class Order extends UserAddressModel {
 		this.voucherLogId = voucherLogId;
 	}
 
-	public int getItemType() {
-		return itemType;
+	public long getCts() {
+		return cts;
 	}
 
-	public void setItemType(int itemType) {
-		this.itemType = itemType;
+	public void setCts(long cts) {
+		this.cts = cts;
 	}
 
-	public long getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(long itemId) {
-		this.itemId = itemId;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	
 	@Override
 	public String toString() {
 		return MapperUtils.getMapper().toString(this);

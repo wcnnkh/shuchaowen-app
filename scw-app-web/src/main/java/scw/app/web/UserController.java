@@ -86,4 +86,16 @@ public class UserController {
 
 		return userService.registerByUsername(username, password, userAttributeModel);
 	}
+
+	@LoginRequired
+	@Controller(value = "info")
+	public Result info(RequestUser requestUser) {
+		User user = userService.getUser(requestUser.getUid());
+		if (user == null) {
+			return resultFactory.error("用户不存在");
+		}
+
+		Map<String, Object> map = userControllerService.info(user);
+		return resultFactory.success(map);
+	}
 }

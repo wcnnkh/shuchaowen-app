@@ -25,7 +25,7 @@ public class DefaultUserControllerService implements UserControllerService {
 		UserToken<Long> userToken = loginManager.login(user.getUid());
 		map.put("token", userToken.getToken());
 		map.put("uid", userToken.getUid());
-		loginAppendInfo(map, user);
+		map.putAll(info(user));
 		HttpCookie uidCookie = new HttpCookie(RequestUser.UID_NAME, userToken.getUid() + "");
 		uidCookie.setPath("/");
 		HttpCookie tokenCookie = new HttpCookie(RequestUser.TOKEN_NAME, userToken.getToken() + "");
@@ -35,7 +35,9 @@ public class DefaultUserControllerService implements UserControllerService {
 		return map;
 	}
 
-	protected void loginAppendInfo(Map<String, Object> map, User user) {
+	public Map<String, Object> info(User user) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("user", user);
+		return map;
 	}
 }

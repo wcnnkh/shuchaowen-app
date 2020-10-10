@@ -6,19 +6,21 @@ import scw.mapper.MapperUtils;
 import scw.sql.orm.annotation.Index;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
+import scw.sql.orm.support.generation.annotation.CreateTime;
+import scw.sql.orm.support.generation.annotation.SequenceId;
 
 @Table
 public class UserVoucherLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
+	@SequenceId
 	private String id;
-	@Index
-	private int group;
 	@Index
 	private long uid;
 	@Index
-	private long voucherId;
+	private int voucherId;
 	private int count;
+	@CreateTime
 	private long cts;
 	private boolean cancel;
 
@@ -36,14 +38,6 @@ public class UserVoucherLog implements Serializable {
 
 	public void setUid(long uid) {
 		this.uid = uid;
-	}
-
-	public long getVoucherId() {
-		return voucherId;
-	}
-
-	public void setVoucherId(long voucherId) {
-		this.voucherId = voucherId;
 	}
 
 	public int getCount() {
@@ -69,13 +63,13 @@ public class UserVoucherLog implements Serializable {
 	public void setCancel(boolean cancel) {
 		this.cancel = cancel;
 	}
-
-	public int getGroup() {
-		return group;
+	
+	public int getVoucherId() {
+		return voucherId;
 	}
 
-	public void setGroup(int group) {
-		this.group = group;
+	public void setVoucherId(int voucherId) {
+		this.voucherId = voucherId;
 	}
 
 	@Override
