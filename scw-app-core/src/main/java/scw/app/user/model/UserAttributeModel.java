@@ -42,6 +42,9 @@ public class UserAttributeModel implements Serializable {
 
 	public void setAge(int age) {
 		this.age = age;
+		if(age != this.age){
+			this.createAgeTime = System.currentTimeMillis();
+		}
 	}
 
 	public String getNickname() {
@@ -62,10 +65,6 @@ public class UserAttributeModel implements Serializable {
 
 	public long getCreateAgeTime() {
 		return createAgeTime;
-	}
-
-	public void setCreateAgeTime(long createAgeTime) {
-		this.createAgeTime = createAgeTime;
 	}
 
 	/**
@@ -115,10 +114,6 @@ public class UserAttributeModel implements Serializable {
 
 		if (StringUtils.isNotEmpty(headImg)) {
 			userAttributeModel.setHeadImg(headImg);
-		}
-
-		if (createAgeTime != 0) {
-			userAttributeModel.setCreateAgeTime(createAgeTime);
 		}
 	}
 }
