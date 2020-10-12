@@ -2,11 +2,11 @@ package scw.app.payment.model;
 
 import scw.app.address.model.UserAddressModel;
 import scw.app.payment.enums.PaymentMethod;
+import scw.core.utils.StringUtils;
 
-public class BasePaymentInfo extends UserAddressModel {
+public class BasePaymentRequest extends UserAddressModel {
 	private static final long serialVersionUID = 1L;
 	private String name;// 订单名称
-	private String detail;// 详情
 	private long uid;// 订单所属用户
 	private int payChannel;// 支付方式
 	private int price;// 实付价格
@@ -49,20 +49,16 @@ public class BasePaymentInfo extends UserAddressModel {
 		this.price = price;
 	}
 
+	public String getPriceDescribe() {
+		return StringUtils.formatNothingToYuan(price);
+	}
+
 	public String getIp() {
 		return ip;
 	}
 
 	public void setIp(String ip) {
 		this.ip = ip;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
 	}
 
 	public String getWxOpenid() {

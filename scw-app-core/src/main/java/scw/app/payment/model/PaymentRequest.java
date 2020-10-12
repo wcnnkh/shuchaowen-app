@@ -1,6 +1,6 @@
 package scw.app.payment.model;
 
-public class PaymentRequest extends BasePaymentInfo {
+public class PaymentRequest extends BasePaymentRequest {
 	private static final long serialVersionUID = 1L;
 	private int accumulatedPoints;// 使用积分
 	private int voucterId;

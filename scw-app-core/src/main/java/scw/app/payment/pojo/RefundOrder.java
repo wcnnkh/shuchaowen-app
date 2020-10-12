@@ -2,6 +2,7 @@ package scw.app.payment.pojo;
 
 import java.io.Serializable;
 
+import scw.core.utils.StringUtils;
 import scw.sql.orm.annotation.Index;
 import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
@@ -38,6 +39,11 @@ public class RefundOrder implements Serializable{
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	
+	public String getPriceDescribe(){
+		return StringUtils.formatNothingToYuan(price);
+	}
+	
 	public String getRefundDesc() {
 		return refundDesc;
 	}

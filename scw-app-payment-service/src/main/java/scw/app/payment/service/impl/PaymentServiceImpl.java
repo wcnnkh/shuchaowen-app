@@ -12,10 +12,9 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 
-import scw.app.payment.controller.NotifyUrlControllerConfig;
+import scw.app.payment.PaymentConfig;
 import scw.app.payment.enums.PaymentMethod;
 import scw.app.payment.enums.PaymentStatus;
-import scw.app.payment.model.BasePaymentInfo;
 import scw.app.payment.model.PaymentRequest;
 import scw.app.payment.model.PaymentResponse;
 import scw.app.payment.pojo.Order;
@@ -29,6 +28,7 @@ import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.tencent.wx.RefundRequest;
+import scw.tencent.wx.UnifiedorderRequest;
 import scw.tencent.wx.WeiXinPay;
 import scw.tencent.wx.WeiXinPayResponse;
 
@@ -37,16 +37,12 @@ public class PaymentServiceImpl implements PaymentService {
 	private OrderService orderService;
 	@Autowired
 	private ResultFactory resultFactory;
-	@Autowired(required = false)
-	private WeiXinPay weiXinPay;
-	@Autowired(required = false)
-	private AlipayClient alipayClient;
-	private NotifyUrlControllerConfig notifyUrlControllerConfig;
+	private PaymentConfig paymentConfig;
 	@Autowired
 	private RefundOrderService refundOrderService;
 
-	public PaymentServiceImpl(NotifyUrlControllerConfig notifyUrlControllerConfig) {
-		this.notifyUrlControllerConfig = notifyUrlControllerConfig;
+	public PaymentServiceImpl(PaymentConfig paymentConfig) {
+		this.paymentConfig = paymentConfig;
 	}
 
 	public DataResult<PaymentResponse> payment(PaymentRequest request) {
@@ -57,41 +53,44 @@ public class PaymentServiceImpl implements PaymentService {
 
 		PaymentResponse response = new PaymentResponse();
 		response.setOrder(orderResult.getData());
-		Object result = payment(orderResult.getData().getId(), request.getPaymentMethod(), orderResult.getData());
+		Object result = payment(orderResult.getData());
 		response.setCredential(result);
 		return resultFactory.success(response);
 	}
 
-	public Object payment(String orderId, PaymentMethod paymentMethod, BasePaymentInfo paymentRequest) {
-		if (paymentRequest.getPrice() == 0) {
+	public Object payment(Order order) {
+		if (order.getPrice() == 0) {
 			// 不要钱的
 			return null;
 		} else {// 要钱的
-			if (paymentMethod == PaymentMethod.ALI_APP) {
+			if (order.getPaymentMethod() == PaymentMethod.ALI_APP) {
+				AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
 				AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 				AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-				model.setBody(paymentRequest.getName());
-				model.setSubject(paymentRequest.getDetail());
-				model.setOutTradeNo(orderId);
+				model.setSubject(order.getName());
+				model.setOutTradeNo(order.getId());
 				model.setTimeoutExpress("30m");
-				model.setTotalAmount(((float) paymentRequest.getPrice() / 100) + "");
+				model.setTotalAmount(order.getPriceDescribe());
 				model.setProductCode("QUICK_MSECURITY_PAY");
 				request.setBizModel(model);
-				request.setNotifyUrl(notifyUrlControllerConfig.getAliPaySuccessNotifyUrl());
+				request.setNotifyUrl(paymentConfig.getAliPaySuccessNotifyUrl());
 				try {
 					AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
 					return response.getBody();
 				} catch (AlipayApiException e) {
 					throw new RuntimeException(e);
 				}
-			} else if (paymentMethod == PaymentMethod.WX_APP) {
-				return weiXinPay.getSimpleUnifiedorder("APP", paymentRequest.getName(), orderId,
-						paymentRequest.getPrice(), paymentRequest.getIp(),
-						notifyUrlControllerConfig.getWeiXinPaySuccessNotifyUrl());
-			} else if (paymentMethod == PaymentMethod.WX_WEB) {
-				return weiXinPay.getDefaultUnifiedorder("JSAPI", paymentRequest.getName(), orderId, "CNY",
-						paymentRequest.getPrice(), paymentRequest.getIp(), null, null, null,
-						paymentRequest.getWxOpenid(), notifyUrlControllerConfig.getWeiXinPaySuccessNotifyUrl());
+			} else if (order.getPaymentMethod() == PaymentMethod.WX_APP) {
+				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
+				return weiXinPay.getUnifiedorder(new UnifiedorderRequest(order.getName(), order.getId(),
+						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "APP"));
+			} else if (order.getPaymentMethod() == PaymentMethod.WX_WEB) {
+				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
+
+				UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest(order.getName(), order.getId(),
+						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "JSAPI");
+				unifiedorderRequest.setOpenid(order.getWxOpenid());
+				return weiXinPay.getUnifiedorder(unifiedorderRequest);
 			}
 			throw new NotSupportedException("不支持的支付方式");
 		}
@@ -114,6 +113,7 @@ public class PaymentServiceImpl implements PaymentService {
 	public Result closeorder(Order order) {
 		if (order.getPayChannel() == PaymentMethod.WX_APP.getChannel()
 				|| order.getPayChannel() == PaymentMethod.WX_WEB.getChannel()) {
+			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
 			WeiXinPayResponse weiXinPayResponse = weiXinPay.closeorder(order.getId());
 			if (!weiXinPayResponse.isSuccess()) {
 				return resultFactory.error(weiXinPayResponse.getReturnMsg());
@@ -121,6 +121,8 @@ public class PaymentServiceImpl implements PaymentService {
 
 			return resultFactory.success();
 		} else if (order.getPayChannel() == PaymentMethod.ALI_APP.getChannel()) {
+			AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
+
 			AlipayTradeCloseModel model = new AlipayTradeCloseModel();
 			model.setOutTradeNo(order.getId());
 			AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
@@ -164,17 +166,20 @@ public class PaymentServiceImpl implements PaymentService {
 		if (order.getPayChannel() == PaymentMethod.WX_APP.getChannel()
 				|| order.getPayChannel() == PaymentMethod.WX_WEB.getChannel()) {
 			RefundRequest refundRequest = new RefundRequest();
-			refundRequest.setNotify_url(notifyUrlControllerConfig.getWeiXinRefundNotifyUrl());
+			refundRequest.setNotify_url(paymentConfig.getWeiXinRefundNotifyUrl());
 			refundRequest.setOut_trade_no(order.getId());
 			refundRequest.setOut_refund_no(refundOrder.getId());
 			refundRequest.setRefund_desc(refundOrder.getRefundDesc());
 			refundRequest.setRefund_fee(refundOrder.getPrice());
 			refundRequest.setTotal_fee(order.getPrice());
+
+			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
 			WeiXinPayResponse response = weiXinPay.refund(refundRequest);
 			if (response.isSuccess()) {
 				return resultFactory.error("申请退款异常(" + response.getReturnMsg() + ")");
 			}
 		} else if (order.getPayChannel() == PaymentMethod.ALI_APP.getChannel()) {
+			AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
 			Result result = orderService.updateStatus(refundOrder.getOrderId(), PaymentStatus.REFUND);
 			if (result.isError()) {
 				return result.dataResult();
@@ -182,12 +187,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 			AlipayTradeRefundModel model = new AlipayTradeRefundModel();
 			model.setOutTradeNo(order.getId());
-			model.setRefundAmount(((float) refundOrder.getPrice() / 100) + "");
+			model.setRefundAmount(refundOrder.getPriceDescribe());
 			model.setRefundReason(refundOrder.getRefundDesc());
 			model.setOutRequestNo(refundOrder.getId());
 			AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 			request.setBizModel(model);
-			request.setNotifyUrl(notifyUrlControllerConfig.getAliPaySuccessNotifyUrl());
+			request.setNotifyUrl(paymentConfig.getAliPaySuccessNotifyUrl());
 			try {
 				AlipayTradeRefundResponse response = alipayClient.sdkExecute(request);
 				if (!response.isSuccess()) {

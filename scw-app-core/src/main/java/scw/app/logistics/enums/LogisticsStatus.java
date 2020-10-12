@@ -26,4 +26,14 @@ public enum LogisticsStatus {
 	public String getDescribe() {
 		return describe;
 	}
+	
+	public static LogisticsStatus forStatus(int status){
+		for(LogisticsStatus logisticsStatus : values()){
+			if(logisticsStatus.status == status){
+				return logisticsStatus;
+			}
+		}
+		
+		return null;
+	}
 }
