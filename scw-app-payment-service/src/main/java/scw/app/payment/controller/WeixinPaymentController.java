@@ -2,7 +2,11 @@ package scw.app.payment.controller;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+
+import scw.app.payment.PaymentConfig;
 import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.pojo.Order;
 import scw.app.payment.service.OrderService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
@@ -15,18 +19,16 @@ import scw.result.BaseResult;
 import scw.result.Result;
 import scw.tencent.wx.WeiXinPay;
 
-import com.alibaba.fastjson.JSONObject;
-
-@Controller(value = NotifyUrlControllerConfig.WEIXIN_PREFIX, methods = HttpMethod.POST)
+@Controller(value = PaymentConfig.WEIXIN_PREFIX, methods = HttpMethod.POST)
 public class WeixinPaymentController {
 	private static Logger logger = LoggerFactory.getLogger(WeixinPaymentController.class);
 	private static final String SUCCESS_TEXT = "SUCCESS";
-	private WeiXinPay weixinPay;
+	private PaymentConfig paymentConfig;
 	@Autowired
 	private OrderService orderService;
 
-	public WeixinPaymentController(WeiXinPay weiXinPay) {
-		this.weixinPay = weiXinPay;
+	public WeixinPaymentController(PaymentConfig paymentConfig) {
+		this.paymentConfig = paymentConfig;
 	}
 
 	public BaseResult check(Map<String, String> map) {
@@ -37,20 +39,26 @@ public class WeixinPaymentController {
 		if (!SUCCESS_TEXT.equals(map.get("result_code"))) {
 			return new BaseResult(false).setMsg(map.get("err_code") + "(" + map.get("err_code_des") + ")");
 		}
-
-		boolean success = weixinPay.checkSign(map);
-		if (!success) {
-			return new BaseResult(false).setMsg("签名错误");
-		}
-
+		
 		String out_trade_no = map.get("out_trade_no");
 		if (StringUtils.isEmpty(out_trade_no)) {
 			return new BaseResult(false).setMsg("订单号错误");
 		}
+		
+		Order order = orderService.getById(out_trade_no);
+		if(order == null){
+			return new BaseResult(false).setMsg("订单不存在");
+		}
+		
+		WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
+		boolean success = weiXinPay.checkSign(map);
+		if (!success) {
+			return new BaseResult(false).setMsg("签名错误");
+		}
 		return new BaseResult(true);
 	}
 
-	@Controller(value = NotifyUrlControllerConfig.SUCCESS_CONTROLLER)
+	@Controller(value = PaymentConfig.SUCCESS_CONTROLLER)
 	public String success(XmlMap map) {
 		logger.info("收到微信支付回调:");
 		logger.info(JSONObject.toJSONString(map));
@@ -68,7 +76,7 @@ public class WeixinPaymentController {
 		return result.toString();
 	}
 
-	@Controller(value = NotifyUrlControllerConfig.REFUND_CONTROLLER)
+	@Controller(value = PaymentConfig.REFUND_CONTROLLER)
 	public String refund(XmlMap map) {
 		logger.info("收到微信退款回调:");
 		logger.info(JSONObject.toJSONString(map));

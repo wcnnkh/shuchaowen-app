@@ -3,6 +3,7 @@ package scw.app.payment.service.impl;
 import scw.app.address.model.UserAddressModel;
 import scw.app.discount.service.UserAccumulatedPointsService;
 import scw.app.discount.service.UserVoucherService;
+import scw.app.logistics.enums.LogisticsStatus;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.event.PaymentEvent;
 import scw.app.payment.event.PaymentEventDispatcher;
@@ -11,12 +12,15 @@ import scw.app.payment.pojo.Order;
 import scw.app.payment.service.OrderService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.core.instance.annotation.Configuration;
+import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.lang.Nullable;
 import scw.mapper.Copy;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
+import scw.sql.WhereSql;
+import scw.util.Pagination;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class OrderServiceImpl extends BaseServiceConfiguration implements OrderService {
@@ -105,6 +109,25 @@ public class OrderServiceImpl extends BaseServiceConfiguration implements OrderS
 		Copy.copy(order, addressModel);
 		db.update(order);
 		return resultFactory.success();
+	}
+
+	public Pagination<Order> search(String query, int page, int limit, PaymentStatus paymentStatus,
+			LogisticsStatus logisticsStatus) {
+		WhereSql sql = new WhereSql();
+		if (paymentStatus != null) {
+			sql.and("status=?", paymentStatus.getStatus());
+		}
+
+		if (logisticsStatus != null) {
+			sql.and("logisticsStatus=?", logisticsStatus.getStatus());
+		}
+
+		if (StringUtils.isNotEmpty(query)) {
+			String like = "%" + query + "%";
+			sql.or("id like ?", like);
+			sql.or("name like ?", like);
+		}
+		return db.select(Order.class, page, limit, sql.assembleSql("select * from `order`", "order by cts desc"));
 	}
 
 }

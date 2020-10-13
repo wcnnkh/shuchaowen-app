@@ -1,7 +1,7 @@
 package scw.app.payment.service;
 
-import scw.app.payment.enums.PaymentMethod;
 import scw.app.payment.model.PaymentRequest;
+import scw.app.payment.model.PaymentResponse;
 import scw.app.payment.model.RefundRequest;
 import scw.app.payment.pojo.RefundOrder;
 import scw.result.DataResult;
@@ -14,24 +14,14 @@ public interface PaymentService {
 	 * @param request
 	 * @return
 	 */
-	DataResult<Object> payment(PaymentRequest request);
-
+	DataResult<PaymentResponse> payment(PaymentRequest request);
+	
 	/**
-	 * 重新支付
-	 * 
-	 * @param orderId
-	 * @param paymentMethod
-	 * @return
-	 */
-	DataResult<Object> repayments(String orderId, PaymentMethod paymentMethod);
-
-	/**
-	 * 取消支付
-	 * 
+	 * 关闭交易
 	 * @param orderId
 	 * @return
 	 */
-	Result cancel(String orderId);
+	Result close(String orderId);
 
 	/**
 	 * 退款

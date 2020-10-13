@@ -133,7 +133,7 @@ public class AdminIndexController {
 	@LoginRequired
 	@Controller(value = "update_pwd", methods = HttpMethod.POST)
 	public Result update_pwd(RequestUser requestUser, String oldPwd, String newPwd) {
-		if (StringUtils.isNull(oldPwd, newPwd)) {
+		if (StringUtils.isEmpty(oldPwd, newPwd)) {
 			return resultFactory.parameterError();
 		}
 

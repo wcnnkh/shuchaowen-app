@@ -6,8 +6,8 @@ public class AlipayConfig implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String publicKey;
 	private String appId;
-	private String type;// json
-	private String charset;
+	private String dataType = "json";// json
+	private String charset = "UTF-8";
 	private String signType;// RSA2
 	private String privateKey;
 
@@ -27,12 +27,12 @@ public class AlipayConfig implements Serializable {
 		this.appId = appId;
 	}
 
-	public String getType() {
-		return type;
+	public String getDataType() {
+		return dataType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public String getCharset() {
