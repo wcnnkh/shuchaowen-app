@@ -4,7 +4,6 @@ import scw.app.logistics.enums.LogisticsStatus;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.service.OrderService;
-import scw.app.payment.service.PaymentService;
 import scw.app.user.security.LoginRequired;
 import scw.beans.annotation.Autowired;
 import scw.core.parameter.annotation.DefaultValue;
@@ -20,10 +19,11 @@ import scw.util.Pagination;
 public class PaymentController {
 	@Autowired
 	private PageFactory pageFactory;
-	@Autowired
 	private OrderService orderService;
-	@Autowired
-	private PaymentService paymentService;
+	
+	public PaymentController(OrderService orderService){
+		this.orderService = orderService;
+	}
 
 	@ActionAuthority(value = "订单列表", menu = true)
 	@Controller(value = "list")
