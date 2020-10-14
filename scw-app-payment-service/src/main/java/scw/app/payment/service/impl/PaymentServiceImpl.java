@@ -23,6 +23,7 @@ import scw.app.payment.service.OrderService;
 import scw.app.payment.service.PaymentService;
 import scw.app.payment.service.RefundOrderService;
 import scw.beans.annotation.Autowired;
+import scw.core.instance.annotation.Configuration;
 import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -32,6 +33,7 @@ import scw.tencent.wx.UnifiedorderRequest;
 import scw.tencent.wx.WeiXinPay;
 import scw.tencent.wx.WeiXinPayResponse;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private OrderService orderService;
