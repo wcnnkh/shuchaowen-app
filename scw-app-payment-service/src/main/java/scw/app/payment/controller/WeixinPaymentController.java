@@ -17,7 +17,7 @@ import scw.mvc.annotation.Controller;
 import scw.mvc.parameter.XmlMap;
 import scw.result.BaseResult;
 import scw.result.Result;
-import scw.tencent.wx.WeiXinPay;
+import scw.tencent.wx.pay.WeiXinPay;
 
 @Controller(value = PaymentConfig.WEIXIN_PREFIX, methods = HttpMethod.POST)
 public class WeixinPaymentController {
