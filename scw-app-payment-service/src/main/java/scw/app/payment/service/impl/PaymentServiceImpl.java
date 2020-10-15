@@ -28,10 +28,10 @@ import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
-import scw.tencent.wx.RefundRequest;
-import scw.tencent.wx.UnifiedorderRequest;
-import scw.tencent.wx.WeiXinPay;
-import scw.tencent.wx.WeiXinPayResponse;
+import scw.tencent.wx.pay.RefundRequest;
+import scw.tencent.wx.pay.UnifiedorderRequest;
+import scw.tencent.wx.pay.WeiXinPay;
+import scw.tencent.wx.pay.WeiXinPayResponse;
 
 @Configuration(order=Integer.MIN_VALUE)
 public class PaymentServiceImpl implements PaymentService {

@@ -6,7 +6,7 @@ import scw.app.payment.pojo.Order;
 import scw.core.Assert;
 import scw.core.utils.StringUtils;
 import scw.net.InetUtils;
-import scw.tencent.wx.WeiXinPay;
+import scw.tencent.wx.pay.WeiXinPay;
 
 public abstract class PaymentConfig {
 	public static final String WEIXIN_PREFIX = "/payment/weixin";

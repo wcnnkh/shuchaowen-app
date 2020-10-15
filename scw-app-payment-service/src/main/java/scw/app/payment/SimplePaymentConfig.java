@@ -4,7 +4,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 
 import scw.app.payment.pojo.Order;
-import scw.tencent.wx.WeiXinPay;
+import scw.tencent.wx.pay.WeiXinPay;
 
 public class SimplePaymentConfig extends PaymentConfig {
 	private AlipayConfig alipayConfig;
