@@ -23,15 +23,17 @@ import scw.app.payment.service.OrderService;
 import scw.app.payment.service.PaymentService;
 import scw.app.payment.service.RefundOrderService;
 import scw.beans.annotation.Autowired;
+import scw.core.instance.annotation.Configuration;
 import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
-import scw.tencent.wx.RefundRequest;
-import scw.tencent.wx.UnifiedorderRequest;
-import scw.tencent.wx.WeiXinPay;
-import scw.tencent.wx.WeiXinPayResponse;
+import scw.tencent.wx.pay.RefundRequest;
+import scw.tencent.wx.pay.UnifiedorderRequest;
+import scw.tencent.wx.pay.WeiXinPay;
+import scw.tencent.wx.pay.WeiXinPayResponse;
 
+@Configuration(order=Integer.MIN_VALUE)
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private OrderService orderService;
@@ -82,7 +84,7 @@ public class PaymentServiceImpl implements PaymentService {
 				}
 			} else if (order.getPaymentMethod() == PaymentMethod.WX_APP) {
 				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
-				return weiXinPay.getUnifiedorder(new UnifiedorderRequest(order.getName(), order.getId(),
+				return weiXinPay.payment(new UnifiedorderRequest(order.getName(), order.getId(),
 						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "APP"));
 			} else if (order.getPaymentMethod() == PaymentMethod.WX_WEB) {
 				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
@@ -90,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
 				UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest(order.getName(), order.getId(),
 						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "JSAPI");
 				unifiedorderRequest.setOpenid(order.getWxOpenid());
-				return weiXinPay.getUnifiedorder(unifiedorderRequest);
+				return weiXinPay.payment(unifiedorderRequest);
 			}
 			throw new NotSupportedException("不支持的支付方式");
 		}
