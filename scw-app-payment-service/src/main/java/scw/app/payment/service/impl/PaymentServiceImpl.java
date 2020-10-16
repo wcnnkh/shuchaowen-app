@@ -13,6 +13,7 @@ import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 
 import scw.app.payment.PaymentConfig;
+import scw.app.payment.dao.ApplePayOrderInfoDao;
 import scw.app.payment.enums.PaymentMethod;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.model.PaymentRequest;
@@ -22,18 +23,22 @@ import scw.app.payment.pojo.RefundOrder;
 import scw.app.payment.service.OrderService;
 import scw.app.payment.service.PaymentService;
 import scw.app.payment.service.RefundOrderService;
+import scw.apple.pay.ApplePay;
+import scw.apple.pay.InApp;
+import scw.apple.pay.VerifyReceiptRequest;
+import scw.apple.pay.VerifyReceiptResponse;
 import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
-import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.tencent.wx.pay.RefundRequest;
+import scw.tencent.wx.pay.Unifiedorder;
 import scw.tencent.wx.pay.UnifiedorderRequest;
 import scw.tencent.wx.pay.WeiXinPay;
 import scw.tencent.wx.pay.WeiXinPayResponse;
 
-@Configuration(order=Integer.MIN_VALUE)
+@Configuration(order = Integer.MIN_VALUE)
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private OrderService orderService;
@@ -42,6 +47,8 @@ public class PaymentServiceImpl implements PaymentService {
 	private PaymentConfig paymentConfig;
 	@Autowired
 	private RefundOrderService refundOrderService;
+	@Autowired
+	private ApplePayOrderInfoDao applePayOrderInfoDao;
 
 	public PaymentServiceImpl(PaymentConfig paymentConfig) {
 		this.paymentConfig = paymentConfig;
@@ -52,49 +59,79 @@ public class PaymentServiceImpl implements PaymentService {
 		if (orderResult.isError()) {
 			return orderResult.dataResult();
 		}
-
-		PaymentResponse response = new PaymentResponse();
-		response.setOrder(orderResult.getData());
-		Object result = payment(orderResult.getData());
-		response.setCredential(result);
-		return resultFactory.success(response);
+		return payment(orderResult.getData());
 	}
 
-	public Object payment(Order order) {
+	public DataResult<PaymentResponse> payment(Order order) {
+		PaymentResponse paymentResponse = new PaymentResponse();
+		paymentResponse.setOrder(order);
 		if (order.getPrice() == 0) {
 			// 不要钱的
-			return null;
-		} else {// 要钱的
-			if (order.getPaymentMethod() == PaymentMethod.ALI_APP) {
-				AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
-				AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-				AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-				model.setSubject(order.getName());
-				model.setOutTradeNo(order.getId());
-				model.setTimeoutExpress("30m");
-				model.setTotalAmount(order.getPriceDescribe());
-				model.setProductCode("QUICK_MSECURITY_PAY");
-				request.setBizModel(model);
-				request.setNotifyUrl(paymentConfig.getAliPaySuccessNotifyUrl());
-				try {
-					AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-					return response.getBody();
-				} catch (AlipayApiException e) {
-					throw new RuntimeException(e);
-				}
-			} else if (order.getPaymentMethod() == PaymentMethod.WX_APP) {
-				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
-				return weiXinPay.payment(new UnifiedorderRequest(order.getName(), order.getId(),
-						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "APP"));
-			} else if (order.getPaymentMethod() == PaymentMethod.WX_WEB) {
-				WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
-
-				UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest(order.getName(), order.getId(),
-						order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "JSAPI");
-				unifiedorderRequest.setOpenid(order.getWxOpenid());
-				return weiXinPay.payment(unifiedorderRequest);
+			Result result = orderService.updateStatus(order.getId(), PaymentStatus.SUCCESS);
+			if (result.isError()) {
+				return result.dataResult();
 			}
-			throw new NotSupportedException("不支持的支付方式");
+
+			return resultFactory.success(paymentResponse);
+		}
+
+		if (order.getPaymentMethod() == PaymentMethod.ALI_APP) {
+			AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
+			AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+			model.setSubject(order.getName());
+			model.setOutTradeNo(order.getId());
+			model.setTimeoutExpress("30m");
+			model.setTotalAmount(order.getPriceDescribe());
+			model.setProductCode("QUICK_MSECURITY_PAY");
+			request.setBizModel(model);
+			request.setNotifyUrl(paymentConfig.getAliPaySuccessNotifyUrl());
+			try {
+				AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+				paymentResponse.setCredential(response.getBody());
+				return resultFactory.success(paymentResponse);
+			} catch (AlipayApiException e) {
+				throw new RuntimeException(e);
+			}
+		} else if (order.getPaymentMethod() == PaymentMethod.WX_APP) {
+			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
+			Unifiedorder unifiedorder = weiXinPay.payment(new UnifiedorderRequest(order.getName(), order.getId(),
+					order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "APP"));
+			paymentResponse.setCredential(unifiedorder);
+			return resultFactory.success(paymentResponse);
+		} else if (order.getPaymentMethod() == PaymentMethod.WX_WEB) {
+			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
+
+			UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest(order.getName(), order.getId(),
+					order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "JSAPI");
+			unifiedorderRequest.setOpenid(order.getWxOpenid());
+			Unifiedorder unifiedorder = weiXinPay.payment(unifiedorderRequest);
+			paymentResponse.setCredential(unifiedorder);
+			return resultFactory.success(paymentResponse);
+		} else if (order.getPaymentMethod() == PaymentMethod.APPLE) {
+			ApplePay applePay = paymentConfig.getApplePay(order);
+			VerifyReceiptResponse response = applePay
+					.verifyReceipt(new VerifyReceiptRequest(order.getApplePayReceiptData()));
+			if (response.isError()) {
+				return resultFactory.error("apple pay error(" + response.getStatus() + ")");
+			}
+			
+			for(InApp app : response.getReceipt().getInApps()){
+				if(applePayOrderInfoDao.getById(app.getTransactionId()) != null){
+					return resultFactory.error("此凭据已核销");
+				}
+				
+				applePayOrderInfoDao.create(app.getTransactionId(), order.getId());
+			}
+			
+			Result result = orderService.updateStatus(order.getId(), PaymentStatus.SUCCESS);
+			if (result.isError()) {
+				return result.dataResult();
+			}
+
+			return resultFactory.success(paymentResponse);
+		} else {
+			return resultFactory.error("不支持的支付方式(" + order.getPayChannel());
 		}
 	}
 

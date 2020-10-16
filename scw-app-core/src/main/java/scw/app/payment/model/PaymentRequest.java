@@ -12,6 +12,7 @@ public class PaymentRequest extends UserAddressModel {
 	private int price;// 实付价格
 	private String ip;// 创建订单的ip
 	private String wxOpenid;// 如果是微信支付，那么应该存在openid
+	private String applePayReceiptData;// apple pay receipt-data
 
 	public String getName() {
 		return name;
@@ -67,5 +68,13 @@ public class PaymentRequest extends UserAddressModel {
 
 	public void setWxOpenid(String wxOpenid) {
 		this.wxOpenid = wxOpenid;
+	}
+
+	public String getApplePayReceiptData() {
+		return applePayReceiptData;
+	}
+
+	public void setApplePayReceiptData(String applePayReceiptData) {
+		this.applePayReceiptData = applePayReceiptData;
 	}
 }

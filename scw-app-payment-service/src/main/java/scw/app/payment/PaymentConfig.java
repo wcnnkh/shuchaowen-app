@@ -3,11 +3,14 @@ package scw.app.payment;
 import com.alipay.api.AlipayClient;
 
 import scw.app.payment.pojo.Order;
+import scw.apple.pay.ApplePay;
+import scw.beans.annotation.AopEnable;
 import scw.core.Assert;
 import scw.core.utils.StringUtils;
 import scw.net.InetUtils;
 import scw.tencent.wx.pay.WeiXinPay;
 
+@AopEnable(false)
 public abstract class PaymentConfig {
 	public static final String WEIXIN_PREFIX = "/payment/weixin";
 	public static final String ALI_PREFIX = "/payment/ali";
@@ -38,4 +41,6 @@ public abstract class PaymentConfig {
 	public abstract WeiXinPay getWeiXinPay(Order order);
 
 	public abstract AlipayConfig getAlipayConfig(Order order);
+	
+	public abstract ApplePay getApplePay(Order order);
 }
