@@ -19,14 +19,14 @@ import scw.oauth2.AccessToken;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
-import scw.tencent.qq.Configuration;
-import scw.tencent.qq.QQUtils;
-import scw.tencent.qq.Userinfo;
+import scw.tencent.qq.connect.QQ;
+import scw.tencent.qq.connect.QQRequest;
+import scw.tencent.qq.connect.UserInfoResponse;
 
 @Controller(value = "qq", methods = { HttpMethod.GET, HttpMethod.POST })
 @scw.mvc.annotation.FactoryResult
 public class QQController {
-	private final Configuration configuration;
+	private QQ qq;
 	private UserService userService;
 	@Autowired
 	private LoginManager loginManager;
@@ -35,9 +35,9 @@ public class QQController {
 	@Autowired
 	private UserControllerService userControllerService;
 
-	public QQController(UserService userService, Configuration configuration) {
+	public QQController(UserService userService, QQ qq) {
 		this.userService = userService;
-		this.configuration = configuration;
+		this.qq = qq;
 	}
 
 	@Controller(value = "login")
@@ -48,10 +48,10 @@ public class QQController {
 
 		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
 		if (user == null) {
-			Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
+			UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
 			userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
-			userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
+			userAttributeModel.setHeadImg(userinfo.getfigureUrlQQ1());
 			userAttributeModel.setNickname(userinfo.getNickname());
 			DataResult<User> dataResult = userService.registerByOpenid(OpenidType.QQ, openid, userAttributeModel);
 			if (dataResult.isError()) {
@@ -70,9 +70,8 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
-				redirect_uri, code);
-		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
+		AccessToken accessToken = qq.getAccessToken(redirect_uri, code);
+		String openid = qq.getOpenid(accessToken.getAccessToken().getToken());
 		return login(openid, accessToken.getAccessToken().getToken(), request, response);
 	}
 
@@ -88,10 +87,10 @@ public class QQController {
 			return resultFactory.error("用户不存在");
 		}
 
-		Userinfo userinfo = QQUtils.getUserinfo(configuration.getAppId(), accessToken, openid);
+		UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
 		UserAttributeModel userAttributeModel = new UserAttributeModel();
 		userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
-		userAttributeModel.setHeadImg(userinfo.getFigureurl_qq_1());
+		userAttributeModel.setHeadImg(userinfo.getfigureUrlQQ1());
 		userAttributeModel.setNickname(userinfo.getNickname());
 		return userService.bindOpenid(uid, OpenidType.QQ, openid, userAttributeModel);
 	}
@@ -103,9 +102,8 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		AccessToken accessToken = QQUtils.getAccessToken(configuration.getAppId(), configuration.getAppKey(),
-				redirect_uri, code);
-		String openid = QQUtils.getOpenId(accessToken.getAccessToken().getToken());
+		AccessToken accessToken = qq.getAccessToken(redirect_uri, code);
+		String openid = qq.getOpenid(accessToken.getAccessToken().getToken());
 		return bind(uid, openid, accessToken.getAccessToken().getToken());
 	}
 }
