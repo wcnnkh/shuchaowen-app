@@ -6,8 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 
 import scw.app.payment.PaymentConfig;
 import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.event.PaymentEvent;
 import scw.app.payment.pojo.Order;
-import scw.app.payment.service.OrderService;
+import scw.app.payment.service.PaymentService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
@@ -25,7 +26,7 @@ public class WeixinPaymentController {
 	private static final String SUCCESS_TEXT = "SUCCESS";
 	private PaymentConfig paymentConfig;
 	@Autowired
-	private OrderService orderService;
+	private PaymentService paymentService;
 
 	public WeixinPaymentController(PaymentConfig paymentConfig) {
 		this.paymentConfig = paymentConfig;
@@ -39,17 +40,17 @@ public class WeixinPaymentController {
 		if (!SUCCESS_TEXT.equals(map.get("result_code"))) {
 			return new BaseResult(false).setMsg(map.get("err_code") + "(" + map.get("err_code_des") + ")");
 		}
-		
+
 		String out_trade_no = map.get("out_trade_no");
 		if (StringUtils.isEmpty(out_trade_no)) {
 			return new BaseResult(false).setMsg("订单号错误");
 		}
-		
-		Order order = orderService.getById(out_trade_no);
-		if(order == null){
+
+		Order order = paymentService.getOrder(out_trade_no);
+		if (order == null) {
 			return new BaseResult(false).setMsg("订单不存在");
 		}
-		
+
 		WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
 		boolean success = weiXinPay.checkSign(map);
 		if (!success) {
@@ -69,7 +70,7 @@ public class WeixinPaymentController {
 		}
 
 		String out_trade_no = map.get("out_trade_no");
-		Result result = orderService.updateStatus(out_trade_no, PaymentStatus.SUCCESS);
+		Result result = paymentService.publish(new PaymentEvent(out_trade_no, PaymentStatus.SUCCESS));
 		if (result.isSuccess()) {
 			return SUCCESS_TEXT;
 		}
@@ -87,7 +88,9 @@ public class WeixinPaymentController {
 		}
 
 		String out_trade_no = map.get("out_trade_no");
-		Result result = orderService.updateStatus(out_trade_no, PaymentStatus.REFUND);
+		PaymentEvent paymentEvent = new PaymentEvent(out_trade_no, PaymentStatus.REFUND);
+		paymentEvent.setRefundOrderId(map.get("out_refund_no"));
+		Result result = paymentService.publish(paymentEvent);
 		if (result.isSuccess()) {
 			return SUCCESS_TEXT;
 		}

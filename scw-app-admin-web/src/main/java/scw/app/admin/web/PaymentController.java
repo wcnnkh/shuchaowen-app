@@ -3,7 +3,7 @@ package scw.app.admin.web;
 import scw.app.logistics.enums.LogisticsStatus;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.pojo.Order;
-import scw.app.payment.service.OrderService;
+import scw.app.payment.service.PaymentService;
 import scw.app.user.security.LoginRequired;
 import scw.beans.annotation.Autowired;
 import scw.core.parameter.annotation.DefaultValue;
@@ -19,10 +19,10 @@ import scw.util.Pagination;
 public class PaymentController {
 	@Autowired
 	private PageFactory pageFactory;
-	private OrderService orderService;
-	
-	public PaymentController(OrderService orderService){
-		this.orderService = orderService;
+	private PaymentService paymentService;
+
+	public PaymentController(PaymentService paymentService) {
+		this.paymentService = paymentService;
 	}
 
 	@ActionAuthority(value = "订单列表", menu = true)
@@ -30,7 +30,7 @@ public class PaymentController {
 	public Page list(String query, @DefaultValue("1") int page, @DefaultValue("10") int limit,
 			PaymentStatus paymentStatus, LogisticsStatus logisticsStatus) {
 		Page view = pageFactory.getPage("/admin/ftl/payment/order_list.ftl");
-		Pagination<Order> pagination = orderService.search(query, page, limit, paymentStatus, logisticsStatus);
+		Pagination<Order> pagination = paymentService.search(query, page, limit, paymentStatus, logisticsStatus);
 		view.put("list", pagination.getData());
 		view.put("totalCount", pagination.getTotalCount());
 		view.put("maxPage", pagination.getMaxPage());

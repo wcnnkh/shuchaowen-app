@@ -1,7 +1,7 @@
 package scw.app.payment.enums;
 
 public enum PaymentStatus {
-	CREATED(0, "未支付/已创建"), SUCCESS(1, "已支付"), REFUND(2, "已退款"), CANCEL(3, "已取消");
+	CREATED(0, "未支付"), SUCCESS(1, "已支付"), REFUND(2, "已退款"), CANCEL(3, "已取消");
 
 	private final int status;
 	private final String describe;

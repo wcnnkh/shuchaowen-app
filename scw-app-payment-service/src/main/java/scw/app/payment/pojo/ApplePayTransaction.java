@@ -6,7 +6,7 @@ import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table
-public class ApplePayOrderInfo implements Serializable {
+public class ApplePayTransaction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
 	private String transactionId;
