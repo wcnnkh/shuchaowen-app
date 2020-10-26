@@ -156,7 +156,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	public Result publish(PaymentEvent paymentEvent) {
-		if (orderDao.updateStatus(paymentEvent.getOrderId(), paymentEvent.getStatus())) {
+		boolean success = orderDao.updateStatus(paymentEvent.getOrderId(), paymentEvent.getStatus());
+		if (!success) {
 			return resultFactory.error("订单状态错误(" + paymentEvent.getStatus() + ")");
 		}
 

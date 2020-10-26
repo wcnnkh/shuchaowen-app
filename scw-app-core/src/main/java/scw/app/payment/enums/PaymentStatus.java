@@ -19,10 +19,20 @@ public enum PaymentStatus {
 		return describe;
 	}
 
+	/**
+	 * @see PaymentStatus#isSwitchTo(int)
+	 * @param status
+	 * @return
+	 */
 	public boolean isSwitchTo(PaymentStatus status) {
 		return isSwitchTo(status.getStatus());
 	}
 
+	/**
+	 * 是否可以变更为此状态
+	 * @param status
+	 * @return
+	 */
 	public boolean isSwitchTo(int status) {
 		if (status == this.status) {
 			return status == REFUND.status;
