@@ -2,11 +2,13 @@ package scw.app.payment.model;
 
 import java.io.Serializable;
 
+import scw.core.utils.StringUtils;
+
 public class RefundRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String orderId;
 	private String refundDesc;
-	private Integer price;
+	private int price;
 
 	public String getOrderId() {
 		return orderId;
@@ -24,11 +26,15 @@ public class RefundRequest implements Serializable {
 		this.refundDesc = refundDesc;
 	}
 
-	public Integer getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public String getPriceDescribe() {
+		return StringUtils.formatNothingToYuan(price);
 	}
 }

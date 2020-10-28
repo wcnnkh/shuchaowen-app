@@ -9,8 +9,9 @@ import scw.alibaba.pay.TradeStatus;
 import scw.app.payment.AlipayConfig;
 import scw.app.payment.PaymentConfig;
 import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.event.PaymentEvent;
 import scw.app.payment.pojo.Order;
-import scw.app.payment.service.OrderService;
+import scw.app.payment.service.PaymentService;
 import scw.beans.annotation.Autowired;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
@@ -28,7 +29,7 @@ public class AliPaymentController {
 
 	private PaymentConfig paymentConfig;
 	@Autowired
-	private OrderService orderService;
+	private PaymentService paymentService;
 
 	public AliPaymentController(PaymentConfig paymentConfig) {
 		this.paymentConfig = paymentConfig;
@@ -42,13 +43,13 @@ public class AliPaymentController {
 		// boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
 		// publicKey, String charset, String sign_type)
 		logger.info(JSONUtils.toJSONString(params));
-		
+
 		String out_trade_no = params.get("out_trade_no");
-		Order order = orderService.getById(out_trade_no);
-		if(order == null){
+		Order order = paymentService.getOrder(out_trade_no);
+		if (order == null) {
 			return "not found order";
 		}
-		
+
 		AlipayConfig alipayConfig = paymentConfig.getAlipayConfig(order);
 		boolean flag = AlipaySignature.rsaCheckV1(params, alipayConfig.getPublicKey(), alipayConfig.getCharset(),
 				alipayConfig.getSignType());
@@ -61,7 +62,7 @@ public class AliPaymentController {
 
 		TradeStatus tradeStatus = TradeStatus.forName(status);
 		if (TradeStatus.TRADE_SUCCESS == tradeStatus) {
-			Result result = orderService.updateStatus(out_trade_no, PaymentStatus.SUCCESS);
+			Result result = paymentService.publish(new PaymentEvent(out_trade_no, PaymentStatus.SUCCESS));
 			if (result.isError()) {
 				return result.toString();
 			}

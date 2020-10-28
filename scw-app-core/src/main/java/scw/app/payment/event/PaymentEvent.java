@@ -6,6 +6,7 @@ import scw.event.support.BasicEvent;
 public class PaymentEvent extends BasicEvent {
 	private final String orderId;
 	private final PaymentStatus status;
+	private String refundOrderId;// 退款时才存在
 
 	public PaymentEvent(String orderId, PaymentStatus status) {
 		this.orderId = orderId;
@@ -18,5 +19,13 @@ public class PaymentEvent extends BasicEvent {
 
 	public PaymentStatus getStatus() {
 		return status;
+	}
+
+	public String getRefundOrderId() {
+		return refundOrderId;
+	}
+
+	public void setRefundOrderId(String refundOrderId) {
+		this.refundOrderId = refundOrderId;
 	}
 }

@@ -1,6 +1,6 @@
 package scw.app.event;
 
-import scw.beans.annotation.AopEnable;
+import scw.aop.annotation.AopEnable;
 import scw.event.EventListener;
 import scw.event.EventRegistration;
 

@@ -1,5 +1,8 @@
 package scw.app.payment.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
@@ -12,17 +15,20 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 
+import scw.app.logistics.enums.LogisticsStatus;
 import scw.app.payment.PaymentConfig;
-import scw.app.payment.dao.ApplePayOrderInfoDao;
+import scw.app.payment.dao.ApplePayTransactionDao;
+import scw.app.payment.dao.OrderDao;
+import scw.app.payment.dao.RefundOrderDao;
 import scw.app.payment.enums.PaymentMethod;
 import scw.app.payment.enums.PaymentStatus;
+import scw.app.payment.event.PaymentEvent;
+import scw.app.payment.event.PaymentEventDispatcher;
 import scw.app.payment.model.PaymentRequest;
 import scw.app.payment.model.PaymentResponse;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.pojo.RefundOrder;
-import scw.app.payment.service.OrderService;
 import scw.app.payment.service.PaymentService;
-import scw.app.payment.service.RefundOrderService;
 import scw.apple.pay.ApplePay;
 import scw.apple.pay.InApp;
 import scw.apple.pay.VerifyReceiptRequest;
@@ -37,42 +43,43 @@ import scw.tencent.wx.pay.Unifiedorder;
 import scw.tencent.wx.pay.UnifiedorderRequest;
 import scw.tencent.wx.pay.WeiXinPay;
 import scw.tencent.wx.pay.WeiXinPayResponse;
+import scw.util.Pagination;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
-	private OrderService orderService;
-	@Autowired
 	private ResultFactory resultFactory;
 	private PaymentConfig paymentConfig;
 	@Autowired
-	private RefundOrderService refundOrderService;
+	private ApplePayTransactionDao applePayTransactionDao;
+	private PaymentEventDispatcher paymentEventDispatcher;
 	@Autowired
-	private ApplePayOrderInfoDao applePayOrderInfoDao;
+	private OrderDao orderDao;
+	@Autowired
+	private RefundOrderDao refundOrderDao;
 
-	public PaymentServiceImpl(PaymentConfig paymentConfig) {
+	public PaymentServiceImpl(PaymentConfig paymentConfig, PaymentEventDispatcher paymentEventDispatche) {
 		this.paymentConfig = paymentConfig;
+		this.paymentEventDispatcher = paymentEventDispatche;
 	}
 
-	public DataResult<PaymentResponse> payment(PaymentRequest request) {
-		DataResult<Order> orderResult = orderService.create(request);
-		if (orderResult.isError()) {
-			return orderResult.dataResult();
-		}
-		return payment(orderResult.getData());
+	public Order getOrder(String orderId) {
+		return orderDao.getById(orderId);
 	}
 
-	public DataResult<PaymentResponse> payment(Order order) {
-		PaymentResponse paymentResponse = new PaymentResponse();
-		paymentResponse.setOrder(order);
+	public RefundOrder getRefundOrder(String refundOrderId) {
+		return refundOrderDao.getById(refundOrderId);
+	}
+
+	public DataResult<?> payment(PaymentRequest paymentRequest, Order order) {
 		if (order.getPrice() == 0) {
 			// 不要钱的
-			Result result = orderService.updateStatus(order.getId(), PaymentStatus.SUCCESS);
+			Result result = publish(new PaymentEvent(order.getId(), PaymentStatus.SUCCESS));
 			if (result.isError()) {
 				return result.dataResult();
 			}
 
-			return resultFactory.success(paymentResponse);
+			return resultFactory.success();
 		}
 
 		if (order.getPaymentMethod() == PaymentMethod.ALI_APP) {
@@ -88,8 +95,7 @@ public class PaymentServiceImpl implements PaymentService {
 			request.setNotifyUrl(paymentConfig.getAliPaySuccessNotifyUrl());
 			try {
 				AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-				paymentResponse.setCredential(response.getBody());
-				return resultFactory.success(paymentResponse);
+				return resultFactory.success(response.getBody());
 			} catch (AlipayApiException e) {
 				throw new RuntimeException(e);
 			}
@@ -97,8 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
 			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
 			Unifiedorder unifiedorder = weiXinPay.payment(new UnifiedorderRequest(order.getName(), order.getId(),
 					order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "APP"));
-			paymentResponse.setCredential(unifiedorder);
-			return resultFactory.success(paymentResponse);
+			return resultFactory.success(unifiedorder);
 		} else if (order.getPaymentMethod() == PaymentMethod.WX_WEB) {
 			WeiXinPay weiXinPay = paymentConfig.getWeiXinPay(order);
 
@@ -106,42 +111,67 @@ public class PaymentServiceImpl implements PaymentService {
 					order.getPrice(), order.getIp(), paymentConfig.getWeiXinPaySuccessNotifyUrl(), "JSAPI");
 			unifiedorderRequest.setOpenid(order.getWxOpenid());
 			Unifiedorder unifiedorder = weiXinPay.payment(unifiedorderRequest);
-			paymentResponse.setCredential(unifiedorder);
-			return resultFactory.success(paymentResponse);
+			return resultFactory.success(unifiedorder);
 		} else if (order.getPaymentMethod() == PaymentMethod.APPLE) {
 			ApplePay applePay = paymentConfig.getApplePay(order);
 			VerifyReceiptResponse response = applePay
-					.verifyReceipt(new VerifyReceiptRequest(order.getApplePayReceiptData()));
+					.verifyReceipt(new VerifyReceiptRequest(paymentRequest.getApplePayReceiptData()));
 			if (response.isError()) {
 				return resultFactory.error("apple pay error(" + response.getStatus() + ")");
 			}
-			
-			for(InApp app : response.getReceipt().getInApps()){
-				if(applePayOrderInfoDao.getById(app.getTransactionId()) != null){
+
+			List<String> productIds = new ArrayList<String>();
+			for (InApp app : response.getReceipt().getInApps()) {
+				if (applePayTransactionDao.getById(app.getTransactionId()) != null) {
 					return resultFactory.error("此凭据已核销");
 				}
-				
-				applePayOrderInfoDao.create(app.getTransactionId(), order.getId());
+
+				applePayTransactionDao.create(app.getTransactionId(), order.getId());
+				productIds.add(app.getProductId());
 			}
-			
-			Result result = orderService.updateStatus(order.getId(), PaymentStatus.SUCCESS);
+
+			orderDao.updateApplePayProductId(order.getId(), productIds);
+			Result result = publish(new PaymentEvent(order.getId(), PaymentStatus.SUCCESS));
 			if (result.isError()) {
 				return result.dataResult();
 			}
 
-			return resultFactory.success(paymentResponse);
+			return resultFactory.success();
 		} else {
 			return resultFactory.error("不支持的支付方式(" + order.getPayChannel());
 		}
 	}
 
+	public DataResult<PaymentResponse> payment(PaymentRequest paymentRequest) {
+		Order order = orderDao.create(paymentRequest);
+		DataResult<?> credentialResult = payment(paymentRequest, order);
+		if (credentialResult.isError()) {
+			return credentialResult.dataResult();
+		}
+
+		PaymentResponse paymentResponse = new PaymentResponse();
+		paymentResponse.setCredential(credentialResult.getData());
+		paymentResponse.setOrder(orderDao.getById(order.getId()));
+		return resultFactory.success(paymentResponse);
+	}
+
+	public Result publish(PaymentEvent paymentEvent) {
+		boolean success = orderDao.updateStatus(paymentEvent.getOrderId(), paymentEvent.getStatus());
+		if (!success) {
+			return resultFactory.error("订单状态错误(" + paymentEvent.getStatus() + ")");
+		}
+
+		paymentEventDispatcher.publishEvent(paymentEvent);
+		return resultFactory.success();
+	}
+
 	public Result close(String orderId) {
-		Order order = orderService.getById(orderId);
+		Order order = orderDao.getById(orderId);
 		if (order == null) {
 			return resultFactory.error("订单不存在");
 		}
 
-		Result result = orderService.updateStatus(orderId, PaymentStatus.CANCEL);
+		Result result = publish(new PaymentEvent(order.getId(), PaymentStatus.CANCEL));
 		if (result.isError()) {
 			return result.dataResult();
 		}
@@ -179,22 +209,32 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	public DataResult<RefundOrder> refund(scw.app.payment.model.RefundRequest request) {
-		Order order = orderService.getById(request.getOrderId());
+		Order order = orderDao.getById(request.getOrderId());
 		if (order == null) {
 			return resultFactory.error("订单不存在");
 		}
 
-		DataResult<RefundOrder> refundResult = refundOrderService.create(request);
-		if (refundResult.isError()) {
-			return refundResult;
+		if (order.getPaymentStatus().isSwitchTo(PaymentStatus.REFUND)) {
+			return resultFactory.error("订单状态错误");
 		}
 
-		return refund(order, refundResult.getData());
+		if (request.getPrice() == 0) {
+			return resultFactory.error("退款金额不能为0");
+		}
+
+		if (request.getPrice() > order.getPrice()) {
+			return resultFactory.error("退款金额不能大于实际支付金额");
+		}
+
+		RefundOrder refundOrder = refundOrderDao.create(request);
+		return refund(order, refundOrder);
 	}
 
 	public DataResult<RefundOrder> refund(Order order, RefundOrder refundOrder) {
+		PaymentEvent refundEvent = new PaymentEvent(order.getId(), PaymentStatus.REFUND);
+		refundEvent.setRefundOrderId(refundOrder.getId());
 		if (refundOrder.getPrice() == 0) {
-			Result result = orderService.updateStatus(refundOrder.getOrderId(), PaymentStatus.REFUND);
+			Result result = publish(refundEvent);
 			if (result.isError()) {
 				return result.dataResult();
 			}
@@ -219,7 +259,7 @@ public class PaymentServiceImpl implements PaymentService {
 			}
 		} else if (order.getPayChannel() == PaymentMethod.ALI_APP.getChannel()) {
 			AlipayClient alipayClient = paymentConfig.getAlipayClient(order);
-			Result result = orderService.updateStatus(refundOrder.getOrderId(), PaymentStatus.REFUND);
+			Result result = publish(refundEvent);
 			if (result.isError()) {
 				return result.dataResult();
 			}
@@ -247,12 +287,12 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	public Result refundAgain(String refundId) {
-		RefundOrder refundOrder = refundOrderService.getById(refundId);
+		RefundOrder refundOrder = refundOrderDao.getById(refundId);
 		if (refundOrder == null) {
 			return resultFactory.error("退款订单不存在");
 		}
 
-		Order order = orderService.getById(refundOrder.getOrderId());
+		Order order = orderDao.getById(refundOrder.getOrderId());
 		if (order == null) {
 			return resultFactory.error("订单不存在");
 		}
@@ -260,4 +300,12 @@ public class PaymentServiceImpl implements PaymentService {
 		return refund(order, refundOrder);
 	}
 
+	public Pagination<Order> search(String query, int page, int limit, PaymentStatus paymentStatus,
+			LogisticsStatus logisticsStatus) {
+		return orderDao.search(query, page, limit, paymentStatus, logisticsStatus);
+	}
+
+	public List<RefundOrder> getRefundOrderList(String orderId) {
+		return refundOrderDao.getRefundOrderList(orderId);
+	}
 }
