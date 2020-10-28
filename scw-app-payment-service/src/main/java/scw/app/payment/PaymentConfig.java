@@ -2,9 +2,9 @@ package scw.app.payment;
 
 import com.alipay.api.AlipayClient;
 
+import scw.aop.annotation.AopEnable;
 import scw.app.payment.pojo.Order;
 import scw.apple.pay.ApplePay;
-import scw.beans.annotation.AopEnable;
 import scw.core.Assert;
 import scw.core.utils.StringUtils;
 import scw.net.InetUtils;
