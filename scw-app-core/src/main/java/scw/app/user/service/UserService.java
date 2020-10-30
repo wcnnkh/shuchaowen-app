@@ -2,6 +2,7 @@ package scw.app.user.service;
 
 import java.util.Collection;
 
+import scw.app.user.enums.AccountType;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
@@ -30,26 +31,24 @@ public interface UserService {
 	 * @return
 	 */
 	boolean isSuperAdmin(long uid);
-
-	User getUserByUsername(String username);
-
-	User getUserByPhone(String phone);
-
+	
+	User getUserByAccount(AccountType type, String account);
+	
+	User getUserByAccount(AccountType type, String account, String password);
+	
 	User getUserByOpenid(OpenidType type, String openid);
-
+	
 	Result checkPassword(long uid, String password);
 
 	Result updatePassword(long uid, String password);
 
 	DataResult<User> createOrUpdateAdminUser(long uid, AdminUserModel adminUserModel);
-
-	DataResult<User> registerByUsername(String username, String password, UserAttributeModel userAttributeModel);
-
-	DataResult<User> registerByPhone(String phone, String password, UserAttributeModel userAttributeModel);
+	
+	DataResult<User> register(AccountType accountType, String account, String password, UserAttributeModel userAttributeModel);
 
 	DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel);
 
-	DataResult<User> bindPhone(long uid, String phone);
+	DataResult<User> bind(long uid, AccountType accountType, String account);
 
 	DataResult<User> bindOpenid(long uid, OpenidType type, String openid, UserAttributeModel userAttributeModel);
 

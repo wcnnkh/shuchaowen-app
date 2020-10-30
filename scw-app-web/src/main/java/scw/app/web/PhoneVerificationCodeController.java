@@ -2,6 +2,7 @@ package scw.app.web;
 
 import java.util.Map;
 
+import scw.app.user.enums.AccountType;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
@@ -45,7 +46,7 @@ public class PhoneVerificationCodeController {
 		switch (type) {
 		case REGISTER:
 		case BIND:
-			if (userService.getUserByPhone(phone) != null) {
+			if (userService.getUserByAccount(AccountType.PHONE, phone) != null) {
 				return resultFactory.error("该账号已注册");
 			}
 			break;
@@ -72,16 +73,16 @@ public class PhoneVerificationCodeController {
 			return result;
 		}
 
-		User user = userService.getUserByPhone(phone);
+		User user = userService.getUserByAccount(AccountType.PHONE, phone);
 		if (user == null) {
-			DataResult<User> dataResult = userService.registerByPhone(phone, null, null);
-			if(dataResult.isError()){
+			DataResult<User> dataResult = userService.register(AccountType.PHONE, phone, null, null);
+			if (dataResult.isError()) {
 				return dataResult;
 			}
-			
+
 			user = dataResult.getData();
 		}
-		
+
 		Map<String, Object> infoMap = userControllerService.login(user, request, response);
 		return resultFactory.success(infoMap);
 	}
@@ -97,7 +98,7 @@ public class PhoneVerificationCodeController {
 			return result;
 		}
 
-		User user = userService.getUserByPhone(phone);
+		User user = userService.getUserByAccount(AccountType.PHONE, phone);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
 		}
@@ -117,7 +118,7 @@ public class PhoneVerificationCodeController {
 			return result;
 		}
 
-		return userService.bindPhone(requestUser.getUid(), phone);
+		return userService.bind(requestUser.getUid(), AccountType.PHONE, phone);
 	}
 
 	@Controller(value = "register")
@@ -131,6 +132,6 @@ public class PhoneVerificationCodeController {
 			return result;
 		}
 
-		return userService.registerByPhone(phone, password, null);
+		return userService.register(AccountType.PHONE, phone, password, null);
 	}
 }
