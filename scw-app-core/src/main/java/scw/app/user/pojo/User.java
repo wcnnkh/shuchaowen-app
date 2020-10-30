@@ -23,6 +23,8 @@ public class User extends UserAttributeModel {
 	private long lastUpdatePasswordTime;
 	@Column(unique = true, length = 16)
 	private String phone;
+	@Column(unique = true)
+	private String email;
 	@Column(unique = true, length = 64)
 	private String openidForWX;
 	@Column(unique = true, length = 64)
@@ -66,6 +68,14 @@ public class User extends UserAttributeModel {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getOpenidForWX() {

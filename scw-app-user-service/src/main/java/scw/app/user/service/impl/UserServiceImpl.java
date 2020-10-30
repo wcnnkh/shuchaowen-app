@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import scw.app.event.AppEvent;
 import scw.app.event.AppEventDispatcher;
+import scw.app.user.enums.AccountType;
 import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
@@ -19,7 +20,6 @@ import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.event.support.EventType;
-import scw.lang.NotSupportedException;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -46,7 +46,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 	public UserServiceImpl(DB db, ResultFactory resultFactory, PropertyFactory propertyFactory) {
 		super(db, resultFactory);
 		db.createTable(User.class, false);
-		User user = getUserByUsername(ADMIN_NAME);
+		User user = getUserByAccount(AccountType.USERNAME, ADMIN_NAME);
 		if (user == null) {
 			AdminUserModel adminUserModel = new AdminUserModel();
 			adminUserModel.setUsername(ADMIN_NAME);
@@ -58,16 +58,6 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 
 	public User getUser(long uid) {
 		return db.getById(User.class, uid);
-	}
-
-	public User getUserByPhone(String phone) {
-		Sql sql = new SimpleSql("select * from user where phone=?", phone);
-		return db.selectOne(User.class, sql);
-	}
-
-	public User getUserByUsername(String username) {
-		Sql sql = new SimpleSql("select * from user where username=?", username);
-		return db.selectOne(User.class, sql);
 	}
 
 	public User getUserByOpenid(OpenidType type, String openid) {
@@ -93,58 +83,6 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		return SignatureUtils.md5(password, "UTF-8");
 	}
 
-	public DataResult<User> registerByUsername(String username, String password,
-			UserAttributeModel userAttributeModel) {
-		User user = getUserByUsername(username);
-		if (user != null) {
-			return resultFactory.error("账号已经存在");
-		}
-
-		user = new User();
-		user.setUsername(username);
-		user.setPassword(formatPassword(password));
-		user.setCts(System.currentTimeMillis());
-
-		if (userAttributeModel != null) {
-			userAttributeModel.writeTo(user);
-		}
-		db.save(user);
-		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
-		return resultFactory.success(user);
-	}
-
-	public DataResult<User> registerByPhone(String phone, String password, UserAttributeModel userAttributeModel) {
-		User user = getUserByPhone(phone);
-		if (user != null) {
-			return resultFactory.error("账号已经存在");
-		}
-
-		user = new User();
-		user.setPhone(phone);
-		user.setPassword(formatPassword(password));
-		user.setCts(System.currentTimeMillis());
-
-		if (userAttributeModel != null) {
-			userAttributeModel.writeTo(user);
-		}
-		db.save(user);
-		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
-		return resultFactory.success(user);
-	}
-
-	private void setOpenid(User user, OpenidType type, String openid) {
-		switch (type) {
-		case WX:
-			user.setOpenidForWX(openid);
-			break;
-		case QQ:
-			user.setOpenidForQQ(openid);
-			break;
-		default:
-			throw new NotSupportedException("不支持的openid类型：" + type);
-		}
-	}
-
 	public DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel) {
 		User user = getUserByOpenid(type, openid);
 		if (user != null) {
@@ -153,32 +91,12 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 
 		user = new User();
 		user.setCts(System.currentTimeMillis());
-		setOpenid(user, type, openid);
+		type.setOpenid(user, openid);
 		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
 		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
-		return resultFactory.success(user);
-	}
-
-	public DataResult<User> bindPhone(long uid, String phone) {
-		User user = getUserByPhone(phone);
-		if (user != null) {
-			return resultFactory.error("手机号已被绑定");
-		}
-
-		user = getUser(uid);
-		if (user == null) {
-			return resultFactory.error("账号不存在");
-		}
-
-		if (phone.equals(user.getPhone())) {
-			return resultFactory.error("与原绑定手机号一致");
-		}
-
-		user.setPhone(phone);
-		db.update(user);
 		return resultFactory.success(user);
 	}
 
@@ -194,7 +112,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 			return resultFactory.error("账号不存在");
 		}
 
-		setOpenid(user, type, openid);
+		type.setOpenid(user, openid);
 		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
 		}
@@ -279,7 +197,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 			return resultFactory.error("参数错误");
 		}
 
-		User username = getUserByUsername(adminUserModel.getUsername());
+		User username = getUserByAccount(AccountType.USERNAME, adminUserModel.getUsername());
 		User user = getUser(uid);
 		if (user == null) {
 			if (username != null) {
@@ -322,5 +240,81 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		user.setDefaultAddressId(addressId);
 		db.update(user);
 		return resultFactory.success();
+	}
+
+	public User getUserByAccount(AccountType type, String account) {
+		Sql sql;
+		switch (type) {
+		case PHONE:
+			sql = new SimpleSql("select * from user where phone=?", account);
+			break;
+		case USERNAME:
+			sql = new SimpleSql("select * from user where username=?", account);
+			break;
+		case EMAIL:
+			sql = new SimpleSql("select * from user where email=?", account);
+			break;
+		default:
+			return null;
+		}
+		return db.selectOne(User.class, sql);
+	}
+	
+	public User getUserByAccount(AccountType type, String account, String password) {
+		Sql sql;
+		switch (type) {
+		case PHONE:
+			sql = new SimpleSql("select * from user where phone=? and password=?", account, formatPassword(password));
+			break;
+		case USERNAME:
+			sql = new SimpleSql("select * from user where username=? and password=?", account, formatPassword(password));
+			break;
+		case EMAIL:
+			sql = new SimpleSql("select * from user where email=? and password=?", account, formatPassword(password));
+			break;
+		default:
+			return null;
+		}
+		return db.selectOne(User.class, sql);
+	}
+
+	public DataResult<User> register(AccountType accountType, String account, String password,
+			UserAttributeModel userAttributeModel) {
+		User user = getUserByAccount(accountType, account);
+		if (user != null) {
+			return resultFactory.error("账号已经存在");
+		}
+
+		user = new User();
+		accountType.setAccount(user, account);
+		user.setPassword(formatPassword(password));
+		user.setCts(System.currentTimeMillis());
+
+		if (userAttributeModel != null) {
+			userAttributeModel.writeTo(user);
+		}
+		db.save(user);
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
+		return resultFactory.success(user);
+	}
+
+	public DataResult<User> bind(long uid, AccountType accountType, String account) {
+		User user = getUserByAccount(accountType, account);
+		if (user != null) {
+			return resultFactory.error("账号已被绑定");
+		}
+
+		user = getUser(uid);
+		if (user == null) {
+			return resultFactory.error("账号不存在");
+		}
+
+		if (account.equals(accountType.getAccount(user))) {
+			return resultFactory.error("与原绑定信息一致");
+		}
+
+		accountType.setAccount(user, account);
+		db.update(user);
+		return resultFactory.success(user);
 	}
 }
