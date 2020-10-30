@@ -14,7 +14,7 @@ import scw.util.RandomUtils;
 
 public abstract class AbstractVerificationCodeService {
 	private static final int ONE_DAY = (int) (XTime.ONE_DAY / 1000);
-	private static Logger logger = LoggerFactory.getLogger(PhoneVerificationCodeService.class);
+	private static Logger logger = LoggerFactory.getLogger(AbstractVerificationCodeService.class);
 
 	private TemporaryCache temporaryCache;
 	private int everyDayMaxSize = 10;// 每天发送限制

@@ -3,6 +3,7 @@ package scw.app.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
@@ -41,9 +42,9 @@ public class UserController {
 			return resultFactory.parameterError();
 		}
 
-		User user = userService.getUserByUsername(username);
+		User user = userService.getUserByAccount(AccountType.USERNAME, username);
 		if (user == null) {
-			user = userService.getUserByPhone(username);
+			user = userService.getUserByAccount(AccountType.PHONE, username);
 		}
 
 		if (user == null) {
@@ -84,7 +85,7 @@ public class UserController {
 			return resultFactory.parameterError();
 		}
 
-		return userService.registerByUsername(username, password, userAttributeModel);
+		return userService.register(AccountType.USERNAME, username, password, userAttributeModel);
 	}
 
 	@LoginRequired
