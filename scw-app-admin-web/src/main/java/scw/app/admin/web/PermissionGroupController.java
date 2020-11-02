@@ -32,18 +32,22 @@ import scw.security.authority.http.HttpAuthority;
 @ActionAuthorityParent(AdminUserController.class)
 @Controller(value = "admin")
 public class PermissionGroupController {
-	@Autowired
 	private PermissionGroupService permissionGroupService;
-	@Autowired
 	private PermissionGroupActionService permissionGroupActionService;
 	@Autowired
 	private ResultFactory resultFactory;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private PageFactory pageFactory;
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
+
+	public PermissionGroupController(PermissionGroupService permissionGroupService,
+			PermissionGroupActionService permissionGroupActionService, UserService userService) {
+		this.permissionGroupService = permissionGroupService;
+		this.permissionGroupActionService = permissionGroupActionService;
+		this.userService = userService;
+	}
 
 	@ActionAuthority(value = "权限组列表", menu = true)
 	@Controller(value = "group_list")

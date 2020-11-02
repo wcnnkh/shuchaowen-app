@@ -9,7 +9,6 @@ import scw.app.user.security.LoginRequired;
 import scw.app.user.security.RequestUser;
 import scw.app.user.security.SecurityActionInterceptor;
 import scw.app.user.service.PermissionGroupActionService;
-import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.CollectionUtils;
@@ -31,20 +30,21 @@ import scw.security.authority.http.HttpAuthority;
 
 @Controller(value = "admin")
 public class AdminIndexController {
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
-	@Autowired
 	private PermissionGroupActionService permissionGroupActionService;
-	@Autowired
-	private PermissionGroupService permissionGroupService;
 	@Autowired
 	private PageFactory pageFactory;
 	@Autowired
 	private LoginManager loginManager;
+
+	public AdminIndexController(UserService userService, PermissionGroupActionService permissionGroupActionService) {
+		this.userService = userService;
+		this.permissionGroupActionService = permissionGroupActionService;
+	}
 
 	@LoginRequired
 	@Controller(value = "menus")
@@ -54,7 +54,7 @@ public class AdminIndexController {
 			return httpActionAuthorityManager.getAuthorityTreeList(new MenuAuthorityFilter<HttpAuthority>());
 		} else {
 			User user = userService.getUser(requestUser.getUid());
-			if(user == null){
+			if (user == null) {
 				throw new RuntimeException("用户不存在");
 			}
 			List<PermissionGroupAction> actions = permissionGroupActionService
