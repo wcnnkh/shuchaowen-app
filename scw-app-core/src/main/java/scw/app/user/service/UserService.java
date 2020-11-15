@@ -3,7 +3,6 @@ package scw.app.user.service;
 import java.util.Collection;
 
 import scw.app.user.enums.AccountType;
-import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
@@ -36,8 +35,6 @@ public interface UserService {
 	
 	User getUserByAccount(AccountType type, String account, String password);
 	
-	User getUserByOpenid(OpenidType type, String openid);
-	
 	Result checkPassword(long uid, String password);
 
 	Result updatePassword(long uid, String password);
@@ -46,11 +43,7 @@ public interface UserService {
 	
 	DataResult<User> register(AccountType accountType, String account, String password, UserAttributeModel userAttributeModel);
 
-	DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel);
-
 	DataResult<User> bind(long uid, AccountType accountType, String account);
-
-	DataResult<User> bindOpenid(long uid, OpenidType type, String openid, UserAttributeModel userAttributeModel);
 
 	Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel);
 	
