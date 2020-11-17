@@ -29,12 +29,15 @@ import scw.util.Pagination;
 @ActionAuthority(value = "系统设置", menu = true)
 @Controller(value = "/admin")
 public class AdminUserController {
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private PageFactory pageFactory;
-	@Autowired
 	private PermissionGroupService permissionGroupService;
+
+	public AdminUserController(UserService userService, PermissionGroupService permissionGroupService) {
+		this.userService = userService;
+		this.permissionGroupService = permissionGroupService;
+	}
 
 	@ActionAuthority(value = "管理员列表", menu = true)
 	@Controller(value = "admin_list")

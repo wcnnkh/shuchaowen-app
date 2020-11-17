@@ -5,7 +5,6 @@ import java.util.Collection;
 import scw.app.event.AppEvent;
 import scw.app.event.AppEventDispatcher;
 import scw.app.user.enums.AccountType;
-import scw.app.user.enums.OpenidType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
@@ -60,64 +59,12 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 		return db.getById(User.class, uid);
 	}
 
-	public User getUserByOpenid(OpenidType type, String openid) {
-		Sql sql;
-		switch (type) {
-		case WX:
-			sql = new SimpleSql("select * from user where openidForWX=?", openid);
-			break;
-		case QQ:
-			sql = new SimpleSql("select * from user where openidForQQ=?", openid);
-			break;
-		default:
-			return null;
-		}
-		return db.selectOne(User.class, sql);
-	}
-
 	private String formatPassword(String password) {
 		if (StringUtils.isEmpty(password)) {
 			return null;
 		}
 
 		return SignatureUtils.md5(password, "UTF-8");
-	}
-
-	public DataResult<User> registerByOpenid(OpenidType type, String openid, UserAttributeModel userAttributeModel) {
-		User user = getUserByOpenid(type, openid);
-		if (user != null) {
-			return resultFactory.error("账号已经存在");
-		}
-
-		user = new User();
-		user.setCts(System.currentTimeMillis());
-		type.setOpenid(user, openid);
-		if (userAttributeModel != null) {
-			userAttributeModel.writeTo(user);
-		}
-		db.save(user);
-		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
-		return resultFactory.success(user);
-	}
-
-	public DataResult<User> bindOpenid(long uid, OpenidType type, String openid,
-			UserAttributeModel userAttributeModel) {
-		User user = getUserByOpenid(type, openid);
-		if (user != null) {
-			return resultFactory.error("openid已被绑定");
-		}
-
-		user = getUser(uid);
-		if (user == null) {
-			return resultFactory.error("账号不存在");
-		}
-
-		type.setOpenid(user, openid);
-		if (userAttributeModel != null) {
-			userAttributeModel.writeTo(user);
-		}
-		db.update(user);
-		return resultFactory.success(user);
 	}
 
 	public Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel) {
@@ -243,37 +190,15 @@ public class UserServiceImpl extends BaseServiceConfiguration implements UserSer
 	}
 
 	public User getUserByAccount(AccountType type, String account) {
-		Sql sql;
-		switch (type) {
-		case PHONE:
-			sql = new SimpleSql("select * from user where phone=?", account);
-			break;
-		case USERNAME:
-			sql = new SimpleSql("select * from user where username=?", account);
-			break;
-		case EMAIL:
-			sql = new SimpleSql("select * from user where email=?", account);
-			break;
-		default:
-			return null;
-		}
-		return db.selectOne(User.class, sql);
+		return getUserByAccount(type, account, null);
 	}
 	
 	public User getUserByAccount(AccountType type, String account, String password) {
 		Sql sql;
-		switch (type) {
-		case PHONE:
-			sql = new SimpleSql("select * from user where phone=? and password=?", account, formatPassword(password));
-			break;
-		case USERNAME:
-			sql = new SimpleSql("select * from user where username=? and password=?", account, formatPassword(password));
-			break;
-		case EMAIL:
-			sql = new SimpleSql("select * from user where email=? and password=?", account, formatPassword(password));
-			break;
-		default:
-			return null;
+		if(StringUtils.isNotEmpty(password)){
+			sql = new SimpleSql("select * from user where " + type.getFieldName() + "=? and password=?", account, password);
+		}else{
+			sql = new SimpleSql("select * from user where " + type.getFieldName() + "=?", account);
 		}
 		return db.selectOne(User.class, sql);
 	}
