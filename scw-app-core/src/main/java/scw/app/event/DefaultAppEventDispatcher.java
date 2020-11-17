@@ -7,7 +7,9 @@ import scw.event.support.DefaultNamedEventDispatcher;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class DefaultAppEventDispatcher implements AppEventDispatcher {
-	private DefaultNamedEventDispatcher<AppEvent<?>> dispatcher = new DefaultNamedEventDispatcher<AppEvent<?>>(true);
+	@SuppressWarnings("rawtypes")
+	private DefaultNamedEventDispatcher<Class, AppEvent<?>> dispatcher = new DefaultNamedEventDispatcher<Class, AppEvent<?>>(
+			true);
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> EventRegistration registerListener(Class<T> type, EventListener<AppEvent<T>> eventListener) {

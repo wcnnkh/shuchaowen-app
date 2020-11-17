@@ -3,7 +3,7 @@ package scw.app.web;
 import java.util.Map;
 
 import scw.app.enums.SexType;
-import scw.app.user.enums.OpenidType;
+import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
@@ -46,14 +46,14 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
+		User user = userService.getUserByAccount(AccountType.QQ_OPENID, openid);
 		if (user == null) {
 			UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
 			userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
 			userAttributeModel.setHeadImg(userinfo.getfigureUrlQQ1());
 			userAttributeModel.setNickname(userinfo.getNickname());
-			DataResult<User> dataResult = userService.registerByOpenid(OpenidType.QQ, openid, userAttributeModel);
+			DataResult<User> dataResult = userService.register(AccountType.QQ_OPENID, openid, null, userAttributeModel);
 			if (dataResult.isError()) {
 				return dataResult;
 			}
@@ -82,9 +82,14 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		User user = userService.getUserByOpenid(OpenidType.QQ, openid);
+		User user = userService.getUserByAccount(AccountType.QQ_OPENID, openid);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
+		}
+		
+		DataResult<User> dataResult = userService.bind(uid, AccountType.QQ_OPENID, openid);
+		if(!dataResult.isSuccess()){
+			return dataResult;
 		}
 
 		UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
@@ -92,7 +97,7 @@ public class QQController {
 		userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
 		userAttributeModel.setHeadImg(userinfo.getfigureUrlQQ1());
 		userAttributeModel.setNickname(userinfo.getNickname());
-		return userService.bindOpenid(uid, OpenidType.QQ, openid, userAttributeModel);
+		return userService.updateUserAttribute(uid, userAttributeModel);
 	}
 
 	@Controller(value = "web_bind")

@@ -3,7 +3,7 @@ package scw.app.web;
 import java.util.Map;
 
 import scw.app.enums.SexType;
-import scw.app.user.enums.OpenidType;
+import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginManager;
@@ -48,7 +48,7 @@ public class WeiXinController {
 		}
 
 		UserAccessToken userAccessToken = userGrantClient.getAccessToken(code, null);
-		User user = userService.getUserByOpenid(OpenidType.WX, userAccessToken.getOpenid());
+		User user = userService.getUserByAccount(AccountType.WX_OPENID, userAccessToken.getOpenid());
 		if (user == null) {
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
 			if (scope == Scope.USERINFO) {
@@ -61,8 +61,8 @@ public class WeiXinController {
 				}
 			}
 
-			DataResult<User> result = userService.registerByOpenid(OpenidType.WX, userAccessToken.getOpenid(),
-					userAttributeModel);
+			DataResult<User> result = userService.register(AccountType.WX_OPENID, userAccessToken.getOpenid(),
+					null, userAttributeModel);
 			if (result.isError()) {
 				return result;
 			}
@@ -77,9 +77,14 @@ public class WeiXinController {
 	@Controller(value = "bind")
 	public Result bind(long uid, String code, Scope scope) {
 		UserAccessToken userAccessToken = userGrantClient.getAccessToken(code, null);
-		User user = userService.getUserByOpenid(OpenidType.WX, userAccessToken.getOpenid());
+		User user = userService.getUserByAccount(AccountType.WX_OPENID, userAccessToken.getOpenid());
 		if (user == null) {
 			return resultFactory.error("未注册，无法绑定");
+		}
+		
+		DataResult<User> dataResult = userService.bind(uid, AccountType.WX_OPENID, userAccessToken.getOpenid());
+		if(dataResult.isError()){
+			return dataResult;
 		}
 
 		UserAttributeModel userAttributeModel = new UserAttributeModel();
@@ -89,7 +94,9 @@ public class WeiXinController {
 			userAttributeModel.setSex(SexType.forValue(userinfo.getSex()));
 			userAttributeModel.setNickname(userinfo.getNickname());
 			userAttributeModel.setHeadImg(StringUtils.split(userinfo.getHeadimgurl(), ",")[0]);
+			return userService.updateUserAttribute(uid, userAttributeModel);
 		}
-		return userService.bindOpenid(uid, OpenidType.WX, userAccessToken.getOpenid(), userAttributeModel).result();
+		
+		return dataResult;
 	}
 }
