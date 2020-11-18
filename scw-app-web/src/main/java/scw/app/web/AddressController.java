@@ -8,12 +8,12 @@ import scw.app.address.pojo.Address;
 import scw.app.address.service.AddressService;
 import scw.beans.annotation.Autowired;
 import scw.http.HttpMethod;
-import scw.http.HttpUtils;
 import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
 import scw.result.Result;
 import scw.result.ResultFactory;
+import scw.web.WebUtils;
 
 @Controller(value = "address", methods = { HttpMethod.GET, HttpMethod.POST })
 public class AddressController {
@@ -36,7 +36,7 @@ public class AddressController {
 
 	@Controller(value = "list")
 	public Result list(ServerHttpRequest request, ServerHttpResponse response) {
-		if (!HttpUtils.isExpired(request, response, addressService.lastModified())) {
+		if (!WebUtils.isExpired(request, response, addressService.lastModified())) {
 			return null;
 		}
 
@@ -49,7 +49,7 @@ public class AddressController {
 
 	@Controller(value = "trees")
 	public Result tree(ServerHttpRequest request, ServerHttpResponse response) {
-		if (!HttpUtils.isExpired(request, response, addressService.lastModified())) {
+		if (!WebUtils.isExpired(request, response, addressService.lastModified())) {
 			return null;
 		}
 

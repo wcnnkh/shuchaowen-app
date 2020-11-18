@@ -6,9 +6,9 @@ import java.util.Map;
 
 import scw.app.user.security.RequestUser;
 import scw.http.HttpMethod;
-import scw.http.multipart.FileItem;
 import scw.http.server.MultiPartServerHttpRequest;
 import scw.mvc.annotation.Controller;
+import scw.net.message.multipart.FileItem;
 import scw.upload.UploadException;
 import scw.upload.UploadFileItem;
 import scw.upload.kind.KindDirType;

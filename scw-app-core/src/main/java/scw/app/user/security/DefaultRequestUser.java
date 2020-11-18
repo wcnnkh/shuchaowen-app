@@ -2,11 +2,11 @@ package scw.app.user.security;
 
 import scw.core.instance.annotation.Configuration;
 import scw.http.HttpCookie;
-import scw.http.HttpUtils;
 import scw.mvc.HttpChannel;
 import scw.security.login.UserToken;
 import scw.value.StringValue;
 import scw.value.Value;
+import scw.web.WebUtils;
 
 @Configuration(order = Integer.MIN_VALUE)
 public class DefaultRequestUser implements RequestUser {
@@ -34,7 +34,7 @@ public class DefaultRequestUser implements RequestUser {
 		if (value == null || value.isEmpty()) {
 			String token = httpChannel.getRequest().getHeaders().getFirst(name);
 			if (token == null) {
-				HttpCookie httpCookie = HttpUtils.getCookie(httpChannel.getRequest(), name);
+				HttpCookie httpCookie = WebUtils.getCookie(httpChannel.getRequest(), name);
 				if (httpCookie != null) {
 					token = httpCookie.getValue();
 				}

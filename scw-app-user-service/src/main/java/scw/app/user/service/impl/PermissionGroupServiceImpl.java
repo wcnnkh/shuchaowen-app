@@ -14,7 +14,7 @@ import scw.beans.annotation.Autowired;
 import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
 import scw.db.DB;
-import scw.io.serialzer.SerializerUtils;
+import scw.io.SerializerUtils;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
