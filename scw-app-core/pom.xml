@@ -14,7 +14,7 @@
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
-			<artifactId>scw-core</artifactId>
+			<artifactId>scw-sql-orm</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
