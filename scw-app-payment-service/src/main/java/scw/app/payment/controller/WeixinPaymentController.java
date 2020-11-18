@@ -2,8 +2,6 @@ package scw.app.payment.controller;
 
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-
 import scw.app.payment.PaymentConfig;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.event.PaymentEvent;
@@ -12,6 +10,7 @@ import scw.app.payment.service.PaymentService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
+import scw.json.JSONUtils;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mvc.annotation.Controller;
@@ -62,7 +61,7 @@ public class WeixinPaymentController {
 	@Controller(value = PaymentConfig.SUCCESS_CONTROLLER)
 	public String success(XmlMap map) {
 		logger.info("收到微信支付回调:");
-		logger.info(JSONObject.toJSONString(map));
+		logger.info(JSONUtils.toJSONString(map));
 		BaseResult baseResult = check(map);
 		if (!baseResult.isError()) {
 			logger.error("微信支付回调失败：{}", baseResult.getMsg());
@@ -80,7 +79,7 @@ public class WeixinPaymentController {
 	@Controller(value = PaymentConfig.REFUND_CONTROLLER)
 	public String refund(XmlMap map) {
 		logger.info("收到微信退款回调:");
-		logger.info(JSONObject.toJSONString(map));
+		logger.info(JSONUtils.toJSONString(map));
 		BaseResult baseResult = check(map);
 		if (!baseResult.isError()) {
 			logger.error("微信退款回调失败：{}", baseResult.getMsg());
