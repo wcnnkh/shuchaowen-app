@@ -32,7 +32,7 @@
 					class="x-red">*</span>名称
 			</label>
 			<div class="layui-input-inline">
-				<input type="text" name="nickName" required="" value="${(admin.nickname)! }"
+				<input type="text" name="nickname" required="" value="${(admin.nickname)! }"
 					   lay-verify="required" autocomplete="off" class="layui-input">
 			</div>
 		</div>

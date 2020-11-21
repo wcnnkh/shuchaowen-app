@@ -23,6 +23,10 @@
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
+			<artifactId>scw-druid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>scw</groupId>
 			<artifactId>scw-upload</artifactId>
 		</dependency>
 		<dependency>

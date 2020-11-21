@@ -16,10 +16,5 @@
 			<groupId>scw-app</groupId>
 			<artifactId>scw-app-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.aliyun</groupId>
-			<artifactId>aliyun-java-sdk-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>
