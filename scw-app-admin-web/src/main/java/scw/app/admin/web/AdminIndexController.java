@@ -4,9 +4,7 @@ import java.util.List;
 
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
-import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.security.SecurityActionInterceptor;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.UserService;
@@ -27,6 +25,7 @@ import scw.result.ResultFactory;
 import scw.security.authority.AuthorityTree;
 import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
+import scw.security.session.UserSession;
 
 @Controller(value = "admin")
 public class AdminIndexController {
@@ -38,8 +37,6 @@ public class AdminIndexController {
 	private PermissionGroupActionService permissionGroupActionService;
 	@Autowired
 	private PageFactory pageFactory;
-	@Autowired
-	private LoginManager loginManager;
 
 	public AdminIndexController(UserService userService, PermissionGroupActionService permissionGroupActionService) {
 		this.userService = userService;
@@ -49,7 +46,7 @@ public class AdminIndexController {
 	@LoginRequired
 	@Controller(value = "menus")
 	@scw.mvc.annotation.FactoryResult
-	public List<AuthorityTree<HttpAuthority>> getMenus(RequestUser requestUser) {
+	public List<AuthorityTree<HttpAuthority>> getMenus(UserSession<Long> requestUser) {
 		if (userService.isSuperAdmin(requestUser.getUid())) {
 			return httpActionAuthorityManager.getAuthorityTreeList(new MenuAuthorityFilter<HttpAuthority>());
 		} else {
@@ -67,7 +64,7 @@ public class AdminIndexController {
 
 	@Controller
 	@LoginRequired
-	public Page index(RequestUser requestUser, ServerHttpRequest request) {
+	public Page index(UserSession<Long> requestUser, ServerHttpRequest request) {
 		Page page = pageFactory.getPage("/admin/ftl/index.ftl");
 		StringBuilder sb = new StringBuilder(4096);
 		appendMenuHtml(sb, getMenus(requestUser), request.getContextPath());
@@ -132,7 +129,7 @@ public class AdminIndexController {
 
 	@LoginRequired
 	@Controller(value = "update_pwd", methods = HttpMethod.POST)
-	public Result update_pwd(RequestUser requestUser, String oldPwd, String newPwd) {
+	public Result update_pwd(UserSession<Long> requestUser, String oldPwd, String newPwd) {
 		if (StringUtils.isEmpty(oldPwd, newPwd)) {
 			return resultFactory.parameterError();
 		}
@@ -146,8 +143,8 @@ public class AdminIndexController {
 	}
 
 	@Controller(value = "cancel_login")
-	public View cacelLogin(RequestUser requestUser, ServerHttpRequest request) {
-		loginManager.cancelLogin(requestUser.getToken());
+	public View cacelLogin(UserSession<Long> requestUser, ServerHttpRequest request) {
+		requestUser.invalidate();
 		return new Redirect(request.getContextPath() + SecurityActionInterceptor.ADMIN_LOGIN_PATH);
 	}
 

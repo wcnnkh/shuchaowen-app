@@ -11,7 +11,6 @@ import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
@@ -27,6 +26,7 @@ import scw.mvc.security.HttpActionAuthorityManager;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
+import scw.security.session.UserSession;
 
 @LoginRequired
 @ActionAuthorityParent(AdminUserController.class)
@@ -51,7 +51,7 @@ public class PermissionGroupController {
 
 	@ActionAuthority(value = "权限组列表", menu = true)
 	@Controller(value = "group_list")
-	public Page group_list(RequestUser requestUser, Integer parentId) {
+	public Page group_list(UserSession<Long> requestUser, Integer parentId) {
 		User user = userService.getUser(requestUser.getUid());
 		int pid = (parentId == null || parentId == 0) ? user.getPermissionGroupId() : parentId;
 		Page page = pageFactory.getPage("/admin/ftl/group_list.ftl");
@@ -73,7 +73,7 @@ public class PermissionGroupController {
 
 	@LoginRequired
 	@Controller(value = "group_action_list")
-	public Result action_list(int groupId, RequestUser requestUser, int parentId) {
+	public Result action_list(int groupId, UserSession<Long> requestUser, int parentId) {
 		List<HttpAuthority> httpAuthorities;
 		if (parentId == 0 && userService.isSuperAdmin(requestUser.getUid())) {
 			httpAuthorities = httpActionAuthorityManager.getAuthorityList(null);
@@ -112,7 +112,7 @@ public class PermissionGroupController {
 
 	@ActionAuthority(value = "(添加/修改)权限")
 	@Controller(value = "group_add_or_update", methods = HttpMethod.POST)
-	public Result group_add_or_update(RequestUser requestUser, int id, int parentId, String name, boolean disable,
+	public Result group_add_or_update(UserSession<Long> requestUser, int id, int parentId, String name, boolean disable,
 			String ids) {
 		PermissionGroupInfo info = new PermissionGroupInfo();
 		info.setId(id);

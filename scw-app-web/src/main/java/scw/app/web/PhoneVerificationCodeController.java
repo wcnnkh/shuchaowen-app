@@ -4,21 +4,19 @@ import java.util.Map;
 
 import scw.app.user.enums.AccountType;
 import scw.app.user.pojo.User;
-import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.service.UserService;
 import scw.app.vc.enums.VerificationCodeType;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
-import scw.http.server.ServerHttpRequest;
-import scw.http.server.ServerHttpResponse;
+import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
+import scw.security.session.UserSession;
 
 @Controller(value = "/phone/code", methods = { HttpMethod.GET, HttpMethod.POST })
 public class PhoneVerificationCodeController {
@@ -26,8 +24,6 @@ public class PhoneVerificationCodeController {
 	private final UserService userService;
 	@Autowired
 	private ResultFactory resultFactory;
-	@Autowired
-	private LoginManager loginManager;
 	@Autowired
 	private UserControllerService userControllerService;
 
@@ -63,7 +59,7 @@ public class PhoneVerificationCodeController {
 	}
 
 	@Controller(value = "login")
-	public Result login(String phone, String code, ServerHttpRequest request, ServerHttpResponse response) {
+	public Result login(String phone, String code, HttpChannel httpChannel) {
 		if (StringUtils.isEmpty(phone, code)) {
 			return resultFactory.parameterError();
 		}
@@ -83,7 +79,7 @@ public class PhoneVerificationCodeController {
 			user = dataResult.getData();
 		}
 
-		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		Map<String, Object> infoMap = userControllerService.login(user, httpChannel);
 		return resultFactory.success(infoMap);
 	}
 
@@ -108,7 +104,7 @@ public class PhoneVerificationCodeController {
 
 	@Controller(value = "bind")
 	@LoginRequired
-	public Result bind(RequestUser requestUser, String phone, String code) {
+	public Result bind(UserSession<Long> requestUser, String phone, String code) {
 		if (StringUtils.isEmpty(phone, code)) {
 			return resultFactory.parameterError();
 		}

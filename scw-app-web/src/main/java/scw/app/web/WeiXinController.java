@@ -6,14 +6,12 @@ import scw.app.enums.SexType;
 import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
-import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
-import scw.http.server.ServerHttpRequest;
-import scw.http.server.ServerHttpResponse;
+import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -30,8 +28,6 @@ public class WeiXinController {
 	protected final UserGrantClient userGrantClient;
 	private UserService userService;
 	@Autowired
-	private LoginManager loginManager;
-	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
 	private UserControllerService userControllerService;
@@ -42,7 +38,7 @@ public class WeiXinController {
 	}
 
 	@Controller(value = "login")
-	public Result login(String code, Scope scope, ServerHttpRequest request, ServerHttpResponse response) {
+	public Result login(String code, Scope scope, HttpChannel httpChannel) {
 		if (StringUtils.isEmpty(code)) {
 			return resultFactory.parameterError();
 		}
@@ -69,7 +65,7 @@ public class WeiXinController {
 			user = result.getData();
 		}
 
-		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		Map<String, Object> infoMap = userControllerService.login(user, httpChannel);
 		return resultFactory.success(infoMap);
 	}
 

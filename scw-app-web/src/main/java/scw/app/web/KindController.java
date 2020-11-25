@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import scw.app.user.security.RequestUser;
 import scw.http.HttpMethod;
 import scw.http.server.MultiPartServerHttpRequest;
 import scw.mvc.annotation.Controller;
 import scw.net.message.multipart.FileItem;
+import scw.security.session.UserSession;
 import scw.upload.UploadException;
 import scw.upload.UploadFileItem;
 import scw.upload.kind.KindDirType;
@@ -23,12 +23,12 @@ public class KindController {
 		this.kindEditor = kindEditor;
 	}
 
-	public String getRequestGroup(RequestUser requestUser) {
-		return requestUser.isLogin() ? (requestUser.getUid() + "") : null;
+	public String getRequestGroup(UserSession<Long> requestUser) {
+		return requestUser != null? (requestUser.getUid() + "") : null;
 	}
 
 	@Controller(value = "upload", methods = { HttpMethod.POST, HttpMethod.PUT })
-	public Object upload(RequestUser requestUser, MultiPartServerHttpRequest request, KindDirType dir) {
+	public Object upload(UserSession<Long> requestUser, MultiPartServerHttpRequest request, KindDirType dir) {
 		FileItem fileItem = request.getFirstFile();
 		if (fileItem == null) {
 			return error("请选择文件");
@@ -47,7 +47,7 @@ public class KindController {
 	}
 
 	@Controller(value = "manager", methods = { HttpMethod.GET })
-	public Object manager(RequestUser requestUser, KindDirType dir, String path, KindOrderType order) {
+	public Object manager(UserSession<Long> requestUser, KindDirType dir, String path, KindOrderType order) {
 		return kindEditor.manager(getRequestGroup(requestUser), dir, path, order);
 	}
 

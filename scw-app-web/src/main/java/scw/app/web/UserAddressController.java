@@ -13,7 +13,6 @@ import scw.app.address.service.AddressService;
 import scw.app.address.service.UserAddressService;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.http.HttpMethod;
@@ -21,6 +20,7 @@ import scw.mapper.MapperUtils;
 import scw.mvc.annotation.Controller;
 import scw.result.Result;
 import scw.result.ResultFactory;
+import scw.security.session.UserSession;
 
 @Controller(value = "/user/address", methods = { HttpMethod.GET, HttpMethod.POST })
 @LoginRequired
@@ -38,7 +38,7 @@ public class UserAddressController {
 	}
 
 	@Controller(value = "info")
-	public Result info(RequestUser requestUser, long id) {
+	public Result info(UserSession<Long> requestUser, long id) {
 		UserAddress userAddress = userAddressService.getById(id);
 		if (userAddress == null) {
 			return resultFactory.error("用户地址不存在");
@@ -56,7 +56,7 @@ public class UserAddressController {
 	}
 
 	@Controller(value = "list")
-	public Result list(RequestUser requestUser) {
+	public Result list(UserSession<Long> requestUser) {
 		User user = userService.getUser(requestUser.getUid());
 		if (user == null) {
 			return resultFactory.error("用户不存在");
@@ -74,12 +74,12 @@ public class UserAddressController {
 	}
 
 	@Controller(value = "create")
-	public Result create(RequestUser requestUser, UserAddressModel userAddressModel) {
+	public Result create(UserSession<Long> requestUser, UserAddressModel userAddressModel) {
 		return userAddressService.create(requestUser.getUid(), userAddressModel);
 	}
 
 	@Controller(value = "update")
-	public Result update(long id, RequestUser requestUser, UserAddressModel userAddressModel) {
+	public Result update(long id, UserSession<Long> requestUser, UserAddressModel userAddressModel) {
 		UserAddress userAddress = userAddressService.getById(id);
 		if (userAddress == null) {
 			return resultFactory.error("地址不存在");
@@ -93,7 +93,7 @@ public class UserAddressController {
 	}
 
 	@Controller(value = "update_default_id")
-	public Result updateDefaultAddressId(RequestUser requestUser, long id) {
+	public Result updateDefaultAddressId(UserSession<Long> requestUser, long id) {
 		UserAddress userAddress = userAddressService.getById(id);
 		if (userAddress == null) {
 			return resultFactory.error("地址不存在");
