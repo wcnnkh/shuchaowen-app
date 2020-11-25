@@ -9,7 +9,6 @@ import scw.app.user.model.AdminUserModel;
 import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
@@ -23,6 +22,7 @@ import scw.mvc.annotation.RequestBody;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
 import scw.result.Result;
+import scw.security.session.UserSession;
 import scw.util.Pagination;
 
 @LoginRequired
@@ -41,7 +41,7 @@ public class AdminUserController {
 
 	@ActionAuthority(value = "管理员列表", menu = true)
 	@Controller(value = "admin_list")
-	public Page admin_list(RequestUser requestUser, Integer groupId, @DefaultValue("1") int page, String search,
+	public Page admin_list(UserSession<Long> requestUser, Integer groupId, @DefaultValue("1") int page, String search,
 			@DefaultValue("10") int limit) {
 		User currentUser = userService.getUser(requestUser.getUid());
 		List<PermissionGroup> userSubGroups = permissionGroupService.getSubList(currentUser.getPermissionGroupId(),
@@ -97,7 +97,7 @@ public class AdminUserController {
 
 	@ActionAuthority(value = "(查看/修改)管理员信息界面")
 	@Controller(value = "admin_view")
-	public Object admin_view(long toUid, RequestUser requestUser) {
+	public Object admin_view(long toUid, UserSession<Long> requestUser) {
 		Page page = pageFactory.getPage("/admin/ftl/admin_view.ftl");
 		User user = userService.getUser(toUid);
 		User currentUser = userService.getUser(requestUser.getUid());
@@ -109,7 +109,7 @@ public class AdminUserController {
 
 	@ActionAuthority(value = "(查看/修改)管理员信息")
 	@Controller(value = "admin_create_or_update", methods = HttpMethod.POST)
-	public Result admin_view(RequestUser requestUser, long toUid, @RequestBody AdminUserModel adminUserModel) {
+	public Result admin_view(UserSession<Long> requestUser, long toUid, @RequestBody AdminUserModel adminUserModel) {
 		return userService.createOrUpdateAdminUser(toUid, adminUserModel);
 	}
 }
