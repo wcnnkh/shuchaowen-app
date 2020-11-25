@@ -6,29 +6,27 @@ import java.util.Map;
 import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
-import scw.app.user.security.LoginManager;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.RequestUser;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.core.utils.StringUtils;
 import scw.http.HttpCookie;
 import scw.http.HttpMethod;
-import scw.http.server.ServerHttpRequest;
 import scw.http.server.ServerHttpResponse;
+import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
+import scw.mvc.security.UserSessionResolver;
 import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.security.login.UserToken;
+import scw.security.session.UserSession;
 
 @Controller(value = "user", methods = { HttpMethod.GET, HttpMethod.POST })
 public class UserController {
 	private UserService userService;
 	@Autowired
 	private ResultFactory resultFactory;
-	@Autowired
-	private LoginManager loginManager;
 	@Autowired
 	private UserControllerService userControllerService;
 
@@ -37,7 +35,7 @@ public class UserController {
 	}
 
 	@Controller(value = "login")
-	public Result login(String username, String password, ServerHttpRequest request, ServerHttpResponse response) {
+	public Result login(String username, String password, HttpChannel httpChannel) {
 		if (StringUtils.isEmpty(username, password)) {
 			return resultFactory.parameterError();
 		}
@@ -56,7 +54,7 @@ public class UserController {
 			return result;
 		}
 
-		Map<String, Object> infoMap = userControllerService.login(user, request, response);
+		Map<String, Object> infoMap = userControllerService.login(user, httpChannel);
 		return resultFactory.success(infoMap);
 	}
 
@@ -64,9 +62,9 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>(8);
 		map.put("token", userToken.getToken());
 		map.put("uid", userToken.getUid());
-		HttpCookie uidCookie = new HttpCookie(RequestUser.UID_NAME, userToken.getUid() + "");
+		HttpCookie uidCookie = new HttpCookie(UserSessionResolver.UID_NAME, userToken.getUid() + "");
 		uidCookie.setPath("/");
-		HttpCookie tokenCookie = new HttpCookie(RequestUser.TOKEN_NAME, userToken.getToken() + "");
+		HttpCookie tokenCookie = new HttpCookie(UserSessionResolver.TOKEN_NAME, userToken.getToken() + "");
 		tokenCookie.setPath("/");
 		response.addCookie(uidCookie);
 		response.addCookie(tokenCookie);
@@ -75,7 +73,7 @@ public class UserController {
 
 	@Controller(value = "update")
 	@LoginRequired
-	public Result updateUserInfo(RequestUser requestUser, @RequestBody UserAttributeModel userAttributeModel) {
+	public Result updateUserInfo(UserSession<Long> requestUser, @RequestBody UserAttributeModel userAttributeModel) {
 		return userService.updateUserAttribute(requestUser.getUid(), userAttributeModel);
 	}
 
@@ -90,7 +88,7 @@ public class UserController {
 
 	@LoginRequired
 	@Controller(value = "info")
-	public Result info(RequestUser requestUser) {
+	public Result info(UserSession<Long> requestUser) {
 		User user = userService.getUser(requestUser.getUid());
 		if (user == null) {
 			return resultFactory.error("用户不存在");

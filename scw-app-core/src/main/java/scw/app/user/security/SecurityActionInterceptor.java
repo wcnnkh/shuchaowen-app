@@ -19,15 +19,13 @@ import scw.mvc.security.HttpActionAuthorityManager;
 import scw.mvc.view.Redirect;
 import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
-import scw.security.login.UserToken;
+import scw.security.session.UserSession;
 
 @Configuration
 public class SecurityActionInterceptor implements ActionInterceptor, ActionInterceptorAccept {
 	public static final String ADMIN_LOGIN_PATH = "/admin/to_login";
 	public static final String ADMIN_PATH_PREFIX = "/admin";
 
-	@Autowired
-	private LoginManager loginManager;
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
@@ -61,35 +59,26 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		if (actionAuthority != null || (required != null && required.value())
 				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest())) {
-			RequestUser requestUser = httpChannel.getBean(RequestUser.class);
-			if (requestUser == null) {
+			UserSession<Long> userSession = httpChannel.getUserSession(Long.class);
+			if (userSession == null) {
 				return authorizationFailure(httpChannel, action);
 			}
-
-			UserToken<Long> userToken = loginManager.getToken(requestUser.getToken());
-			if (userToken == null) {
-				return authorizationFailure(httpChannel, action);
-			}
-
-			if (!requestUser.accept(userToken)) {
-				return authorizationFailure(httpChannel, action);
-			}
-
+			
 			if (httpChannel.getRequest().getPath().startsWith(ADMIN_PATH_PREFIX)) {
-				User user = userService.getUser(requestUser.getUid());
+				User user = userService.getUser(userSession.getUid());
 				if (user == null) {
 					return authorizationFailure(httpChannel, action);
 				}
 			}
 
 			if (actionAuthority != null) {
-				if (!userService.isSuperAdmin(userToken.getUid())) {
+				if (!userService.isSuperAdmin(userSession.getUid())) {
 					HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
 					if (httpAuthority == null) {
 						return error(httpChannel, action, resultFactory.error("权限不足(1)"));
 					}
 
-					User user = userService.getUser(userToken.getUid());
+					User user = userService.getUser(userSession.getUid());
 					if (user == null) {
 						return authorizationFailure(httpChannel, action);
 					}
