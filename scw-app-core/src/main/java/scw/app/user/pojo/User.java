@@ -25,14 +25,6 @@ public class User extends UserAttributeModel {
 	private String phone;
 	@Column(unique = true)
 	private String email;
-	@Column(unique = true, length = 64)
-	private String openidForWX;
-	@Column(unique = true, length = 64)
-	private String openidForWXCXC;
-	@Column(unique = true, length = 64)
-	private String unionidForWX;
-	@Column(unique = true, length = 64)
-	private String openidForQQ;
 	private int permissionGroupId;// 权限组id
 	private boolean disable;// 是否禁用
 	private long lastLoginTime;
@@ -80,38 +72,6 @@ public class User extends UserAttributeModel {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getOpenidForWX() {
-		return openidForWX;
-	}
-
-	public void setOpenidForWX(String openidForWX) {
-		this.openidForWX = openidForWX;
-	}
-
-	public String getOpenidForWXCXC() {
-		return openidForWXCXC;
-	}
-
-	public void setOpenidForWXCXC(String openidForWXCXC) {
-		this.openidForWXCXC = openidForWXCXC;
-	}
-
-	public String getUnionidForWX() {
-		return unionidForWX;
-	}
-
-	public void setUnionidForWX(String unionidForWX) {
-		this.unionidForWX = unionidForWX;
-	}
-
-	public String getOpenidForQQ() {
-		return openidForQQ;
-	}
-
-	public void setOpenidForQQ(String openidForQQ) {
-		this.openidForQQ = openidForQQ;
 	}
 
 	public String getPassword() {
