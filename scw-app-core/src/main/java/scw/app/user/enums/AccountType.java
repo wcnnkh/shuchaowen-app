@@ -9,10 +9,7 @@ public enum AccountType {
 	USERNAME("username"), 
 	PHONE("phone"),
 	EMAIL("email"), 
-	WX_OPENID("openidForWX"),
-	WX_XCX_OPENID("openidForWXCXC"),
-	WX_UNIONID("unionidForWX"),
-	QQ_OPENID("openidForQQ");
+	;
 	
 	private final String fieldName;
 	
