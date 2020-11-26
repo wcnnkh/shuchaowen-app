@@ -3,7 +3,7 @@ package scw.app.web;
 import java.util.Map;
 
 import scw.app.enums.SexType;
-import scw.app.user.enums.AccountType;
+import scw.app.user.enums.UnionIdType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
@@ -41,15 +41,15 @@ public class QQController {
 		if (StringUtils.isEmpty(openid, accessToken)) {
 			return resultFactory.parameterError();
 		}
-
-		User user = userService.getUserByAccount(AccountType.QQ_OPENID, openid);
+		
+		User user = userService.getUserByUnionId(openid, UnionIdType.QQ_OPENID);
 		if (user == null) {
 			UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
 			UserAttributeModel userAttributeModel = new UserAttributeModel();
 			userAttributeModel.setSex(SexType.forDescribe(userinfo.getGender()));
 			userAttributeModel.setHeadImg(userinfo.getfigureUrlQQ1());
 			userAttributeModel.setNickname(userinfo.getNickname());
-			DataResult<User> dataResult = userService.register(AccountType.QQ_OPENID, openid, null, userAttributeModel);
+			DataResult<User> dataResult = userService.registerUnionId(UnionIdType.QQ_OPENID, openid, null, userAttributeModel);
 			if (dataResult.isError()) {
 				return dataResult;
 			}
@@ -67,8 +67,8 @@ public class QQController {
 		}
 
 		AccessToken accessToken = qq.getAccessToken(redirect_uri, code);
-		String openid = qq.getOpenid(accessToken.getAccessToken().getToken());
-		return login(openid, accessToken.getAccessToken().getToken(), httpChannel);
+		String openid = qq.getOpenid(accessToken.getToken().getToken());
+		return login(openid, accessToken.getToken().getToken(), httpChannel);
 	}
 
 	@LoginRequired
@@ -78,14 +78,14 @@ public class QQController {
 			return resultFactory.parameterError();
 		}
 
-		User user = userService.getUserByAccount(AccountType.QQ_OPENID, openid);
+		User user = userService.getUserByUnionId(openid, UnionIdType.QQ_OPENID);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
 		}
 		
-		DataResult<User> dataResult = userService.bind(uid, AccountType.QQ_OPENID, openid);
-		if(!dataResult.isSuccess()){
-			return dataResult;
+		Result result = userService.bindUnionId(uid, UnionIdType.QQ_OPENID, openid);
+		if(result.isError()){
+			return result;
 		}
 
 		UserInfoResponse userinfo = qq.getUserinfo(new QQRequest(accessToken, openid));
@@ -104,7 +104,7 @@ public class QQController {
 		}
 
 		AccessToken accessToken = qq.getAccessToken(redirect_uri, code);
-		String openid = qq.getOpenid(accessToken.getAccessToken().getToken());
-		return bind(uid, openid, accessToken.getAccessToken().getToken());
+		String openid = qq.getOpenid(accessToken.getToken().getToken());
+		return bind(uid, openid, accessToken.getToken().getToken());
 	}
 }

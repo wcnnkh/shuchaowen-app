@@ -3,8 +3,11 @@ package scw.app.user.service;
 import java.util.Collection;
 
 import scw.app.user.enums.AccountType;
+import scw.app.user.enums.UnionIdType;
 import scw.app.user.model.AdminUserModel;
 import scw.app.user.model.UserAttributeModel;
+import scw.app.user.pojo.UidToUnionId;
+import scw.app.user.pojo.UnionIdToUid;
 import scw.app.user.pojo.User;
 import scw.result.DataResult;
 import scw.result.Result;
@@ -35,6 +38,18 @@ public interface UserService {
 	
 	User getUserByAccount(AccountType type, String account, String password);
 	
+	User getUserByUnionId(String unionId, UnionIdType type);
+	
+	User getUserByUnionId(String unionId, int type);
+	
+	UidToUnionId getUnionIdByUid(long uid, UnionIdType type);
+	
+	UidToUnionId getUnionIdByUid(long uid, int type);
+	
+	UnionIdToUid getUidByUnionId(String unionId, UnionIdType type);
+	
+	UnionIdToUid getUidByUnionId(String unionId, int type);
+	
 	Result checkPassword(long uid, String password);
 
 	Result updatePassword(long uid, String password);
@@ -44,6 +59,14 @@ public interface UserService {
 	DataResult<User> register(AccountType accountType, String account, String password, UserAttributeModel userAttributeModel);
 
 	DataResult<User> bind(long uid, AccountType accountType, String account);
+	
+	DataResult<User> registerUnionId(UnionIdType type, String unionId, String password, UserAttributeModel userAttributeModel);
+
+	DataResult<User> registerUnionId(int unionIdType, String unionId, String password, UserAttributeModel userAttributeModel);
+	
+	Result bindUnionId(long uid, UnionIdType type, String unionId);
+	
+	Result bindUnionId(long uid, int unionIdType, String unionId);
 
 	Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel);
 	
