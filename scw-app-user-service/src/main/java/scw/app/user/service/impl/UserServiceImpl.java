@@ -21,7 +21,7 @@ import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
-import scw.event.support.EventType;
+import scw.event.EventType;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;

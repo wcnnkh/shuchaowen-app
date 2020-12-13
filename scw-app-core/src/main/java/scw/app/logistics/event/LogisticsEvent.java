@@ -3,7 +3,7 @@ package scw.app.logistics.event;
 import java.io.Serializable;
 
 import scw.app.logistics.enums.LogisticsStatus;
-import scw.event.support.BasicEvent;
+import scw.event.BasicEvent;
 
 public class LogisticsEvent extends BasicEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
