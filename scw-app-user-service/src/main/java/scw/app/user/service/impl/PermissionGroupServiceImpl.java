@@ -11,7 +11,7 @@ import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Autowired;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.core.utils.CollectionUtils;
 import scw.db.DB;
 import scw.io.SerializerUtils;
@@ -20,7 +20,7 @@ import scw.result.Result;
 import scw.result.ResultFactory;
 import scw.sql.SimpleSql;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class PermissionGroupServiceImpl extends BaseServiceConfiguration implements PermissionGroupService {
 	@Autowired
 	private PermissionGroupActionService adminRoleGroupActionService;

@@ -12,9 +12,9 @@ import java.util.Map;
 import scw.app.address.model.AddressTree;
 import scw.app.address.pojo.Address;
 import scw.app.address.service.AddressService;
+import scw.beans.annotation.Service;
 import scw.beans.annotation.Value;
 import scw.beans.ioc.value.JsonFileValueProcesser;
-import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
 import scw.io.Resource;
 import scw.io.ResourceUtils;
@@ -25,7 +25,7 @@ import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mapper.Copy;
 
-@Configuration
+@Service
 public class LocalAddressServiceImpl implements AddressService {
 	private static final String RESOURCE = "classpath:/scw/app/address/service/address.json";
 

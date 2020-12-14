@@ -7,7 +7,7 @@ import scw.app.common.pojo.UserMembershipCard;
 import scw.app.common.service.UserMembershipCardService;
 import scw.app.enums.TimeCycle;
 import scw.app.util.BaseServiceConfiguration;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.data.TemporaryCache;
@@ -17,7 +17,7 @@ import scw.sql.SimpleSql;
 import scw.sql.Sql;
 import scw.util.CalendarUtils;
 
-@Configuration
+@Service
 public class UserMembershipCardServiceImpl extends BaseServiceConfiguration implements UserMembershipCardService {
 	private static final String CURRENT_MEMBERSHIP_CARD_CACHE_PREFIX = "user.membership_card.current.id:";
 	private static final int EXP = (int) ((XTime.ONE_DAY * 7) / 1000);

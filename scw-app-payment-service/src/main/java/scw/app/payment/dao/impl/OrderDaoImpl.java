@@ -7,14 +7,14 @@ import scw.app.payment.dao.OrderDao;
 import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.model.PaymentRequest;
 import scw.app.payment.pojo.Order;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.sql.WhereSql;
 import scw.util.Pagination;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class OrderDaoImpl implements OrderDao {
 	private DB db;
 

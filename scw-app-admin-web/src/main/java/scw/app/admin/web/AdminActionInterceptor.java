@@ -2,7 +2,7 @@ package scw.app.admin.web;
 
 import scw.beans.annotation.Autowired;
 import scw.core.GlobalPropertyFactory;
-import scw.core.instance.annotation.Configuration;
+import scw.core.instance.annotation.SPI;
 import scw.event.Observable;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
@@ -12,7 +12,7 @@ import scw.mvc.action.ActionParameters;
 import scw.mvc.page.Page;
 import scw.result.ResultFactory;
 
-@Configuration(order = Integer.MIN_VALUE)
+@SPI
 public class AdminActionInterceptor implements ActionInterceptor {
 	public static final Observable<String> ADMIN_WEBSITE_NAME = GlobalPropertyFactory
 			.getInstance().getObservableValue("admin.website.name",

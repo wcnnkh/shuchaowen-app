@@ -1,8 +1,5 @@
 package scw.app.payment;
 
-import com.alipay.api.AlipayClient;
-
-import scw.aop.annotation.AopEnable;
 import scw.app.payment.pojo.Order;
 import scw.apple.pay.ApplePay;
 import scw.core.Assert;
@@ -10,7 +7,8 @@ import scw.core.utils.StringUtils;
 import scw.net.InetUtils;
 import scw.tencent.wx.pay.WeiXinPay;
 
-@AopEnable(false)
+import com.alipay.api.AlipayClient;
+
 public abstract class PaymentConfig {
 	public static final String WEIXIN_PREFIX = "/payment/weixin";
 	public static final String ALI_PREFIX = "/payment/ali";

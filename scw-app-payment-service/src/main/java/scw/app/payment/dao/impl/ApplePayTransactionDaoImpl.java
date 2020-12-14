@@ -2,10 +2,10 @@ package scw.app.payment.dao.impl;
 
 import scw.app.payment.dao.ApplePayTransactionDao;
 import scw.app.payment.pojo.ApplePayTransaction;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.db.DB;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class ApplePayTransactionDaoImpl implements ApplePayTransactionDao {
 	private DB db;
 

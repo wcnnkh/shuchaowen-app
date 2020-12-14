@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scw.app.user.pojo.User;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.http.HttpCookie;
 import scw.mvc.HttpChannel;
 import scw.mvc.security.UserSessionResolver;
 import scw.security.session.UserSession;
 import scw.util.XUtils;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class DefaultUserControllerService implements UserControllerService {
 
 	public Map<String, Object> login(User user, HttpChannel httpChannel) {

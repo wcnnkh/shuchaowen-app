@@ -8,7 +8,7 @@
 	<form class="layui-form">
 		<div class="layui-form-item">
 			<label for="name" class="layui-form-label"> <span
-					class="x-red">*</span>璐﹀彿
+					class="x-red">*</span>账号
 			</label>
 			<div class="layui-input-inline">
 				<input type="text" name="username" required="" value="${(admin.username)! }"
@@ -16,20 +16,20 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label for="name" class="layui-form-label">瀵嗙爜
+			<label for="name" class="layui-form-label">密码
 			</label>
 			<div class="layui-input-inline">
 				<input type="text" name="password"
 					   autocomplete="off" class="layui-input">
 			</div>
 			<#if admin??>
-			<div class="layui-form-mid layui-word-aux">(濡傛棤闇�淇敼璇蜂笉瑕佸煷鍐�)</div>
+			<div class="layui-form-mid layui-word-aux">(如无需修改请不要埴写)</div>
 			</#if>
 		</div>
 
 		<div class="layui-form-item">
 			<label for="name" class="layui-form-label"> <span
-					class="x-red">*</span>鍚嶇О
+					class="x-red">*</span>名称
 			</label>
 			<div class="layui-input-inline">
 				<input type="text" name="nickname" required="" value="${(admin.nickname)! }"
@@ -39,7 +39,7 @@
 
 		<div class="layui-form-item">
 			<label for="name" class="layui-form-label"> <span
-					class="x-red">*</span>鍒嗙粍
+					class="x-red">*</span>分组
 			</label>
 			<div class="layui-input-inline">
 				<select name="groupId">
@@ -52,20 +52,19 @@
 
 		<div class="layui-form-item">
 			<label for="status" class="layui-form-label"> <span
-					class="x-red">*</span>鐘舵��
+					class="x-red">*</span>状态
 			</label>
 			<div class="layui-input-inline">
 				<select name="disable">
-					<option value="false" ${((admin.disable)!false)?then("", "selected='selected'") }>鍚敤</option>
-					<option value="true" ${((admin.disable)!false)?then("selected='selected'","") }>绂佺敤</option>
+					<option value="false" ${((admin.disable)!false)?then("", "selected='selected'") }>启用</option>
+					<option value="true" ${((admin.disable)!false)?then("selected='selected'","") }>禁用</option>
 				</select>
 			</div>
 		</div>
 
 		<div class="layui-form-item">
 			<label for="L_repass" class="layui-form-label"> </label>
-			<button class="layui-btn" lay-filter="add" lay-submit="">
-				淇濆瓨</button>
+			<button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
 		</div>
 	</form>
 </div>
@@ -75,7 +74,6 @@
 		var form = layui.form
 				,layer = layui.layer;
 
-		//鐩戝惉鎻愪氦
 		form.on('submit(add)', function(data){
 			var requestData = data.field;
 			requestData.toUid = "${(admin.uid)!}";
@@ -88,13 +86,13 @@
 					if(response.code != 0){
 						layer.alert(response.msg, {icon: 5});
 					}else{
-						layer.alert("鎿嶄綔鎴愬姛", {icon: 6},function () {
+						layer.alert("操作成功", {icon: 6},function () {
 							parent.location.reload();
 						});
 					}
 				},
 				error:function(){
-					layer.msg("缃戠粶鎴栫郴缁熼敊璇紝璇风◢鍚庨噸璇�", {icon: 5});
+					layer.msg("网络或系统错误，请稍后重试", {icon: 5});
 				}
 			})
 			return false;

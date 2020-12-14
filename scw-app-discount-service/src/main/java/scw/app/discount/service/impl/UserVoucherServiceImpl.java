@@ -6,12 +6,12 @@ import scw.app.discount.pojo.UserVoucher;
 import scw.app.discount.pojo.UserVoucherLog;
 import scw.app.discount.service.UserVoucherService;
 import scw.app.util.BaseServiceConfiguration;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.db.DB;
 import scw.result.Result;
 import scw.result.ResultFactory;
 
-@Configuration(order=Integer.MIN_VALUE)
+@Service
 public class UserVoucherServiceImpl extends BaseServiceConfiguration implements UserVoucherService {
 
 	public UserVoucherServiceImpl(DB db, ResultFactory resultFactory) {
