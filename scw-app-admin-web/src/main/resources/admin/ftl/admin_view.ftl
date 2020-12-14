@@ -64,8 +64,7 @@
 
 		<div class="layui-form-item">
 			<label for="L_repass" class="layui-form-label"> </label>
-			<button class="layui-btn" lay-filter="add" lay-submit="">
-				保存</button>
+			<button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
 		</div>
 	</form>
 </div>
@@ -75,7 +74,6 @@
 		var form = layui.form
 				,layer = layui.layer;
 
-		//监听提交
 		form.on('submit(add)', function(data){
 			var requestData = data.field;
 			requestData.toUid = "${(admin.uid)!}";

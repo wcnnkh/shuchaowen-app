@@ -3,11 +3,11 @@ package scw.app.user.service.impl;
 import scw.app.user.pojo.UserSettings;
 import scw.app.user.service.UserSettingsService;
 import scw.app.util.BaseServiceConfiguration;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.db.DB;
 import scw.result.ResultFactory;
 
-@Configuration(order=Integer.MIN_VALUE)
+@Service
 public class UserSettingsServiceImpl extends BaseServiceConfiguration implements UserSettingsService{
 	
 	public UserSettingsServiceImpl(DB db, ResultFactory resultFactory) {

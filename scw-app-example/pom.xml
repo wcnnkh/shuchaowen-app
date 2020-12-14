@@ -17,6 +17,10 @@
 			<groupId>scw-app</groupId>
 			<artifactId>scw-app-integration</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-sqlite</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

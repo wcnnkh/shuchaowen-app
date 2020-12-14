@@ -5,12 +5,12 @@ import java.util.List;
 import scw.app.payment.dao.RefundOrderDao;
 import scw.app.payment.model.RefundRequest;
 import scw.app.payment.pojo.RefundOrder;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.db.DB;
 import scw.mapper.Copy;
 import scw.sql.SimpleSql;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class RefundOrderDaoImpl implements RefundOrderDao {
 	private DB db;
 

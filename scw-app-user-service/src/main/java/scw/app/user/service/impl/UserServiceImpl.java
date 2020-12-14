@@ -16,12 +16,12 @@ import scw.app.user.service.UserService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
+import scw.beans.annotation.Service;
 import scw.core.GlobalPropertyFactory;
-import scw.core.instance.annotation.Configuration;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
-import scw.event.support.EventType;
+import scw.event.EventType;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -33,7 +33,7 @@ import scw.sql.WhereSql;
 import scw.util.Pagination;
 import scw.value.property.PropertyFactory;
 
-@Configuration(order = Integer.MIN_VALUE)
+@Service
 public class UserServiceImpl extends BaseServiceConfiguration implements
 		UserService {
 	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance()

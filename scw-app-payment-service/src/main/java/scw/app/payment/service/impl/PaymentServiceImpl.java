@@ -3,18 +3,6 @@ package scw.app.payment.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.domain.AlipayTradeCloseModel;
-import com.alipay.api.domain.AlipayTradeRefundModel;
-import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayTradeCloseRequest;
-import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.response.AlipayTradeAppPayResponse;
-import com.alipay.api.response.AlipayTradeCloseResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
-
 import scw.app.logistics.enums.LogisticsStatus;
 import scw.app.payment.PaymentConfig;
 import scw.app.payment.dao.ApplePayTransactionDao;
@@ -34,7 +22,7 @@ import scw.apple.pay.InApp;
 import scw.apple.pay.VerifyReceiptRequest;
 import scw.apple.pay.VerifyReceiptResponse;
 import scw.beans.annotation.Autowired;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.result.DataResult;
 import scw.result.Result;
 import scw.result.ResultFactory;
@@ -45,7 +33,19 @@ import scw.tencent.wx.pay.WeiXinPay;
 import scw.tencent.wx.pay.WeiXinPayResponse;
 import scw.util.Pagination;
 
-@Configuration(order = Integer.MIN_VALUE)
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.domain.AlipayTradeCloseModel;
+import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradeCloseRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.alipay.api.response.AlipayTradeCloseResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
+
+@Service
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private ResultFactory resultFactory;

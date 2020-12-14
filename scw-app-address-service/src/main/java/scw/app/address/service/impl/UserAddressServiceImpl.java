@@ -12,7 +12,7 @@ import scw.app.address.service.AddressService;
 import scw.app.address.service.UserAddressService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Autowired;
-import scw.core.instance.annotation.Configuration;
+import scw.beans.annotation.Service;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
@@ -21,7 +21,7 @@ import scw.result.DataResult;
 import scw.result.ResultFactory;
 import scw.sql.SimpleSql;
 
-@Configuration
+@Service
 public class UserAddressServiceImpl extends BaseServiceConfiguration implements UserAddressService {
 	@Autowired
 	private AddressService addressService;
