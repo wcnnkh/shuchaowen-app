@@ -20,7 +20,7 @@ public class ExampleApplication {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		MainApplication.run(ExampleApplication.class);
+		MainApplication.run(ExampleApplication.class, args);
 	}
 	
 	/**
