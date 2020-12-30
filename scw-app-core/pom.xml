@@ -10,7 +10,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>scw</groupId>
-			<artifactId>scw-cloud</artifactId>
+			<artifactId>scw-tcc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
@@ -20,7 +20,10 @@
 			<groupId>scw</groupId>
 			<artifactId>scw-security</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-result</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>scw</groupId>
 			<artifactId>scw-mvc</artifactId>
