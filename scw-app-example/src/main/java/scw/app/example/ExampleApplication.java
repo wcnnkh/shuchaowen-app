@@ -1,7 +1,7 @@
 package scw.app.example;
 
-import scw.application.MainApplication;
 import scw.beans.annotation.Bean;
+import scw.boot.MainApplication;
 import scw.core.GlobalPropertyFactory;
 import scw.db.DB;
 import scw.http.server.cors.Cors;
