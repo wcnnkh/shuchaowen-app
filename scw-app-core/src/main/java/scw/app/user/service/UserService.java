@@ -9,8 +9,8 @@ import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.UidToUnionId;
 import scw.app.user.pojo.UnionIdToUid;
 import scw.app.user.pojo.User;
-import scw.result.DataResult;
-import scw.result.Result;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
 import scw.util.Pagination;
 
 public interface UserService {

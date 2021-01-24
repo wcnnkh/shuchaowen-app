@@ -1,7 +1,7 @@
 package scw.app.util;
 
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.ResultFactory;
 
 public class BaseServiceConfiguration {
 	protected final DB db;

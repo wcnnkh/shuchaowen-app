@@ -4,8 +4,8 @@ import scw.app.user.pojo.UserSettings;
 import scw.app.user.service.UserSettingsService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.ResultFactory;
 
 @Service
 public class UserSettingsServiceImpl extends BaseServiceConfiguration implements UserSettingsService{

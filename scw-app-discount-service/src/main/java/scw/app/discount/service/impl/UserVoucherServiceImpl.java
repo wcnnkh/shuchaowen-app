@@ -7,9 +7,9 @@ import scw.app.discount.pojo.UserVoucherLog;
 import scw.app.discount.service.UserVoucherService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.Result;
-import scw.result.ResultFactory;
 
 @Service
 public class UserVoucherServiceImpl extends BaseServiceConfiguration implements UserVoucherService {

@@ -2,14 +2,14 @@ package scw.app.vc.service;
 
 import scw.app.vc.enums.VerificationCodeType;
 import scw.app.vc.model.VerificationCodeInfo;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.data.TemporaryCache;
 import scw.logger.Level;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.util.RandomUtils;
 
 public abstract class AbstractVerificationCodeService {

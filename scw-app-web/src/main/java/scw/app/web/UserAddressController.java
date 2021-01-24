@@ -15,11 +15,11 @@ import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.http.HttpMethod;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.Controller;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.security.session.UserSession;
 
 @Controller(value = "/user/address", methods = { HttpMethod.GET, HttpMethod.POST })

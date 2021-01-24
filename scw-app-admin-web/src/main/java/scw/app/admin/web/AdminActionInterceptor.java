@@ -1,8 +1,9 @@
 package scw.app.admin.web;
 
 import scw.beans.annotation.Autowired;
-import scw.core.GlobalPropertyFactory;
-import scw.core.instance.annotation.SPI;
+import scw.context.annotation.Provider;
+import scw.context.result.ResultFactory;
+import scw.env.SystemEnvironment;
 import scw.event.Observable;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
@@ -10,11 +11,10 @@ import scw.mvc.action.ActionInterceptor;
 import scw.mvc.action.ActionInterceptorChain;
 import scw.mvc.action.ActionParameters;
 import scw.mvc.page.Page;
-import scw.result.ResultFactory;
 
-@SPI
+@Provider
 public class AdminActionInterceptor implements ActionInterceptor {
-	public static final Observable<String> ADMIN_WEBSITE_NAME = GlobalPropertyFactory
+	public static final Observable<String> ADMIN_WEBSITE_NAME = SystemEnvironment
 			.getInstance().getObservableValue("admin.website.name",
 					String.class, "后台管理系统");
 

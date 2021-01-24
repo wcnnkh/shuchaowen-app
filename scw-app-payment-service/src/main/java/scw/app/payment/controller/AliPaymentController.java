@@ -13,6 +13,7 @@ import scw.app.payment.event.PaymentEvent;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.service.PaymentService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
 import scw.json.JSONUtils;
@@ -20,7 +21,6 @@ import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mvc.MVCUtils;
 import scw.mvc.annotation.Controller;
-import scw.result.Result;
 
 @Controller(value = PaymentConfig.ALI_PREFIX, methods = HttpMethod.POST)
 public class AliPaymentController {

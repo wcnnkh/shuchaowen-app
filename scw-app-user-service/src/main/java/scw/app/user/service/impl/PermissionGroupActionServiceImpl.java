@@ -7,9 +7,9 @@ import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.Result;
-import scw.result.ResultFactory;
 
 @Service
 public class PermissionGroupActionServiceImpl extends BaseServiceConfiguration implements PermissionGroupActionService {

@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.model.ElementUiTree;
 import scw.app.user.model.PermissionGroupInfo;
 import scw.app.user.pojo.PermissionGroup;
-import scw.result.DataResult;
+import scw.context.result.DataResult;
 
 public interface PermissionGroupService {
 	PermissionGroup getById(int id);

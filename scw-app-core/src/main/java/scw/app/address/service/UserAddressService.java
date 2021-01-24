@@ -5,7 +5,7 @@ import java.util.List;
 import scw.app.address.model.UserAddressInfo;
 import scw.app.address.model.UserAddressModel;
 import scw.app.address.pojo.UserAddress;
-import scw.result.DataResult;
+import scw.context.result.DataResult;
 
 /**
  * 用户地址管理

@@ -15,6 +15,8 @@ import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.ActionAuthority;
@@ -23,8 +25,6 @@ import scw.mvc.annotation.Controller;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
 import scw.mvc.security.HttpActionAuthorityManager;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
 import scw.security.session.UserSession;
 

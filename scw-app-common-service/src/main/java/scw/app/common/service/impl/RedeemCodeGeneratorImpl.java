@@ -7,8 +7,8 @@ import org.apache.commons.codec.binary.Base32;
 import scw.app.common.service.RedeemCodeGenerator;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.ResultFactory;
 
 @Service
 public class RedeemCodeGeneratorImpl extends BaseServiceConfiguration implements RedeemCodeGenerator {

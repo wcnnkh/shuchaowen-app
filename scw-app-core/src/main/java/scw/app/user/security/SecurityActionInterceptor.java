@@ -6,8 +6,9 @@ import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.context.annotation.Provider;
+import scw.context.result.ResultFactory;
 import scw.core.annotation.AnnotationUtils;
-import scw.core.instance.annotation.SPI;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.mvc.action.ActionInterceptor;
@@ -17,11 +18,10 @@ import scw.mvc.action.ActionParameters;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.mvc.view.Redirect;
-import scw.result.ResultFactory;
 import scw.security.authority.http.HttpAuthority;
 import scw.security.session.UserSession;
 
-@SPI
+@Provider
 public class SecurityActionInterceptor implements ActionInterceptor, ActionInterceptorAccept {
 	public static final String ADMIN_LOGIN_PATH = "/admin/to_login";
 	public static final String ADMIN_PATH_PREFIX = "/admin";

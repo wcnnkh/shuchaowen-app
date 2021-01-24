@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import scw.app.user.pojo.PermissionGroupAction;
-import scw.result.Result;
+import scw.context.result.Result;
 
 public interface PermissionGroupActionService {
 	boolean check(int groupId, String actionId);

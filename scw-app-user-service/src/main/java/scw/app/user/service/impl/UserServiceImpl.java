@@ -17,26 +17,27 @@ import scw.app.util.BaseServiceConfiguration;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
-import scw.core.GlobalPropertyFactory;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
+import scw.env.Environment;
+import scw.env.SystemEnvironment;
+import scw.env.support.DefaultEnvironment;
 import scw.event.EventType;
-import scw.result.DataResult;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.security.SignatureUtils;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
 import scw.sql.SqlUtils;
 import scw.sql.WhereSql;
 import scw.util.Pagination;
-import scw.value.property.PropertyFactory;
 
 @Service
 public class UserServiceImpl extends BaseServiceConfiguration implements
 		UserService {
-	public static String ADMIN_NAME = GlobalPropertyFactory.getInstance()
+	public static String ADMIN_NAME = SystemEnvironment.getInstance()
 			.getValue("scw.admin.username", String.class, "admin");
 
 	@Autowired(required = false)
@@ -47,16 +48,16 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 	private AppEventDispatcher appEventDispatcher;
 
 	public UserServiceImpl(DB db, ResultFactory resultFactory,
-			PropertyFactory propertyFactory) {
+			Environment environment) {
 		super(db, resultFactory);
 		db.createTable(User.class, false);
 		User user = getUserByAccount(AccountType.USERNAME, ADMIN_NAME);
 		if (user == null) {
 			AdminUserModel adminUserModel = new AdminUserModel();
 			adminUserModel.setUsername(ADMIN_NAME);
-			adminUserModel.setNickname(propertyFactory.getValue(
+			adminUserModel.setNickname(environment.getValue(
 					"scw.admin.nickname", String.class, "超级管理员"));
-			adminUserModel.setPassword(propertyFactory.getValue(
+			adminUserModel.setPassword(environment.getValue(
 					"scw.admin.password", String.class, "123456"));
 			createOrUpdateAdminUser(0, adminUserModel);
 		}

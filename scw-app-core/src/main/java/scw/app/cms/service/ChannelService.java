@@ -5,8 +5,8 @@ import java.util.List;
 import scw.app.cms.model.BasicChannel;
 import scw.app.cms.model.ChannelTree;
 import scw.app.cms.pojo.Channel;
-import scw.result.DataResult;
-import scw.result.Result;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
 
 public interface ChannelService {
 	Channel getChannel(int id);

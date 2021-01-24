@@ -1,7 +1,7 @@
 package scw.app.discount.service;
 
 import scw.app.discount.pojo.UserAccumulatedPoints;
-import scw.result.Result;
+import scw.context.result.Result;
 import scw.tcc.annotation.Tcc;
 import scw.tcc.annotation.TccStage;
 import scw.tcc.annotation.TryResult;

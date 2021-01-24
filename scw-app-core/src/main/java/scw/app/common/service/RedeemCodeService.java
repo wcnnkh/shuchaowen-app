@@ -4,8 +4,8 @@ import java.util.List;
 
 import scw.app.common.pojo.RedeemCode;
 import scw.app.common.pojo.UserRedeemCodeLog;
-import scw.result.DataResult;
-import scw.result.Result;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
 import scw.util.Pagination;
 
 public interface RedeemCodeService {

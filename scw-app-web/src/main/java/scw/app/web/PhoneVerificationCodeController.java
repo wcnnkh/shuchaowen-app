@@ -9,13 +9,13 @@ import scw.app.user.service.UserService;
 import scw.app.vc.enums.VerificationCodeType;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
-import scw.result.DataResult;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.security.session.UserSession;
 
 @Controller(value = "/phone/code", methods = { HttpMethod.GET, HttpMethod.POST })

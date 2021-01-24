@@ -1,9 +1,9 @@
 package scw.app.example;
 
 import scw.beans.annotation.Bean;
-import scw.boot.MainApplication;
-import scw.core.GlobalPropertyFactory;
+import scw.boot.support.MainApplication;
 import scw.db.DB;
+import scw.env.SystemEnvironment;
 import scw.http.server.cors.Cors;
 import scw.http.server.cors.CorsRegistry;
 import scw.mvc.annotation.Controller;
@@ -39,7 +39,7 @@ public class ExampleApplication {
 	 */
 	@Bean
 	public DB getDB() {
-		return new SQLiteDB(GlobalPropertyFactory.getInstance().getWorkPath()
+		return new SQLiteDB(SystemEnvironment.getInstance().getWorkPath()
 				+ "/scw-app-example.db");
 	}
 
