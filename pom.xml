@@ -12,7 +12,6 @@
 	<modules>
 		<module>scw-app-user-service</module>
 		<module>scw-app-admin-web</module>
-		<module>scw-app-example</module>
 		<module>scw-app-product-service</module>
 		<module>scw-app-cms-service</module>
 		<module>scw-app-common-service</module>
