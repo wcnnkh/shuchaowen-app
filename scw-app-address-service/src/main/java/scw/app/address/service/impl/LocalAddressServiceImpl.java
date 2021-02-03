@@ -16,8 +16,8 @@ import scw.beans.annotation.Service;
 import scw.beans.annotation.Value;
 import scw.beans.ioc.value.JsonFileValueProcesser;
 import scw.core.utils.CollectionUtils;
+import scw.env.Environment;
 import scw.io.Resource;
-import scw.io.ResourceUtils;
 import scw.json.JsonArray;
 import scw.json.JsonElement;
 import scw.json.JsonObject;
@@ -33,7 +33,12 @@ public class LocalAddressServiceImpl implements AddressService {
 	private volatile Map<Integer, Address> addressMap = Collections.emptyMap();
 	private volatile List<Address> rootAddressList = Collections.emptyList();
 	private volatile Map<Integer, List<Address>> subListMap = Collections.emptyMap();
-
+	private Environment environment;
+	
+	public LocalAddressServiceImpl(Environment environment) {
+		this.environment = environment;
+	}
+	
 	@Value(value = RESOURCE, processer = JsonFileValueProcesser.class)
 	public void setLocalAddressJson(JsonObject jsonObject) {
 		List<Address> list = parseAddressList(jsonObject);
@@ -202,7 +207,7 @@ public class LocalAddressServiceImpl implements AddressService {
 	}
 
 	public long lastModified() {
-		Resource resource = ResourceUtils.getResourceOperations().getResource(RESOURCE);
+		Resource resource = environment.getResource(RESOURCE);
 		if (resource == null || !resource.exists()) {
 			return -1;
 		}

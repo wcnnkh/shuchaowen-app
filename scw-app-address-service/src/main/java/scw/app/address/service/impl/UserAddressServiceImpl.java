@@ -13,12 +13,12 @@ import scw.app.address.service.UserAddressService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
+import scw.context.result.DataResult;
+import scw.context.result.ResultFactory;
 import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.mapper.Copy;
-import scw.result.DataResult;
-import scw.result.ResultFactory;
 import scw.sql.SimpleSql;
 
 @Service

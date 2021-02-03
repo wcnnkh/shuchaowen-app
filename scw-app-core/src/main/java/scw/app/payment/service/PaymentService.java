@@ -10,8 +10,8 @@ import scw.app.payment.model.PaymentResponse;
 import scw.app.payment.model.RefundRequest;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.pojo.RefundOrder;
-import scw.result.DataResult;
-import scw.result.Result;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
 import scw.util.Pagination;
 
 public interface PaymentService {

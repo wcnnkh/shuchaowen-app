@@ -2,8 +2,8 @@ package scw.app.cms.service;
 
 import scw.app.cms.model.BasicContent;
 import scw.app.cms.pojo.Content;
-import scw.result.DataResult;
-import scw.result.Result;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
 
 /**
  * 内容服务

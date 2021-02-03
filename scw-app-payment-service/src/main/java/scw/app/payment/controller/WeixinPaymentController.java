@@ -8,6 +8,8 @@ import scw.app.payment.event.PaymentEvent;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.service.PaymentService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.BaseResult;
+import scw.context.result.Result;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.json.JSONUtils;
@@ -15,8 +17,6 @@ import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mvc.annotation.Controller;
 import scw.mvc.parameter.XmlMap;
-import scw.result.BaseResult;
-import scw.result.Result;
 import scw.tencent.wx.pay.WeiXinPay;
 
 @Controller(value = PaymentConfig.WEIXIN_PREFIX, methods = HttpMethod.POST)

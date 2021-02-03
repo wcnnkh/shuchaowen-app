@@ -9,10 +9,10 @@ import scw.app.common.service.RedeemCodeGenerator;
 import scw.app.common.service.RedeemCodeService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.DataResult;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.sql.WhereSql;
 import scw.util.Pagination;
 

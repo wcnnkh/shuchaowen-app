@@ -9,6 +9,8 @@ import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpCookie;
 import scw.http.HttpMethod;
@@ -17,8 +19,6 @@ import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
 import scw.mvc.security.UserSessionResolver;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.security.login.UserToken;
 import scw.security.session.UserSession;
 

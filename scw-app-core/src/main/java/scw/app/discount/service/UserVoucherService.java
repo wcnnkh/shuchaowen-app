@@ -3,7 +3,7 @@ package scw.app.discount.service;
 import java.util.List;
 
 import scw.app.discount.pojo.UserVoucher;
-import scw.result.Result;
+import scw.context.result.Result;
 import scw.tcc.annotation.Tcc;
 import scw.tcc.annotation.TccStage;
 import scw.tcc.annotation.TryResult;

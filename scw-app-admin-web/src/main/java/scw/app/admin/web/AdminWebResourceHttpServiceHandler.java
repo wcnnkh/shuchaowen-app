@@ -1,10 +1,10 @@
 package scw.app.admin.web;
 
-import scw.core.instance.annotation.SPI;
+import scw.context.annotation.Provider;
 import scw.http.server.resource.DefaultStaticResourceLoader;
 import scw.http.server.resource.StaticResourceHttpServiceHandler;
 
-@SPI
+@Provider
 public class AdminWebResourceHttpServiceHandler extends StaticResourceHttpServiceHandler {
 
 	public AdminWebResourceHttpServiceHandler() {

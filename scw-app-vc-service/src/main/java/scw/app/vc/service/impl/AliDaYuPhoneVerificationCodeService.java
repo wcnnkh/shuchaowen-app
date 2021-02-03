@@ -9,10 +9,10 @@ import scw.alibaba.dayu.Sender;
 import scw.app.vc.enums.VerificationCodeType;
 import scw.app.vc.service.AbstractVerificationCodeService;
 import scw.app.vc.service.PhoneVerificationCodeService;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.data.TemporaryCache;
-import scw.result.Result;
-import scw.result.ResultFactory;
 
 public class AliDaYuPhoneVerificationCodeService extends AbstractVerificationCodeService
 		implements PhoneVerificationCodeService {

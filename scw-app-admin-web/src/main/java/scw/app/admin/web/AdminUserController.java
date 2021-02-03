@@ -12,6 +12,7 @@ import scw.app.user.security.LoginRequired;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
 import scw.core.parameter.annotation.DefaultValue;
 import scw.core.utils.CollectionUtils;
 import scw.http.HttpMethod;
@@ -21,7 +22,6 @@ import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
-import scw.result.Result;
 import scw.security.session.UserSession;
 import scw.util.Pagination;
 

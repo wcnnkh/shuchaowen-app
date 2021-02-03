@@ -4,8 +4,8 @@ import scw.app.common.pojo.UserEveryDayTouch;
 import scw.app.common.service.UserEveryDayTouchService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.ResultFactory;
 
 @Service
 public class UserEveryDayTouchServiceImpl extends BaseServiceConfiguration implements UserEveryDayTouchService {

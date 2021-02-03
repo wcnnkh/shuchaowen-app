@@ -3,7 +3,7 @@ package scw.app.common.service;
 import java.util.List;
 
 import scw.app.common.pojo.UserRelationship;
-import scw.result.Result;
+import scw.context.result.Result;
 
 public interface UserRelationshipService {
 	UserRelationship getUserRelationship(long uid, int type, long toUid);

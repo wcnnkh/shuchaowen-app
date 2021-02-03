@@ -1,7 +1,7 @@
 package scw.app.vc.service;
 
 import scw.app.vc.enums.VerificationCodeType;
-import scw.result.Result;
+import scw.context.result.Result;
 
 /**
  * 手机号验证码服务

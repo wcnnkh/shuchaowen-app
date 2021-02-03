@@ -12,12 +12,12 @@ import scw.app.user.service.PermissionGroupService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
+import scw.context.result.DataResult;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.CollectionUtils;
 import scw.db.DB;
 import scw.io.SerializerUtils;
-import scw.result.DataResult;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.sql.SimpleSql;
 
 @Service

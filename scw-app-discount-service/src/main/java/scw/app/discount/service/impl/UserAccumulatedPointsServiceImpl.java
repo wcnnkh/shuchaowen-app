@@ -5,9 +5,9 @@ import scw.app.discount.pojo.UserAccumulatedPointsLog;
 import scw.app.discount.service.UserAccumulatedPointsService;
 import scw.app.util.BaseServiceConfiguration;
 import scw.beans.annotation.Service;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.db.DB;
-import scw.result.Result;
-import scw.result.ResultFactory;
 
 @Service
 public class UserAccumulatedPointsServiceImpl extends BaseServiceConfiguration implements UserAccumulatedPointsService {

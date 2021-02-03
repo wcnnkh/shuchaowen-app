@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scw.beans.annotation.Autowired;
+import scw.context.result.Result;
+import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.ActionAuthority;
@@ -11,8 +13,6 @@ import scw.mvc.annotation.Controller;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
 import scw.mvc.view.View;
-import scw.result.Result;
-import scw.result.ResultFactory;
 import scw.value.Value;
 import scw.zookeeper.ZookeeperCloudPropertyFactory;
 
