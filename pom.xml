@@ -16,7 +16,6 @@
 		<module>scw-app-cms-service</module>
 		<module>scw-app-common-service</module>
 		<module>scw-app-core</module>
-		<module>scw-app-integration</module>
 		<module>scw-app-vc-service</module>
 		<module>scw-app-discount-service</module>
 		<module>scw-app-address-service</module>
@@ -59,11 +58,6 @@
 			<dependency>
 				<groupId>scw-app</groupId>
 				<artifactId>scw-app-vc-service</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>scw-app</groupId>
-				<artifactId>scw-app-integration</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
