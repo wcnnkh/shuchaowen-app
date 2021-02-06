@@ -5,6 +5,7 @@ import java.util.Map;
 import scw.app.user.enums.AccountType;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
+import scw.app.user.security.UserLoginService;
 import scw.app.user.service.UserService;
 import scw.app.vc.enums.VerificationCodeType;
 import scw.app.vc.service.PhoneVerificationCodeService;
@@ -25,7 +26,7 @@ public class PhoneVerificationCodeController {
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
-	private UserControllerService userControllerService;
+	private UserLoginService userControllerService;
 
 	public PhoneVerificationCodeController(PhoneVerificationCodeService phoneVerificationCodeService,
 			UserService userService) {

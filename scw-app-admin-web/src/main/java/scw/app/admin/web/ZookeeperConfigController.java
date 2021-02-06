@@ -16,7 +16,7 @@ import scw.mvc.view.View;
 import scw.value.Value;
 import scw.zookeeper.ZookeeperCloudPropertyFactory;
 
-@Controller(value="/admin/zookeeper/config", methods={HttpMethod.GET, HttpMethod.POST})
+@Controller(value= AdminConstants.ADMIN_CONTROLLER_PREFIX + "/zookeeper/config", methods={HttpMethod.GET, HttpMethod.POST})
 public class ZookeeperConfigController {
 	private final ZookeeperCloudPropertyFactory cloudPropertyFactory;
 	@Autowired

@@ -14,7 +14,7 @@ import scw.mvc.page.PageFactory;
 import scw.util.Pagination;
 
 @LoginRequired
-@Controller(value = "/admin/payment")
+@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX + "/payment")
 @ActionAuthority(value = "支付管理", menu = true)
 public class PaymentController {
 	@Autowired

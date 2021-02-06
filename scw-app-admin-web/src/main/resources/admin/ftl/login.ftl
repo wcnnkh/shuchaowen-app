@@ -29,7 +29,7 @@
               //监听提交
               form.on('submit(login)', function(data){
             	$.ajax({
-            		"url": "/user/login",
+            		"url": "login",
             		"method":"POST",
             		"dataType":"json",
             		"data":data.field,
@@ -38,7 +38,7 @@
             				layer.msg(response.msg, {icon: 5});
             				return ;
             			}
-            			window.location.href = "${_request.contextPath}/admin";
+            			window.location.href = "";
             		},
             		error:function(){
             			layer.msg("网络或系统错误，请稍后重试", {icon: 5});

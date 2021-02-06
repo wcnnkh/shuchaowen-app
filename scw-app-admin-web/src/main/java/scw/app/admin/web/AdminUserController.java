@@ -27,7 +27,7 @@ import scw.util.Pagination;
 
 @LoginRequired
 @ActionAuthority(value = "系统设置", menu = true)
-@Controller(value = "/admin")
+@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX)
 public class AdminUserController {
 	private UserService userService;
 	@Autowired
