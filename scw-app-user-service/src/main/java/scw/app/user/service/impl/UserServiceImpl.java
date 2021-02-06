@@ -25,7 +25,6 @@ import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.env.Environment;
 import scw.env.SystemEnvironment;
-import scw.env.support.DefaultEnvironment;
 import scw.event.EventType;
 import scw.security.SignatureUtils;
 import scw.sql.SimpleSql;
