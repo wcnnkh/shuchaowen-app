@@ -8,6 +8,7 @@ import scw.app.user.enums.UnionIdType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
+import scw.app.user.security.UserLoginService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.context.result.DataResult;
@@ -39,7 +40,7 @@ public class WeiXinController {
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
-	private UserControllerService userControllerService;
+	private UserLoginService userControllerService;
 	@Autowired(required=false)
 	private WeixinMiniprogram weixinMiniprogram;
 

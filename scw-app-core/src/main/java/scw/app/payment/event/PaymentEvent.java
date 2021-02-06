@@ -4,6 +4,7 @@ import scw.app.payment.enums.PaymentStatus;
 import scw.event.BasicEvent;
 
 public class PaymentEvent extends BasicEvent {
+	private static final long serialVersionUID = 1L;
 	private final String orderId;
 	private final PaymentStatus status;
 	private String refundOrderId;// 退款时才存在

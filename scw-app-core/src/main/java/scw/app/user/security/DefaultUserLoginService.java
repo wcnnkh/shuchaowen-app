@@ -1,18 +1,18 @@
-package scw.app.web;
+package scw.app.user.security;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import scw.app.user.pojo.User;
-import scw.beans.annotation.Service;
+import scw.context.annotation.Provider;
 import scw.http.HttpCookie;
 import scw.mvc.HttpChannel;
 import scw.mvc.security.UserSessionResolver;
 import scw.security.session.UserSession;
 import scw.util.XUtils;
 
-@Service
-public class DefaultUserControllerService implements UserControllerService {
+@Provider
+public class DefaultUserLoginService implements UserLoginService {
 
 	public Map<String, Object> login(User user, HttpChannel httpChannel) {
 		Map<String, Object> map = new HashMap<String, Object>(8);

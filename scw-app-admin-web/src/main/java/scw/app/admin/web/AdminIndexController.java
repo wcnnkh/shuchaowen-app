@@ -1,14 +1,18 @@
 package scw.app.admin.web;
 
 import java.util.List;
+import java.util.Map;
 
+import scw.app.user.enums.AccountType;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
 import scw.app.user.security.SecurityActionInterceptor;
+import scw.app.user.security.UserLoginService;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
+import scw.beans.annotation.Value;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.CollectionUtils;
@@ -16,6 +20,7 @@ import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
 import scw.mapper.MapperUtils;
+import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.mvc.page.Page;
 import scw.mvc.page.PageFactory;
@@ -27,7 +32,7 @@ import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
 import scw.security.session.UserSession;
 
-@Controller(value = "admin")
+@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX)
 public class AdminIndexController {
 	private UserService userService;
 	@Autowired
@@ -37,6 +42,11 @@ public class AdminIndexController {
 	private PermissionGroupActionService permissionGroupActionService;
 	@Autowired
 	private PageFactory pageFactory;
+	@Autowired
+	private UserLoginService userLoginService;
+	
+	@Value(AdminConstants.ADMIN_CONTROLLER_PREFIX)
+	private String controllerPrefix;
 
 	public AdminIndexController(UserService userService, PermissionGroupActionService permissionGroupActionService) {
 		this.userService = userService;
@@ -60,6 +70,30 @@ public class AdminIndexController {
 			return httpActionAuthorityManager.getRelationAuthorityTreeList(actionIds,
 					new MenuAuthorityFilter<HttpAuthority>());
 		}
+	}
+	
+	@Controller(value = "login", methods=HttpMethod.POST)
+	public Result login(String username, String password, HttpChannel httpChannel) {
+		if (StringUtils.isEmpty(username, password)) {
+			return resultFactory.parameterError();
+		}
+
+		User user = userService.getUserByAccount(AccountType.USERNAME, username);
+		if (user == null) {
+			user = userService.getUserByAccount(AccountType.PHONE, username);
+		}
+
+		if (user == null) {
+			return resultFactory.error("账号或密码错误");
+		}
+
+		Result result = userService.checkPassword(user.getUid(), password);
+		if (result.isError()) {
+			return result;
+		}
+
+		Map<String, Object> infoMap = userLoginService.login(user, httpChannel);
+		return resultFactory.success(infoMap);
 	}
 
 	@Controller
@@ -111,7 +145,11 @@ public class AdminIndexController {
 	}
 
 	@Controller(value = "login")
-	public View login() {
+	public View login(HttpChannel httpChannel) {
+		UserSession<Long> userSession = httpChannel.getUserSession(Long.class);
+		if(userSession != null){
+			return new Redirect(httpChannel.getRequest().getContextPath() + controllerPrefix);
+		}
 		return pageFactory.getPage("/admin/ftl/login.ftl");
 	}
 

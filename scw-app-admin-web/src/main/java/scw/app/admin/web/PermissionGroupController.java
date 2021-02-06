@@ -30,7 +30,7 @@ import scw.security.session.UserSession;
 
 @LoginRequired
 @ActionAuthorityParent(AdminUserController.class)
-@Controller(value = "admin")
+@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX)
 public class PermissionGroupController {
 	private PermissionGroupService permissionGroupService;
 	private PermissionGroupActionService permissionGroupActionService;

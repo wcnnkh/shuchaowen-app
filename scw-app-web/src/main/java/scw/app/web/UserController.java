@@ -1,25 +1,21 @@
 package scw.app.web;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import scw.app.user.enums.AccountType;
 import scw.app.user.model.UserAttributeModel;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
+import scw.app.user.security.UserLoginService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
-import scw.http.HttpCookie;
 import scw.http.HttpMethod;
-import scw.http.server.ServerHttpResponse;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
-import scw.mvc.security.UserSessionResolver;
-import scw.security.login.UserToken;
 import scw.security.session.UserSession;
 
 @Controller(value = "user", methods = { HttpMethod.GET, HttpMethod.POST })
@@ -28,7 +24,7 @@ public class UserController {
 	@Autowired
 	private ResultFactory resultFactory;
 	@Autowired
-	private UserControllerService userControllerService;
+	private UserLoginService userControllerService;
 
 	public UserController(UserService userService) {
 		this.userService = userService;
@@ -56,19 +52,6 @@ public class UserController {
 
 		Map<String, Object> infoMap = userControllerService.login(user, httpChannel);
 		return resultFactory.success(infoMap);
-	}
-
-	public static Map<String, Object> login(UserToken<Long> userToken, ServerHttpResponse response) {
-		Map<String, Object> map = new HashMap<String, Object>(8);
-		map.put("token", userToken.getToken());
-		map.put("uid", userToken.getUid());
-		HttpCookie uidCookie = new HttpCookie(UserSessionResolver.UID_NAME, userToken.getUid() + "");
-		uidCookie.setPath("/");
-		HttpCookie tokenCookie = new HttpCookie(UserSessionResolver.TOKEN_NAME, userToken.getToken() + "");
-		tokenCookie.setPath("/");
-		response.addCookie(uidCookie);
-		response.addCookie(tokenCookie);
-		return map;
 	}
 
 	@Controller(value = "update")
