@@ -23,6 +23,6 @@ public class PermissionGroupInfo extends PermissionGroupModel{
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(PermissionGroupInfo.class).getValueMap(this).toString();
 	}
 }

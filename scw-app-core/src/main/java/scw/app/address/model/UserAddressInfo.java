@@ -28,6 +28,6 @@ public class UserAddressInfo extends UserAddress {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(UserAddressInfo.class).getValueMap(this).toString();
 	}
 }

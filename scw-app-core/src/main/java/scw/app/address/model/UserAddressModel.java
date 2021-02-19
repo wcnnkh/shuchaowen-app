@@ -51,6 +51,6 @@ public class UserAddressModel implements Serializable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(UserAddressModel.class).getValueMap(this).toString();
 	}
 }

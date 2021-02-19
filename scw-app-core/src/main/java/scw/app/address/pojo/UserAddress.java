@@ -52,6 +52,6 @@ public class UserAddress extends UserAddressModel {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(UserAddress.class).getValueMap(this).toString();
 	}
 }

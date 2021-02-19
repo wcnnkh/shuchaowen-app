@@ -2,7 +2,7 @@ package scw.app.user.enums;
 
 import scw.app.user.pojo.User;
 import scw.mapper.Field;
-import scw.mapper.FilterFeature;
+import scw.mapper.FieldFeature;
 import scw.mapper.MapperUtils;
 
 public enum AccountType {
@@ -22,7 +22,7 @@ public enum AccountType {
 	}
 
 	public Field getField(){
-		return MapperUtils.getMapper().getFields(User.class, FilterFeature.EXISTING_GETTER_FIELD).find(fieldName, String.class);
+		return MapperUtils.getMapper().getFields(User.class).accept(FieldFeature.EXISTING_GETTER_FIELD).find(fieldName, String.class);
 	}
 
 	public String getAccount(User user) {
