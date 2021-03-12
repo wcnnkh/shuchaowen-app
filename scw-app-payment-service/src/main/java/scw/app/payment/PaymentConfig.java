@@ -4,7 +4,7 @@ import scw.app.payment.pojo.Order;
 import scw.apple.pay.ApplePay;
 import scw.core.Assert;
 import scw.core.utils.StringUtils;
-import scw.net.InetUtils;
+import scw.net.uri.UriUtils;
 import scw.tencent.wx.pay.WeiXinPay;
 
 import com.alipay.api.AlipayClient;
@@ -18,7 +18,7 @@ public abstract class PaymentConfig {
 	private final String host;
 
 	public PaymentConfig(String host) {
-		Assert.requiredArgument(InetUtils.isUrl(host), "host");
+		Assert.requiredArgument(UriUtils.isUri(host), "host");
 		this.host = host;
 	}
 
