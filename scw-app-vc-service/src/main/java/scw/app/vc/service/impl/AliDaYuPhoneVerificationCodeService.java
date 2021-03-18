@@ -12,7 +12,7 @@ import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
-import scw.data.TemporaryCache;
+import scw.data.TemporaryStorage;
 
 public class AliDaYuPhoneVerificationCodeService extends AbstractVerificationCodeService
 		implements PhoneVerificationCodeService {
@@ -21,7 +21,7 @@ public class AliDaYuPhoneVerificationCodeService extends AbstractVerificationCod
 	private Sender sender;
 	private String product;
 
-	public AliDaYuPhoneVerificationCodeService(TemporaryCache temporaryCache, Sender sender, String product,
+	public AliDaYuPhoneVerificationCodeService(TemporaryStorage temporaryCache, Sender sender, String product,
 			ResultFactory resultFactory) {
 		super(temporaryCache, resultFactory);
 		this.sender = sender;

@@ -11,7 +11,7 @@ import scw.beans.annotation.Service;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
-import scw.data.TemporaryCache;
+import scw.data.TemporaryStorage;
 import scw.db.DB;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
@@ -21,9 +21,9 @@ import scw.util.CalendarUtils;
 public class UserMembershipCardServiceImpl extends BaseServiceConfiguration implements UserMembershipCardService {
 	private static final String CURRENT_MEMBERSHIP_CARD_CACHE_PREFIX = "user.membership_card.current.id:";
 	private static final int EXP = (int) ((XTime.ONE_DAY * 7) / 1000);
-	private TemporaryCache temporaryCache;
+	private TemporaryStorage temporaryCache;
 
-	public UserMembershipCardServiceImpl(DB db, ResultFactory resultFactory, TemporaryCache temporaryCache) {
+	public UserMembershipCardServiceImpl(DB db, ResultFactory resultFactory, TemporaryStorage temporaryCache) {
 		super(db, resultFactory);
 		this.temporaryCache = temporaryCache;
 		db.createTable(UserMembershipCard.class, false);
