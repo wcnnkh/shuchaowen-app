@@ -42,7 +42,7 @@ public class AliPaymentController {
 		// 切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
 		// boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
 		// publicKey, String charset, String sign_type)
-		logger.info(JSONUtils.toJSONString(params));
+		logger.info(JSONUtils.getJsonSupport().toJSONString(params));
 
 		String out_trade_no = params.get("out_trade_no");
 		Order order = paymentService.getOrder(out_trade_no);

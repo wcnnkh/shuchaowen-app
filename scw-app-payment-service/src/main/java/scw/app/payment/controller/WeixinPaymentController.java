@@ -61,7 +61,7 @@ public class WeixinPaymentController {
 	@Controller(value = PaymentConfig.SUCCESS_CONTROLLER)
 	public String success(XmlMap map) {
 		logger.info("收到微信支付回调:");
-		logger.info(JSONUtils.toJSONString(map));
+		logger.info(JSONUtils.getJsonSupport().toJSONString(map));
 		BaseResult baseResult = check(map);
 		if (!baseResult.isError()) {
 			logger.error("微信支付回调失败：{}", baseResult.getMsg());
@@ -79,7 +79,7 @@ public class WeixinPaymentController {
 	@Controller(value = PaymentConfig.REFUND_CONTROLLER)
 	public String refund(XmlMap map) {
 		logger.info("收到微信退款回调:");
-		logger.info(JSONUtils.toJSONString(map));
+		logger.info(JSONUtils.getJsonSupport().toJSONString(map));
 		BaseResult baseResult = check(map);
 		if (!baseResult.isError()) {
 			logger.error("微信退款回调失败：{}", baseResult.getMsg());
