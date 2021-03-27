@@ -19,6 +19,7 @@ import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.http.server.ServerHttpRequest;
+import scw.mapper.Field;
 import scw.mapper.MapperUtils;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
@@ -66,7 +67,8 @@ public class AdminIndexController {
 			}
 			List<PermissionGroupAction> actions = permissionGroupActionService
 					.getActionList(user.getPermissionGroupId());
-			List<String> actionIds = MapperUtils.getMapper().getFieldValueList(actions, "actionId");
+			Field field = MapperUtils.getMapper().getFields(PermissionGroupAction.class).find("actionId", null);
+			List<String> actionIds = field.getValues(actions);
 			return httpActionAuthorityManager.getRelationAuthorityTreeList(actionIds,
 					new MenuAuthorityFilter<HttpAuthority>());
 		}

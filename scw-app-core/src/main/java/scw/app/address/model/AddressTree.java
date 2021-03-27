@@ -19,6 +19,6 @@ public class AddressTree extends Address {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(AddressTree.class).getValueMap(this).toString();
 	}
 }

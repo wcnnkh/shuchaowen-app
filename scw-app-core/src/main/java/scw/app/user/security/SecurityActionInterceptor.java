@@ -45,7 +45,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 	}
 	
 	public boolean isAccept(HttpChannel httpChannel, Action action, ActionParameters parameters) {
-		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getSourceClass(),
+		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		return actionAuthority != null || (required != null && required.value())
@@ -54,7 +54,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 
 	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters,
 			ActionInterceptorChain chain) throws Throwable {
-		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getSourceClass(),
+		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		if (actionAuthority != null || (required != null && required.value())

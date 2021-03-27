@@ -16,6 +16,8 @@ import scw.context.result.Result;
 import scw.core.parameter.annotation.DefaultValue;
 import scw.core.utils.CollectionUtils;
 import scw.http.HttpMethod;
+import scw.mapper.Field;
+import scw.mapper.Fields;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
@@ -47,12 +49,13 @@ public class AdminUserController {
 		List<PermissionGroup> userSubGroups = permissionGroupService.getSubList(currentUser.getPermissionGroupId(),
 				true);
 		List<Integer> groupIds = null;// groupIds如果为空就表示没有数据，如果长度为0就表示全部
+		Field groupIdField = MapperUtils.getMapper().getFields(PermissionGroup.class).find("id", null);
 		if (groupId == null) {// 全部
 			if (userService.isSuperAdmin(requestUser.getUid())) {
 				groupIds = Collections.emptyList();
 			} else {
 				if (!CollectionUtils.isEmpty(userSubGroups)) {
-					groupIds = MapperUtils.getMapper().getFieldValueList(userSubGroups, "id");
+					groupIds = groupIdField.getValues(userSubGroups);
 				}
 				// else 该分组下没有子分组了
 			}
@@ -60,7 +63,7 @@ public class AdminUserController {
 			// 如果选择了分组
 			List<PermissionGroup> groups = permissionGroupService.getSubList(groupId, true);
 			if (!CollectionUtils.isEmpty(groups)) {
-				groupIds = MapperUtils.getMapper().getFieldValueList(groups, "id");
+				groupIds = groupIdField.getValues(groups);
 			}
 			// else 该分组下没有子分组了
 		}
@@ -74,11 +77,12 @@ public class AdminUserController {
 
 		List<Object> list = new ArrayList<Object>();
 		if (pagination.getData() != null) {
+			Fields fields = MapperUtils.getMapper().getFields(User.class);
 			for (User user : pagination.getData()) {
 				PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
 				String groupName = group == null ? "系统分组" : group.getName();
 				boolean groupDisable = group == null ? false : group.isDisable();
-				Map<String, Object> map = MapperUtils.getMapper().getFieldValueMap(user);
+				Map<String, Object> map = fields.getValueMap(user);
 				map.put("groupName", groupName + "(状态：" + (!groupDisable ? "可用" : "禁用") + ")");
 				list.add(map);
 			}

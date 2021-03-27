@@ -17,6 +17,9 @@ import scw.app.util.BaseServiceConfiguration;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
+import scw.codec.Signer;
+import scw.codec.support.CharsetCodec;
+import scw.codec.support.MD5;
 import scw.context.result.DataResult;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
@@ -26,7 +29,6 @@ import scw.db.DB;
 import scw.env.Environment;
 import scw.env.SystemEnvironment;
 import scw.event.EventType;
-import scw.security.SignatureUtils;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
 import scw.sql.SqlUtils;
@@ -38,6 +40,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		UserService {
 	public static String ADMIN_NAME = SystemEnvironment.getInstance()
 			.getValue("scw.admin.username", String.class, "admin");
+	
+	private static final Signer<String, String> PASSWORD_SIGNER = CharsetCodec.UTF_8.to(MD5.DEFAULT);
 
 	@Autowired(required = false)
 	private PhoneVerificationCodeService verificationCodeService;
@@ -70,8 +74,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		if (StringUtils.isEmpty(password)) {
 			return null;
 		}
-
-		return SignatureUtils.md5(password, "UTF-8");
+		
+		return PASSWORD_SIGNER.encode(password);
 	}
 
 	public Result updateUserAttribute(long uid,

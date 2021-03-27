@@ -50,7 +50,7 @@ public class UserAddressController {
 			sb.append(address.getName());
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.putAll(MapperUtils.getMapper().getFieldValueMap(userAddress));
+		map.putAll(MapperUtils.getMapper().getFields(UserAddress.class).getValueMap(userAddress));
 		map.put("address", sb.toString());
 		return resultFactory.success(map);
 	}

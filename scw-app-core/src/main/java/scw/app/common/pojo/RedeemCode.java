@@ -85,6 +85,6 @@ public class RedeemCode implements Serializable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(RedeemCode.class).getValueMap(this).toString();
 	}
 }

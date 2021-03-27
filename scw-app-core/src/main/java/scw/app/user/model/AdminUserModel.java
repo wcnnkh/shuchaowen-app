@@ -54,6 +54,6 @@ public class AdminUserModel implements Serializable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(AdminUserModel.class).getValueMap(this).toString();
 	}
 }

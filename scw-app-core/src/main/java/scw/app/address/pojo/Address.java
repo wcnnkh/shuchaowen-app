@@ -40,6 +40,6 @@ public class Address extends AddressModel implements Cloneable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(Address.class).getValueMap(this).toString();
 	}
 }

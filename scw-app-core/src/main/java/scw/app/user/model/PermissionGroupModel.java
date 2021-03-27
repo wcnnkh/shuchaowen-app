@@ -36,6 +36,6 @@ public class PermissionGroupModel implements Serializable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(PermissionGroupModel.class).getValueMap(this).toString();
 	}
 }

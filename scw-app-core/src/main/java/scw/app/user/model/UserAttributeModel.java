@@ -92,7 +92,7 @@ public class UserAttributeModel implements Serializable {
 
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(UserAttributeModel.class).getValueMap(this).toString();
 	}
 
 	public void writeTo(UserAttributeModel userAttributeModel) {

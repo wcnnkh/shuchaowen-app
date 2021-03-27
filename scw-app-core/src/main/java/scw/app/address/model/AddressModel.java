@@ -39,6 +39,6 @@ public class AddressModel implements Serializable, Cloneable {
 	
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(AddressModel.class).getValueMap(this).toString();
 	}
 }

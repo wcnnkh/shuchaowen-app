@@ -89,6 +89,6 @@ public class Order extends OrderModel {
 
 	@Override
 	public String toString() {
-		return MapperUtils.getMapper().toString(this);
+		return MapperUtils.getMapper().getFields(getClass()).getValueMap(this).toString();
 	}
 }

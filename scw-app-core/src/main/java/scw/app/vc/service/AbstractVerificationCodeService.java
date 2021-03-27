@@ -6,7 +6,7 @@ import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
-import scw.data.TemporaryCache;
+import scw.data.TemporaryStorage;
 import scw.logger.Level;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
@@ -16,7 +16,7 @@ public abstract class AbstractVerificationCodeService {
 	private static final int ONE_DAY = (int) (XTime.ONE_DAY / 1000);
 	private static Logger logger = LoggerFactory.getLogger(AbstractVerificationCodeService.class);
 
-	private TemporaryCache temporaryCache;
+	private TemporaryStorage temporaryCache;
 	private int everyDayMaxSize = 10;// 每天发送限制
 	private int maxTimeInterval = 30;// 两次发送时间限制(秒)
 	private int maxActiveTime = 300;// 验证码有效时间(秒)
@@ -25,7 +25,7 @@ public abstract class AbstractVerificationCodeService {
 	private boolean test = false;// 是否是测试模式，测试模式不真实发送
 	private ResultFactory resultFactory;
 
-	public AbstractVerificationCodeService(TemporaryCache temporaryCache, ResultFactory resultFactory) {
+	public AbstractVerificationCodeService(TemporaryStorage temporaryCache, ResultFactory resultFactory) {
 		this.temporaryCache = temporaryCache;
 		this.resultFactory = resultFactory;
 	}
@@ -34,11 +34,11 @@ public abstract class AbstractVerificationCodeService {
 		return getClass().getName() + ":" + type + ":" + user;
 	}
 
-	public TemporaryCache getTemporaryCache() {
+	public TemporaryStorage getTemporaryCache() {
 		return temporaryCache;
 	}
 
-	public void setTemporaryCache(TemporaryCache temporaryCache) {
+	public void setTemporaryCache(TemporaryStorage temporaryCache) {
 		this.temporaryCache = temporaryCache;
 	}
 
