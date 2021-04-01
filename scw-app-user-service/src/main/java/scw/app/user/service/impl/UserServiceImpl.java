@@ -17,9 +17,8 @@ import scw.app.util.BaseServiceConfiguration;
 import scw.app.vc.service.PhoneVerificationCodeService;
 import scw.beans.annotation.Autowired;
 import scw.beans.annotation.Service;
-import scw.codec.Signer;
+import scw.codec.Encoder;
 import scw.codec.support.CharsetCodec;
-import scw.codec.support.MD5;
 import scw.context.result.DataResult;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
@@ -41,7 +40,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 	public static String ADMIN_NAME = SystemEnvironment.getInstance()
 			.getValue("scw.admin.username", String.class, "admin");
 	
-	private static final Signer<String, String> PASSWORD_SIGNER = CharsetCodec.UTF_8.to(MD5.DEFAULT);
+	private static final Encoder<String, String> PASSWORD_ENCODER = CharsetCodec.UTF_8.toMD5();
 
 	@Autowired(required = false)
 	private PhoneVerificationCodeService verificationCodeService;
@@ -75,7 +74,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 			return null;
 		}
 		
-		return PASSWORD_SIGNER.encode(password);
+		return PASSWORD_ENCODER.encode(password);
 	}
 
 	public Result updateUserAttribute(long uid,
