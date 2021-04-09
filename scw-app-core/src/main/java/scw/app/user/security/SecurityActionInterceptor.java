@@ -1,5 +1,8 @@
 package scw.app.user.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.User;
 import scw.app.user.service.PermissionGroupActionService;
@@ -9,6 +12,7 @@ import scw.beans.annotation.Autowired;
 import scw.context.annotation.Provider;
 import scw.context.result.ResultFactory;
 import scw.core.annotation.AnnotationUtils;
+import scw.core.utils.StringUtils;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.mvc.HttpChannel;
@@ -48,6 +52,39 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		return resultFactory != null && httpActionAuthorityManager != null && loginRequiredRegistry != null && userService != null && permissionGroupActionService != null && permissionGroupService != null;
 	}
 	
+	private Object getUnsupportedDesc() {
+		return new Object() {
+			@Override
+			public String toString() {
+				List<Object> list = new ArrayList<Object>(8);
+				if(resultFactory == null) {
+					list.add(ResultFactory.class.getName());
+				}
+				
+				if(httpActionAuthorityManager == null) {
+					list.add(HttpActionAuthorityManager.class);
+				}
+				
+				if(loginRequiredRegistry == null) {
+					list.add(LoginRequiredRegistry.class);
+				}
+				
+				if(permissionGroupActionService == null) {
+					list.add(PermissionGroupActionService.class);
+				}
+				
+				if(permissionGroupService == null) {
+					list.add(PermissionGroupService.class);
+				}
+				
+				if(userService == null) {
+					list.add(UserService.class);
+				}
+				return "@Autowired fail " + StringUtils.collectionToCommaDelimitedString(list);
+			}
+		};
+	}
+	
 	private boolean loginRequired(LoginRequired loginRequired, ActionAuthority actionAuthority) {
 		return actionAuthority != null || (loginRequired != null && loginRequired.value());
 	}
@@ -67,7 +104,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		boolean loginRequired = loginRequired(required, actionAuthority);
 		if(loginRequired && !isSupported()) {
-			logger.warn("Authentication is required, but authentication service is not supported {}", httpChannel);
+			logger.warn("Authentication is required, but authentication service is not supported! {}, {}", getUnsupportedDesc(), httpChannel);
 			return resultFactory.error("Authentication is required, but authentication service is not supported");
 		}
 		
