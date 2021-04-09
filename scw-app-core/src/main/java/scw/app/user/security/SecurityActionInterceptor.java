@@ -9,6 +9,8 @@ import scw.beans.annotation.Autowired;
 import scw.context.annotation.Provider;
 import scw.context.result.ResultFactory;
 import scw.core.annotation.AnnotationUtils;
+import scw.logger.Logger;
+import scw.logger.LoggerFactory;
 import scw.mvc.HttpChannel;
 import scw.mvc.action.Action;
 import scw.mvc.action.ActionInterceptor;
@@ -25,30 +27,36 @@ import scw.security.session.UserSession;
 public class SecurityActionInterceptor implements ActionInterceptor, ActionInterceptorAccept {
 	public static final String ADMIN_LOGIN_PATH = "/admin/to_login";
 	public static final String ADMIN_PATH_PREFIX = "/admin";
+	
+	private static Logger logger = LoggerFactory.getLogger(SecurityActionInterceptor.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private ResultFactory resultFactory;
-	@Autowired
+	@Autowired(required = false)
 	private HttpActionAuthorityManager httpActionAuthorityManager;
-	@Autowired
+	@Autowired(required = false)
 	private LoginRequiredRegistry loginRequiredRegistry;
 
+	@Autowired(required = false)
 	private PermissionGroupActionService permissionGroupActionService;
+	@Autowired(required = false)
 	private PermissionGroupService permissionGroupService;
+	@Autowired(required = false)
 	private UserService userService;
-
-	public SecurityActionInterceptor(UserService userService, PermissionGroupService permissionGroupService,
-			PermissionGroupActionService permissionGroupActionService) {
-		this.userService = userService;
-		this.permissionGroupService = permissionGroupService;
-		this.permissionGroupActionService = permissionGroupActionService;
+	
+	private boolean isSupported() {
+		return resultFactory != null && httpActionAuthorityManager != null && loginRequiredRegistry != null && userService != null && permissionGroupActionService != null && permissionGroupService != null;
 	}
 	
+	private boolean loginRequired(LoginRequired loginRequired, ActionAuthority actionAuthority) {
+		return actionAuthority != null || (loginRequired != null && loginRequired.value());
+	}
+
 	public boolean isAccept(HttpChannel httpChannel, Action action, ActionParameters parameters) {
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
-		return actionAuthority != null || (required != null && required.value())
+		return loginRequired(required, actionAuthority)
 				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest());
 	}
 
@@ -57,8 +65,13 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
-		if (actionAuthority != null || (required != null && required.value())
-				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest())) {
+		boolean loginRequired = loginRequired(required, actionAuthority);
+		if(loginRequired && !isSupported()) {
+			logger.warn("Authentication is required, but authentication service is not supported {}", httpChannel);
+			return resultFactory.error("Authentication is required, but authentication service is not supported");
+		}
+		
+		if (loginRequired || loginRequiredRegistry.isLoginRequried(httpChannel.getRequest())) {
 			UserSession<Long> userSession = httpChannel.getUserSession(Long.class);
 			if (userSession == null) {
 				return authorizationFailure(httpChannel, action);
