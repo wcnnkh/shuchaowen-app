@@ -9,6 +9,7 @@ import scw.app.user.model.AdminUserModel;
 import scw.app.user.pojo.PermissionGroup;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
+import scw.app.user.security.SecurityProperties;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
@@ -29,7 +30,7 @@ import scw.util.Pagination;
 
 @LoginRequired
 @ActionAuthority(value = "系统设置", menu = true)
-@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX)
+@Controller(value = SecurityProperties.ADMIN_CONTROLLER)
 public class AdminUserController {
 	private UserService userService;
 	@Autowired
