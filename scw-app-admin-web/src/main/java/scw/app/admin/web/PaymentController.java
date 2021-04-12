@@ -5,6 +5,7 @@ import scw.app.payment.enums.PaymentStatus;
 import scw.app.payment.pojo.Order;
 import scw.app.payment.service.PaymentService;
 import scw.app.user.security.LoginRequired;
+import scw.app.user.security.SecurityProperties;
 import scw.beans.annotation.Autowired;
 import scw.core.parameter.annotation.DefaultValue;
 import scw.mvc.annotation.ActionAuthority;
@@ -14,7 +15,7 @@ import scw.mvc.page.PageFactory;
 import scw.util.Pagination;
 
 @LoginRequired
-@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX + "/payment")
+@Controller(value = SecurityProperties.ADMIN_CONTROLLER + "/payment")
 @ActionAuthority(value = "支付管理", menu = true)
 public class PaymentController {
 	@Autowired

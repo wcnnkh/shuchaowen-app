@@ -29,11 +29,11 @@ import scw.security.session.UserSession;
 
 @Provider
 public class SecurityActionInterceptor implements ActionInterceptor, ActionInterceptorAccept {
-	public static final String ADMIN_LOGIN_PATH = "/admin/to_login";
-	public static final String ADMIN_PATH_PREFIX = "/admin";
-	
 	private static Logger logger = LoggerFactory.getLogger(SecurityActionInterceptor.class);
 
+	@Autowired
+	private SecurityProperties securityConfigProperties;
+	
 	@Autowired(required = false)
 	private ResultFactory resultFactory;
 	@Autowired(required = false)
@@ -94,7 +94,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 				action.getAnnotatedElement());
 		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
 		return loginRequired(required, actionAuthority)
-				|| loginRequiredRegistry.isLoginRequried(httpChannel.getRequest());
+				|| (loginRequiredRegistry == null || loginRequiredRegistry.isLoginRequried(httpChannel.getRequest()));
 	}
 
 	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters,
@@ -114,7 +114,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 				return authorizationFailure(httpChannel, action);
 			}
 			
-			if (httpChannel.getRequest().getPath().startsWith(ADMIN_PATH_PREFIX)) {
+			if (httpChannel.getRequest().getPath().startsWith(securityConfigProperties.getController())) {
 				User user = userService.getUser(userSession.getUid());
 				if (user == null) {
 					return authorizationFailure(httpChannel, action);
@@ -156,9 +156,9 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 	}
 
 	protected Object authorizationFailure(HttpChannel httpChannel, Action action) throws Throwable {
-		if (httpChannel.getRequest().getPath().startsWith(ADMIN_PATH_PREFIX)) {
+		if (httpChannel.getRequest().getPath().startsWith(securityConfigProperties.getController())) {
 			if (!httpChannel.getRequest().getHeaders().isAjax()) {
-				return new Redirect(ADMIN_LOGIN_PATH);
+				return new Redirect(securityConfigProperties.getToLoginPath());
 			}
 		}
 		return resultFactory.authorizationFailure();

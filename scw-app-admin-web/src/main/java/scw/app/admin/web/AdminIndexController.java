@@ -7,12 +7,11 @@ import scw.app.user.enums.AccountType;
 import scw.app.user.pojo.PermissionGroupAction;
 import scw.app.user.pojo.User;
 import scw.app.user.security.LoginRequired;
-import scw.app.user.security.SecurityActionInterceptor;
+import scw.app.user.security.SecurityProperties;
 import scw.app.user.security.UserLoginService;
 import scw.app.user.service.PermissionGroupActionService;
 import scw.app.user.service.UserService;
 import scw.beans.annotation.Autowired;
-import scw.beans.annotation.Value;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.CollectionUtils;
@@ -33,7 +32,7 @@ import scw.security.authority.MenuAuthorityFilter;
 import scw.security.authority.http.HttpAuthority;
 import scw.security.session.UserSession;
 
-@Controller(value = AdminConstants.ADMIN_CONTROLLER_PREFIX)
+@Controller(value = SecurityProperties.ADMIN_CONTROLLER)
 public class AdminIndexController {
 	private UserService userService;
 	@Autowired
@@ -45,9 +44,8 @@ public class AdminIndexController {
 	private PageFactory pageFactory;
 	@Autowired
 	private UserLoginService userLoginService;
-	
-	@Value(AdminConstants.ADMIN_CONTROLLER_PREFIX)
-	private String controllerPrefix;
+	@Autowired
+	private SecurityProperties securityConfigProperties;
 
 	public AdminIndexController(UserService userService, PermissionGroupActionService permissionGroupActionService) {
 		this.userService = userService;
@@ -150,7 +148,7 @@ public class AdminIndexController {
 	public View login(HttpChannel httpChannel) {
 		UserSession<Long> userSession = httpChannel.getUserSession(Long.class);
 		if(userSession != null){
-			return new Redirect(httpChannel.getRequest().getContextPath() + controllerPrefix);
+			return new Redirect(httpChannel.getRequest().getContextPath() + securityConfigProperties.getController());
 		}
 		return pageFactory.getPage("/admin/ftl/login.ftl");
 	}
@@ -185,7 +183,7 @@ public class AdminIndexController {
 	@Controller(value = "cancel_login")
 	public View cacelLogin(UserSession<Long> requestUser, ServerHttpRequest request) {
 		requestUser.invalidate();
-		return new Redirect(request.getContextPath() + SecurityActionInterceptor.ADMIN_LOGIN_PATH);
+		return new Redirect(request.getContextPath() + securityConfigProperties.getToLoginPath());
 	}
 
 	@Controller(value = "to_login")
