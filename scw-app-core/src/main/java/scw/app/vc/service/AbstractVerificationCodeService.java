@@ -110,7 +110,7 @@ public abstract class AbstractVerificationCodeService {
 		String code = RandomUtils.getNumCode(getCodeLength());
 		Result result = resultFactory.success();
 		Level level = isTest() ? Level.INFO : Level.DEBUG;
-		if (logger.isLogEnable(level.getValue())) {
+		if (logger.isLoggable(level.getValue())) {
 			logger.log(level.getValue(), (isTest() ? "测试模式" : "") + "向用户[{}]发送验证码[{}]", user, code);
 		}
 
