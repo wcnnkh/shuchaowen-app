@@ -2,7 +2,7 @@ package scw.app.user.enums;
 
 /**
  * 常见的类型
- * @author asus1
+ * @author shuchaowen
  *
  */
 public enum UnionIdType {
