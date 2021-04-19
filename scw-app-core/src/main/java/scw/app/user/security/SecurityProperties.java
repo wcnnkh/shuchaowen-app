@@ -3,21 +3,20 @@ package scw.app.user.security;
 import scw.beans.annotation.ConfigurationProperties;
 import scw.beans.annotation.Value;
 
-@ConfigurationProperties(prefix = "security.")
+@ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
 	public static final String ADMIN_CONTROLLER = "${security.controller:/admin}";
 
-	@Value(ADMIN_CONTROLLER)
+	/**
+	 * 固定值，不监听变更，只能通过重启来更新
+	 */
+	@Value(value = ADMIN_CONTROLLER, listener = false)
 	private String controller;
 
 	private String toLoginPath;
 
 	public String getController() {
 		return controller;
-	}
-
-	public void setController(String controller) {
-		this.controller = controller;
 	}
 
 	public String getToLoginPath() {
