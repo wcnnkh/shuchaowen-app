@@ -21,10 +21,6 @@
   	</dependency>
   	<dependency>
   		<groupId>scw</groupId>
-  		<artifactId>scw-apple</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>scw</groupId>
   		<artifactId>scw-alibaba</artifactId>
   	</dependency>
   	<dependency>

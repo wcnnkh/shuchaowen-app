@@ -1,60 +1,32 @@
 package scw.app.payment.service;
 
-import java.util.List;
-
-import scw.app.logistics.enums.LogisticsStatus;
-import scw.app.payment.enums.PaymentStatus;
-import scw.app.payment.event.PaymentEvent;
-import scw.app.payment.model.PaymentRequest;
-import scw.app.payment.model.PaymentResponse;
-import scw.app.payment.model.RefundRequest;
-import scw.app.payment.pojo.Order;
-import scw.app.payment.pojo.RefundOrder;
+import scw.app.payment.dto.PaymentResponse;
+import scw.app.payment.dto.RefundRequest;
+import scw.app.payment.dto.UnifiedPaymentRequest;
 import scw.context.result.DataResult;
 import scw.context.result.Result;
-import scw.util.Pagination;
+import scw.lang.NotSupportedException;
 
+/**
+ * 支付服务
+ * 
+ * @author shuchaowen
+ *
+ */
 public interface PaymentService {
-	Order getOrder(String orderId);
-
-	Pagination<Order> search(String query, int page, int limit, PaymentStatus paymentStatus,
-			LogisticsStatus logisticsStatus);
-
-	Result publish(PaymentEvent paymentEvent);
-
 	/**
 	 * 发起支付
 	 * 
 	 * @param request
 	 * @return
 	 */
-	DataResult<PaymentResponse> payment(PaymentRequest request);
-
-	/**
-	 * 关闭交易
-	 * 
-	 * @param orderId
-	 * @return
-	 */
-	Result close(String orderId);
-
-	RefundOrder getRefundOrder(String refundOrderId);
-
-	List<RefundOrder> getRefundOrderList(String orderId);
+	DataResult<PaymentResponse> payment(UnifiedPaymentRequest request) throws NotSupportedException;
 
 	/**
 	 * 退款
 	 * 
-	 * @param orderId
+	 * @param request
 	 * @return
 	 */
-	DataResult<RefundOrder> refund(RefundRequest request);
-
-	/**
-	 * 重新退款
-	 * 
-	 * @param refundId
-	 * @return
-	 */
-	Result refundAgain(String refundId);
+	Result refund(RefundRequest request) throws NotSupportedException;
 }
