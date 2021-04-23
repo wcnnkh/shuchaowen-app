@@ -15,12 +15,12 @@ import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
+import scw.integration.tencent.qq.connect.QQ;
+import scw.integration.tencent.qq.connect.QQRequest;
+import scw.integration.tencent.qq.connect.UserInfoResponse;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.oauth2.AccessToken;
-import scw.tencent.qq.connect.QQ;
-import scw.tencent.qq.connect.QQRequest;
-import scw.tencent.qq.connect.UserInfoResponse;
 
 @Controller(value = "qq", methods = { HttpMethod.GET, HttpMethod.POST })
 @scw.mvc.annotation.FactoryResult
