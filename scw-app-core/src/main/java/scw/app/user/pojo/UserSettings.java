@@ -3,8 +3,8 @@ package scw.app.user.pojo;
 import java.io.Serializable;
 
 import scw.mapper.MapperUtils;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Column;
-import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table

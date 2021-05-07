@@ -5,8 +5,8 @@ import scw.app.util.RegexUtils;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.mapper.MapperUtils;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Column;
-import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 import scw.sql.orm.support.generation.annotation.Generator;
 

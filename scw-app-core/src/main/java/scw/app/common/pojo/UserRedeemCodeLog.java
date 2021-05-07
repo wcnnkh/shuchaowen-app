@@ -3,7 +3,7 @@ package scw.app.common.pojo;
 import java.io.Serializable;
 
 import scw.mapper.MapperUtils;
-import scw.sql.orm.annotation.PrimaryKey;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 /**

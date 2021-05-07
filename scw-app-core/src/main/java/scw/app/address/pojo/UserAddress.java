@@ -2,9 +2,9 @@ package scw.app.address.pojo;
 
 import scw.app.address.model.UserAddressModel;
 import scw.mapper.MapperUtils;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.AutoIncrement;
 import scw.sql.orm.annotation.Index;
-import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table

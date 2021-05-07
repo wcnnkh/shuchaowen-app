@@ -3,7 +3,7 @@ package scw.app.common.pojo;
 import java.io.Serializable;
 
 import scw.core.utils.XTime;
-import scw.sql.orm.annotation.PrimaryKey;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table
