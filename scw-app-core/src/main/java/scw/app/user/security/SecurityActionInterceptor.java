@@ -91,8 +91,8 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 
 	public boolean isAccept(HttpChannel httpChannel, Action action, ActionParameters parameters) {
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
-				action.getAnnotatedElement());
-		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
+				action);
+		ActionAuthority actionAuthority = action.getAnnotation(ActionAuthority.class);
 		return loginRequired(required, actionAuthority)
 				|| (loginRequiredRegistry == null || loginRequiredRegistry.isLoginRequried(httpChannel.getRequest()));
 	}
@@ -100,8 +100,8 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 	public Object intercept(HttpChannel httpChannel, Action action, ActionParameters parameters,
 			ActionInterceptorChain chain) throws Throwable {
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
-				action.getAnnotatedElement());
-		ActionAuthority actionAuthority = action.getAnnotatedElement().getAnnotation(ActionAuthority.class);
+				action);
+		ActionAuthority actionAuthority = action.getAnnotation(ActionAuthority.class);
 		boolean loginRequired = loginRequired(required, actionAuthority);
 		if(loginRequired && !isSupported()) {
 			logger.warn("Authentication is required, but authentication service is not supported! {}, {}", getUnsupportedDesc(), httpChannel);

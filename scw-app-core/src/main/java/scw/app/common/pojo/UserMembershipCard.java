@@ -2,9 +2,9 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Column;
 import scw.sql.orm.annotation.Index;
-import scw.sql.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 import scw.sql.orm.support.generation.annotation.CreateTime;
 import scw.sql.orm.support.generation.annotation.SequenceId;

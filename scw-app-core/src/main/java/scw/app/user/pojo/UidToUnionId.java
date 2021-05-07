@@ -2,7 +2,7 @@ package scw.app.user.pojo;
 
 import java.io.Serializable;
 
-import scw.sql.orm.annotation.PrimaryKey;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table

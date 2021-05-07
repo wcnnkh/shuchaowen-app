@@ -2,7 +2,7 @@ package scw.app.address.pojo;
 
 import scw.app.address.model.AddressModel;
 import scw.mapper.MapperUtils;
-import scw.sql.orm.annotation.PrimaryKey;
+import scw.orm.annotation.PrimaryKey;
 import scw.sql.orm.annotation.Table;
 
 @Table
