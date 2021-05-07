@@ -14,8 +14,8 @@
 			<artifactId>scw-app-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>scw</groupId>
-			<artifactId>scw-alibaba</artifactId>
+			<groupId>scw.integration</groupId>
+			<artifactId>alibaba</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.aliyun</groupId>

@@ -1,6 +1,5 @@
 package scw.app.web;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +8,6 @@ import scw.http.server.MultiPartServerHttpRequest;
 import scw.mvc.annotation.Controller;
 import scw.net.message.multipart.FileItem;
 import scw.security.session.UserSession;
-import scw.upload.UploadException;
-import scw.upload.UploadFileItem;
 import scw.upload.kind.KindDirType;
 import scw.upload.kind.KindEditor;
 import scw.upload.kind.KindOrderType;
@@ -35,11 +32,9 @@ public class KindController {
 		}
 
 		try {
-			String url = kindEditor.upload(getRequestGroup(requestUser), dir, new UploadFileItem(fileItem));
+			String url = kindEditor.upload(getRequestGroup(requestUser), dir, fileItem);
 			return success(url);
-		} catch (UploadException e) {
-			return error(e.getMessage());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return error(e.getMessage());
 		} finally {
 			request.close();

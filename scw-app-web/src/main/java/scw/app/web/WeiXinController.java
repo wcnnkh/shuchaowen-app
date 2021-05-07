@@ -16,18 +16,18 @@ import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
+import scw.integration.tencent.wx.Scope;
+import scw.integration.tencent.wx.UserAccessToken;
+import scw.integration.tencent.wx.UserGrantClient;
+import scw.integration.tencent.wx.Userinfo;
+import scw.integration.tencent.wx.WeiXinUtils;
+import scw.integration.tencent.wx.miniprogram.PhoneNumber;
+import scw.integration.tencent.wx.miniprogram.Session;
+import scw.integration.tencent.wx.miniprogram.WeiXinMiniprogramUtils;
+import scw.integration.tencent.wx.miniprogram.WeixinMiniprogram;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 import scw.security.session.UserSession;
-import scw.tencent.wx.Scope;
-import scw.tencent.wx.UserAccessToken;
-import scw.tencent.wx.UserGrantClient;
-import scw.tencent.wx.Userinfo;
-import scw.tencent.wx.WeiXinUtils;
-import scw.tencent.wx.miniprogram.PhoneNumber;
-import scw.tencent.wx.miniprogram.Session;
-import scw.tencent.wx.miniprogram.WeiXinMiniprogramUtils;
-import scw.tencent.wx.miniprogram.WeixinMiniprogram;
 
 @Controller(value = "weixin", methods = { HttpMethod.GET, HttpMethod.POST })
 @scw.mvc.annotation.FactoryResult

@@ -22,8 +22,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>scw</groupId>
-			<artifactId>scw-tencent</artifactId>
+			<groupId>scw.integration</groupId>
+			<artifactId>tencent</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
