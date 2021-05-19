@@ -19,18 +19,17 @@ public class EditorRegistry {
 		EnumMap<HttpMethod, Editor> methodMap = map.get(editor.getPath());
 		if (methodMap == null) {
 			methodMap = new EnumMap<HttpMethod, Editor>(HttpMethod.class);
-			EnumMap<HttpMethod, Editor> oldMethodMap = map.putIfAbsent(
-					editor.getPath(), methodMap);
+			EnumMap<HttpMethod, Editor> oldMethodMap = map.putIfAbsent(editor.getPath(), methodMap);
 			if (oldMethodMap != null) {
 				methodMap = oldMethodMap;
 			}
 		}
 
-		if (methodMap.containsKey(editor.getHttpMethod())) {
+		if (methodMap.containsKey(editor.getMethod())) {
 			throw new AlreadyExistsException(editor.toString());
 		}
 
-		methodMap.put(editor.getHttpMethod(), editor);
+		methodMap.put(editor.getMethod(), editor);
 		httpActionAuthorityManager.register(editor);
 	}
 
@@ -40,6 +39,6 @@ public class EditorRegistry {
 			return null;
 		}
 
-		return methodMap.get(methodMap);
+		return methodMap.get(httpMethod);
 	}
 }

@@ -10,8 +10,8 @@
 	<artifactId>scw-app-editable</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>scw</groupId>
-			<artifactId>scw-mvc</artifactId>
+			<groupId>scw-app</groupId>
+			<artifactId>scw-app-admin-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>scw</groupId>

@@ -4,9 +4,11 @@ import java.util.List;
 
 import scw.boot.ApplicationPostProcessor;
 import scw.boot.ConfigurableApplication;
+import scw.context.annotation.Provider;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 
+@Provider
 public class AuthorityInitializer implements ApplicationPostProcessor {
 	private static Logger logger = LoggerFactory
 			.getLogger(AuthorityInitializer.class);
