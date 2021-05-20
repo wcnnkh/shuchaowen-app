@@ -1,6 +1,7 @@
 package scw.app.editable.support;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public Map<String, String> getAttributeMap() {
-		return null;
+		return Collections.emptyMap();
 	}
 
 	@Override
