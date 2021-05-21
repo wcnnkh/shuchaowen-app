@@ -17,7 +17,7 @@ public abstract class EditorCURD extends EditorParent {
 
 	@Override
 	public String getPath() {
-		return getEditableClass().getName() + "/" + method;
+		return "/" + getEditableClass().getName() + "/" + method;
 	}
 
 	@Override

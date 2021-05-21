@@ -45,7 +45,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public String getPath() {
-		return editableClass.getName() + "/list";
+		return "/" + editableClass.getName() + "/list";
 	}
 
 	@Override
@@ -96,8 +96,8 @@ public class EditorParent implements Editor {
 		Page view = pageFactory.getPage("/editable/list.ftl");
 		view.put("page", page);
 		view.put("limit", limit);
-		view.put("list", pagination.getData());
-		view.put("totalCount", pagination.getTotalCount());
+		view.put("list", pagination == null ? null : pagination.getData());
+		view.put("totalCount", pagination == null ? 0 : pagination.getTotalCount());
 		view.put("query", requestBean);
 		view.put("fields", getFieldInfos(requestBean));
 		view.put("name", getName());

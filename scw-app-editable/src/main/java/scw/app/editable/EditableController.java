@@ -13,7 +13,7 @@ public class EditableController {
 		this.editorRegistry = editorRegistry;
 	}
 
-	@Controller(value = "/*", methods = { HttpMethod.GET, HttpMethod.POST,
+	@Controller(value = "/**", methods = { HttpMethod.GET, HttpMethod.POST,
 			HttpMethod.DELETE, HttpMethod.PUT })
 	public Object editable(HttpChannel httpChannel) {
 		Editor editor = editorRegistry.getEditor(httpChannel.getRequest()
