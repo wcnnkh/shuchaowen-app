@@ -1,6 +1,7 @@
 package scw.app.editable.support;
 
 import scw.app.editable.DataManager;
+import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
 import scw.mvc.page.Page;
@@ -8,8 +9,8 @@ import scw.mvc.page.PageFactory;
 
 public class EditorInfoPage extends EditorCURD {
 
-	public EditorInfoPage(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory) {
-		super(dataManager, editableClass, pageFactory, HttpMethod.GET);
+	public EditorInfoPage(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, SecurityProperties securityProperties) {
+		super(dataManager, editableClass, pageFactory, HttpMethod.GET, securityProperties);
 	}
 
 	@Override

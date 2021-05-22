@@ -1,11 +1,12 @@
 package scw.app.editable;
 
+import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.http.HttpStatus;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
 
-@Controller
+@Controller(SecurityProperties.ADMIN_CONTROLLER)
 public class EditableController {
 	private final EditorRegistry editorRegistry;
 

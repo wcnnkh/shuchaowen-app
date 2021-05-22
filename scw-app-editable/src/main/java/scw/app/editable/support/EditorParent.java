@@ -10,6 +10,7 @@ import scw.app.editable.Editor;
 import scw.app.editable.FieldInfo;
 import scw.app.editable.annotation.Editable;
 import scw.app.editable.annotation.SelectOption;
+import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.mapper.Field;
 import scw.mapper.FieldFeature;
@@ -24,11 +25,17 @@ public class EditorParent implements Editor {
 	private final Class<?> editableClass;
 	private final DataManager dataManager;
 	private final PageFactory pageFactory;
+	private final SecurityProperties securityProperties;
 
-	public EditorParent(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory) {
+	public EditorParent(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, SecurityProperties securityProperties) {
 		this.editableClass = editableClass;
 		this.dataManager = dataManager;
 		this.pageFactory = pageFactory;
+		this.securityProperties = securityProperties;
+	}
+
+	public SecurityProperties getSecurityProperties() {
+		return securityProperties;
 	}
 
 	public Class<?> getEditableClass() {
@@ -45,7 +52,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public String getPath() {
-		return "/" + editableClass.getName() + "/list";
+		return securityProperties.getController() + "/" + editableClass.getName() + "/list";
 	}
 
 	@Override
@@ -83,23 +90,26 @@ public class EditorParent implements Editor {
 	public Object doAction(HttpChannel httpChannel) {
 		Object requestBean = httpChannel.getInstanceFactory().getInstance(editableClass);
 		Integer page = httpChannel.getValue("page").getAsInteger();
-		if (page == null) {
+		if (page == null || page < 1) {
 			page = 1;
 		}
-
+		
 		Integer limit = httpChannel.getValue("limit").getAsInteger();
-		if (limit == null) {
+		if (limit == null || limit < 1) {
 			limit = 10;
 		}
-
+		
 		Pagination<Object> pagination = dataManager.list(editableClass, requestBean, page, limit);
 		Page view = pageFactory.getPage("/editable/list.ftl");
-		view.put("page", page);
+		int maxPage = pagination == null? 1:pagination.getMaxPage();
+		int currentPage = Math.min(page, maxPage);
+		view.put("page", currentPage);
 		view.put("limit", limit);
 		view.put("list", pagination == null ? null : pagination.getData());
 		view.put("totalCount", pagination == null ? 0 : pagination.getTotalCount());
 		view.put("query", requestBean);
 		view.put("fields", getFieldInfos(requestBean));
+		view.put("maxPage", maxPage);
 		view.put("name", getName());
 		return view;
 	}
