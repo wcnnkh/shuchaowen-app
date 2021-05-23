@@ -4,13 +4,12 @@ import scw.app.editable.DataManager;
 import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
-import scw.mvc.page.Page;
-import scw.mvc.page.PageFactory;
+import scw.web.model.Page;
 
 public class EditorAddPage extends EditorCURD {
 
-	public EditorAddPage(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, pageFactory, HttpMethod.GET, securityProperties);
+	public EditorAddPage(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
+		super(dataManager, editableClass, HttpMethod.GET, securityProperties);
 	}
 	
 	@Override
@@ -31,7 +30,7 @@ public class EditorAddPage extends EditorCURD {
 	@Override
 	public Object doAction(HttpChannel httpChannel) {
 		Object requestBean = httpChannel.getInstanceFactory().getInstance(getEditableClass());
-		Page page = getPageFactory().getPage("add.ftl");
+		Page page = new Page("/editable/ftl/add.ftl");
 		page.put("fields", getFieldInfos(requestBean));
 		return page;
 	}

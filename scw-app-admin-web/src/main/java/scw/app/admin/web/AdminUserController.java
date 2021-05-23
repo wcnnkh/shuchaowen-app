@@ -12,7 +12,6 @@ import scw.app.user.security.LoginRequired;
 import scw.app.user.security.SecurityProperties;
 import scw.app.user.service.PermissionGroupService;
 import scw.app.user.service.UserService;
-import scw.beans.annotation.Autowired;
 import scw.context.result.Result;
 import scw.core.parameter.annotation.DefaultValue;
 import scw.core.utils.CollectionUtils;
@@ -23,18 +22,15 @@ import scw.mapper.MapperUtils;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
 import scw.mvc.annotation.RequestBody;
-import scw.mvc.page.Page;
-import scw.mvc.page.PageFactory;
 import scw.security.session.UserSession;
 import scw.util.Pagination;
+import scw.web.model.Page;
 
 @LoginRequired
 @ActionAuthority(value = "系统设置", menu = true)
 @Controller(value = SecurityProperties.ADMIN_CONTROLLER)
 public class AdminUserController {
 	private UserService userService;
-	@Autowired
-	private PageFactory pageFactory;
 	private PermissionGroupService permissionGroupService;
 
 	public AdminUserController(UserService userService, PermissionGroupService permissionGroupService) {
@@ -89,7 +85,7 @@ public class AdminUserController {
 			}
 		}
 
-		Page view = pageFactory.getPage("/admin/ftl/admin_list.ftl");
+		Page view = new Page("/admin/ftl/admin_list.ftl");
 		view.put("adminList", list);
 		view.put("page", page);
 		view.put("maxPage", pagination.getMaxPage());
@@ -103,7 +99,7 @@ public class AdminUserController {
 	@ActionAuthority(value = "(查看/修改)管理员信息界面")
 	@Controller(value = "admin_view")
 	public Object admin_view(long toUid, UserSession<Long> requestUser) {
-		Page page = pageFactory.getPage("/admin/ftl/admin_view.ftl");
+		Page page = new Page("/admin/ftl/admin_view.ftl");
 		User user = userService.getUser(toUid);
 		User currentUser = userService.getUser(requestUser.getUid());
 		List<PermissionGroup> groups = permissionGroupService.getSubList(currentUser.getPermissionGroupId(), true);

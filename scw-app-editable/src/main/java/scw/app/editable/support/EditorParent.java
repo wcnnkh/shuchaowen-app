@@ -16,21 +16,18 @@ import scw.mapper.Field;
 import scw.mapper.FieldFeature;
 import scw.mapper.MapperUtils;
 import scw.mvc.HttpChannel;
-import scw.mvc.page.Page;
-import scw.mvc.page.PageFactory;
 import scw.orm.annotation.PrimaryKey;
 import scw.util.Pagination;
+import scw.web.model.Page;
 
 public class EditorParent implements Editor {
 	private final Class<?> editableClass;
 	private final DataManager dataManager;
-	private final PageFactory pageFactory;
 	private final SecurityProperties securityProperties;
 
-	public EditorParent(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, SecurityProperties securityProperties) {
+	public EditorParent(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
 		this.editableClass = editableClass;
 		this.dataManager = dataManager;
-		this.pageFactory = pageFactory;
 		this.securityProperties = securityProperties;
 	}
 
@@ -44,10 +41,6 @@ public class EditorParent implements Editor {
 
 	public DataManager getDataManager() {
 		return dataManager;
-	}
-
-	public PageFactory getPageFactory() {
-		return pageFactory;
 	}
 
 	@Override
@@ -100,7 +93,7 @@ public class EditorParent implements Editor {
 		}
 		
 		Pagination<Object> pagination = dataManager.list(editableClass, requestBean, page, limit);
-		Page view = pageFactory.getPage("/editable/list.ftl");
+		Page view = new Page("/editable/list.ftl");
 		int maxPage = pagination == null? 1:pagination.getMaxPage();
 		int currentPage = Math.min(page, maxPage);
 		view.put("page", currentPage);

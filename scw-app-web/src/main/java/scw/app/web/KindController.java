@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scw.http.HttpMethod;
-import scw.http.server.MultiPartServerHttpRequest;
 import scw.mvc.annotation.Controller;
 import scw.net.message.multipart.FileItem;
 import scw.security.session.UserSession;
 import scw.upload.kind.KindDirType;
 import scw.upload.kind.KindEditor;
 import scw.upload.kind.KindOrderType;
+import scw.web.MultiPartServerHttpRequest;
 
 @Controller(value = "kind")
 public class KindController {

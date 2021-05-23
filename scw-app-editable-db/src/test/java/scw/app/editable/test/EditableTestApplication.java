@@ -4,10 +4,10 @@ import scw.beans.annotation.Bean;
 import scw.boot.support.MainApplication;
 import scw.db.DB;
 import scw.env.SystemEnvironment;
-import scw.http.server.cors.Cors;
-import scw.http.server.cors.CorsRegistry;
 import scw.mvc.annotation.Controller;
 import scw.sqlite.SQLiteDB;
+import scw.web.cors.Cors;
+import scw.web.cors.CorsRegistry;
 
 public class EditableTestApplication {
 	

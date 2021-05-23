@@ -4,12 +4,11 @@ import scw.app.editable.DataManager;
 import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
-import scw.mvc.page.PageFactory;
 
 public class EditorAdd extends EditorCURD {
 
-	public EditorAdd(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, pageFactory, HttpMethod.PUT, securityProperties);
+	public EditorAdd(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
+		super(dataManager, editableClass, HttpMethod.PUT, securityProperties);
 	}
 
 	@Override

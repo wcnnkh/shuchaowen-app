@@ -6,13 +6,12 @@ import scw.app.editable.DataManager;
 import scw.app.user.security.SecurityProperties;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
-import scw.mvc.page.PageFactory;
 
 public abstract class EditorCURD extends EditorParent {
 	private final HttpMethod method;
 
-	public EditorCURD(DataManager dataManager, Class<?> editableClass, PageFactory pageFactory, HttpMethod method, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, pageFactory, securityProperties);
+	public EditorCURD(DataManager dataManager, Class<?> editableClass, HttpMethod method, SecurityProperties securityProperties) {
+		super(dataManager, editableClass, securityProperties);
 		this.method = method;
 	}
 

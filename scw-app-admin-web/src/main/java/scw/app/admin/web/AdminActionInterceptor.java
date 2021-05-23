@@ -10,7 +10,7 @@ import scw.mvc.action.Action;
 import scw.mvc.action.ActionInterceptor;
 import scw.mvc.action.ActionInterceptorChain;
 import scw.mvc.action.ActionParameters;
-import scw.mvc.page.Page;
+import scw.web.model.Page;
 
 @Provider
 public class AdminActionInterceptor implements ActionInterceptor {
