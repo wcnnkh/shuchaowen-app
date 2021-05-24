@@ -21,9 +21,9 @@ import scw.mapper.Fields;
 import scw.mapper.MapperUtils;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
-import scw.mvc.annotation.RequestBody;
 import scw.security.session.UserSession;
 import scw.util.Pagination;
+import scw.web.message.annotation.RequestBody;
 import scw.web.model.Page;
 
 @LoginRequired
