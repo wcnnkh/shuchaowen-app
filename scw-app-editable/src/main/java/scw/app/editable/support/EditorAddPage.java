@@ -30,7 +30,7 @@ public class EditorAddPage extends EditorCURD {
 	@Override
 	public Object doAction(HttpChannel httpChannel) {
 		Object requestBean = httpChannel.getInstanceFactory().getInstance(getEditableClass());
-		Page page = new Page("/editable/ftl/add.ftl");
+		Page page = new Page("/editable/add.ftl");
 		page.put("fields", getFieldInfos(requestBean));
 		return page;
 	}

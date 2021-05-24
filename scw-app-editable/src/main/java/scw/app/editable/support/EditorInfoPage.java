@@ -21,7 +21,7 @@ public class EditorInfoPage extends EditorCURD {
 	public Object doAction(HttpChannel httpChannel) {
 		Object requestBean = httpChannel.getInstanceFactory().getInstance(getEditableClass());
 		Object info = getDataManager().info(getEditableClass(), requestBean);
-		Page page = new Page("/editable/ftl/info.ftl");
+		Page page = new Page("/editable/info.ftl");
 		page.put("info", info);
 		page.put("query", requestBean);
 		page.put("fields", getFieldInfos(requestBean));
