@@ -3,7 +3,7 @@ package scw.app.editable.test;
 import scw.beans.annotation.Bean;
 import scw.boot.support.MainApplication;
 import scw.db.DB;
-import scw.env.SystemEnvironment;
+import scw.env.Sys;
 import scw.mvc.annotation.Controller;
 import scw.sqlite.SQLiteDB;
 import scw.web.cors.Cors;
@@ -32,7 +32,7 @@ public class EditableTestApplication {
 	 */
 	@Bean
 	public DB getDB() {
-		return new SQLiteDB(SystemEnvironment.getInstance().getWorkPath() + "/scw-app-example.db");
+		return new SQLiteDB(Sys.env.getWorkPath() + "/scw-app-example.db");
 	}
 
 	/**

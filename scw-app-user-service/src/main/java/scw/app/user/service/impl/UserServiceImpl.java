@@ -26,7 +26,7 @@ import scw.core.utils.CollectionUtils;
 import scw.core.utils.StringUtils;
 import scw.db.DB;
 import scw.env.Environment;
-import scw.env.SystemEnvironment;
+import scw.env.Sys;
 import scw.event.EventType;
 import scw.sql.SimpleSql;
 import scw.sql.Sql;
@@ -37,10 +37,11 @@ import scw.util.Pagination;
 @Service
 public class UserServiceImpl extends BaseServiceConfiguration implements
 		UserService {
-	public static String ADMIN_NAME = SystemEnvironment.getInstance()
-			.getValue("scw.admin.username", String.class, "admin");
-	
-	private static final Encoder<String, String> PASSWORD_ENCODER = CharsetCodec.UTF_8.toMD5();
+	public static String ADMIN_NAME = Sys.env.getValue("scw.admin.username",
+			String.class, "admin");
+
+	private static final Encoder<String, String> PASSWORD_ENCODER = CharsetCodec.UTF_8
+			.toMD5();
 
 	@Autowired(required = false)
 	private PhoneVerificationCodeService verificationCodeService;
@@ -73,7 +74,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		if (StringUtils.isEmpty(password)) {
 			return null;
 		}
-		
+
 		return PASSWORD_ENCODER.encode(password);
 	}
 
@@ -118,7 +119,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		}
 
 		user.setPassword(formatPassword(password));
-		user.setLastUpdatePasswordTime(System.currentTimeMillis());
+		user.setLastUpdatePasswordTime(Sys.currentTimeMillis());
 		db.update(user);
 		return resultFactory.success();
 	}
@@ -234,7 +235,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		user = new User();
 		accountType.setAccount(user, account);
 		user.setPassword(formatPassword(password));
-		user.setCts(System.currentTimeMillis());
+		user.setCts(Sys.currentTimeMillis());
 
 		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
@@ -275,7 +276,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 
 		User user = new User();
 		user.setPassword(formatPassword(password));
-		user.setCts(System.currentTimeMillis());
+		user.setCts(Sys.currentTimeMillis());
 
 		if (userAttributeModel != null) {
 			userAttributeModel.writeTo(user);
@@ -354,7 +355,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 
 	public DataResult<User> registerUnionId(UnionIdType type, String unionId,
 			String password, UserAttributeModel userAttributeModel) {
-		return registerUnionId(type.getValue(), unionId, password, userAttributeModel);
+		return registerUnionId(type.getValue(), unionId, password,
+				userAttributeModel);
 	}
 
 	public Result bindUnionId(long uid, UnionIdType type, String unionId) {
