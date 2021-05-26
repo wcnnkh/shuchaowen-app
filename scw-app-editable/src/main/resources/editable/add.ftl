@@ -22,8 +22,8 @@
 		form.on('submit(add)', function(data){
 			var requestData = data.field;
 			$.ajax({
-				"url": "PUT",
-				"method":"PUT",
+				"url": "add",
+				"method":"POST",
 				"dataType":"json",
 				"data": requestData,
 				success:function(response){

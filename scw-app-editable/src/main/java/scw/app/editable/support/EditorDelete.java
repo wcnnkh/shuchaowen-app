@@ -8,7 +8,7 @@ import scw.mvc.HttpChannel;
 public class EditorDelete extends EditorCURD {
 
 	public EditorDelete(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, HttpMethod.DELETE, securityProperties);
+		super(dataManager, editableClass, HttpMethod.POST, securityProperties, "delete");
 	}
 	
 	@Override

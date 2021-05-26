@@ -9,7 +9,7 @@ import scw.web.model.Page;
 public class EditorInfoPage extends EditorCURD {
 
 	public EditorInfoPage(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, HttpMethod.GET, securityProperties);
+		super(dataManager, editableClass, HttpMethod.GET, securityProperties, "info");
 	}
 
 	@Override

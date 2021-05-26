@@ -1,11 +1,16 @@
 package scw.app.editable.test.ediable;
 
+import java.io.Serializable;
+
 import scw.app.editable.annotation.Editable;
 import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
+import scw.sql.orm.annotation.Table;
 
+@Table
 @Editable(name = "测试栏目")
-public class TestInfo {
+public class TestInfo implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Description("ID")
 	@PrimaryKey
 	private String id;

@@ -45,7 +45,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public String getPath() {
-		return securityProperties.getController() + "/" + editableClass.getName() + "/list";
+		return securityProperties.getController() + "/" + editableClass.getName() + "/root";
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public String getId() {
-		return editableClass.getName() + "#list#" + HttpMethod.GET;
+		return editableClass.getName() + "#root";
 	}
 
 	@Override

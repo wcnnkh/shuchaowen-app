@@ -9,25 +9,27 @@ import scw.mvc.HttpChannel;
 
 public abstract class EditorCURD extends EditorParent {
 	private final HttpMethod method;
+	private final String name;
 
-	public EditorCURD(DataManager dataManager, Class<?> editableClass, HttpMethod method, SecurityProperties securityProperties) {
+	public EditorCURD(DataManager dataManager, Class<?> editableClass, HttpMethod method, SecurityProperties securityProperties, String name) {
 		super(dataManager, editableClass, securityProperties);
 		this.method = method;
-	}
-
-	@Override
-	public String getPath() {
-		return getSecurityProperties().getController() + "/" + getEditableClass().getName() + "/" + method;
+		this.name = name;
 	}
 
 	@Override
 	public final HttpMethod getMethod() {
 		return method;
 	}
+	
+	@Override
+	public String getPath() {
+		return getSecurityProperties().getController() + "/" + getEditableClass().getName() + "/" + name;
+	}
 
 	@Override
 	public String getId() {
-		return getEditableClass().getName() + "#" + method;
+		return getEditableClass().getName() + "#" + method + "#" + name;
 	}
 
 	@Override

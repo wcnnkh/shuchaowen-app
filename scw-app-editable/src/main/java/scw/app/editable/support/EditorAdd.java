@@ -8,7 +8,7 @@ import scw.mvc.HttpChannel;
 public class EditorAdd extends EditorCURD {
 
 	public EditorAdd(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, HttpMethod.PUT, securityProperties);
+		super(dataManager, editableClass, HttpMethod.POST, securityProperties, "add");
 	}
 
 	@Override

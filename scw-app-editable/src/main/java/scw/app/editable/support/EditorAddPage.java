@@ -9,19 +9,9 @@ import scw.web.model.Page;
 public class EditorAddPage extends EditorCURD {
 
 	public EditorAddPage(DataManager dataManager, Class<?> editableClass, SecurityProperties securityProperties) {
-		super(dataManager, editableClass, HttpMethod.GET, securityProperties);
+		super(dataManager, editableClass, HttpMethod.GET, securityProperties, "add");
 	}
 	
-	@Override
-	public String getPath() {
-		return getSecurityProperties().getController() + "/" + getEditableClass().getName() + "/add";
-	}
-	
-	@Override
-	public String getId() {
-		return getEditableClass().getName() + "#add";
-	}
-
 	@Override
 	public String getName() {
 		return super.getName() + "(添加页面)";

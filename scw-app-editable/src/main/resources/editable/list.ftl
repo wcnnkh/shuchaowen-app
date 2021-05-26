@@ -46,6 +46,7 @@
 				<#list fields as field>
 					<th>${field.describe}</th>
 				</#list>
+				<th width="50">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,12 +58,12 @@
 					</#list>
 					<td class="td-manage">
 					<a title="删除"
-											 onclick="x_admin_show('删除','delete?<#list fields as f><#if f.primaryKey>${f.name}=${item[field.name]}&</#if></#list>')"
+											 onclick="x_admin_show('删除','delete?<#list fields as f><#if f.primaryKey>${f.name}=${item[f.name]}&</#if></#list>')"
 											 href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
 					</a>
 					&nbsp;&nbsp;
 					<a title="查看/修改"
-											 onclick="x_admin_show('查看/修改','info?<#list fields as f><#if f.primaryKey>${f.name}=${item[field.name]}&</#if></#list>')"
+											 onclick="x_admin_show('查看/修改','info?<#list fields as f><#if f.primaryKey>${f.name}=${item[f.name]}&</#if></#list>')"
 											 href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
 					</a>
 					</td>
