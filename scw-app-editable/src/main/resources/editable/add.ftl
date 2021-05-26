@@ -21,10 +21,9 @@
 
 		form.on('submit(add)', function(data){
 			var requestData = data.field;
-			requestData.toUid = "${(admin.uid)!}";
 			$.ajax({
-				"url": "admin_create_or_update",
-				"method":"POST",
+				"url": "PUT",
+				"method":"PUT",
 				"dataType":"json",
 				"data": requestData,
 				success:function(response){

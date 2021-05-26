@@ -18,7 +18,7 @@ public class EditorAdd extends EditorCURD {
 
 	@Override
 	public Object doAction(HttpChannel httpChannel) {
-		Object requestBean = httpChannel.getInstanceFactory().getInstance(getEditableClass());
+		Object requestBean = httpChannel.getInstance(getEditableClass());
 		return getDataManager().add(getEditableClass(), requestBean);
 	}
 

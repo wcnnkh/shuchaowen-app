@@ -15,7 +15,7 @@
 	<div class="layui-row">
 		<form class="layui-form layui-col-md12 x-so">
 			<#list fields as field>
-				${field.describe}
+				${field.describe}:
 				<#if (field.options)??>
 					<div class="layui-input-inline">
 						<select name="${field.name}">
@@ -27,7 +27,7 @@
 				<#else>
 					<input type="text" name="${field.name}"
 									   placeholder="请输入${field.describe}" autocomplete="off"
-									   class="layui-input">
+									   class="layui-input"/>
 				</#if>
 				&nbsp;&nbsp
 			</#list>
@@ -68,7 +68,7 @@
 					</td>
 				</tr>
 			</#list>
-		</#if>>
+		</#if>
 		</tbody>
 	</table>
 	<#include "/admin/ftl/include/pagination.ftl" />

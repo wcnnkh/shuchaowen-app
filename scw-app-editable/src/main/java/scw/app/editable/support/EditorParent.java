@@ -81,7 +81,7 @@ public class EditorParent implements Editor {
 
 	@Override
 	public Object doAction(HttpChannel httpChannel) {
-		Object requestBean = httpChannel.getInstanceFactory().getInstance(editableClass);
+		Object requestBean = httpChannel.getInstance(editableClass);
 		Integer page = httpChannel.getValue("page").getAsInteger();
 		if (page == null || page < 1) {
 			page = 1;

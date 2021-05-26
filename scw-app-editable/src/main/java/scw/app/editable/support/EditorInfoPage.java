@@ -19,7 +19,7 @@ public class EditorInfoPage extends EditorCURD {
 
 	@Override
 	public Object doAction(HttpChannel httpChannel) {
-		Object requestBean = httpChannel.getInstanceFactory().getInstance(getEditableClass());
+		Object requestBean = httpChannel.getInstance(getEditableClass());
 		Object info = getDataManager().info(getEditableClass(), requestBean);
 		Page page = new Page("/editable/info.ftl");
 		page.put("info", info);
