@@ -1,5 +1,6 @@
 package scw.app.editable.db;
 
+import java.util.Collections;
 import java.util.List;
 
 import scw.app.editable.DataManager;
@@ -16,48 +17,50 @@ import scw.mapper.MapperUtils;
 import scw.sql.Sql;
 import scw.sql.WhereSql;
 import scw.util.Pagination;
+import scw.value.AnyValue;
 
 @Provider
 public class DBDataManager implements DataManager {
 	private final DB db;
 	private final ResultFactory resultFactory;
-	
+
 	public DBDataManager(DB db, ResultFactory resultFactory) {
 		this.db = db;
 		this.resultFactory = resultFactory;
 	}
 
-	@Override
-	public <T> Pagination<T> list(Class<? extends T> type, T query, int page, int limit) {
+	private <T> Sql toSql(Class<? extends T> type, T query) {
 		WhereSql where = new WhereSql();
-		for(Field field : MapperUtils.getMapper().getFields(type).accept(FieldFeature.EXISTING_GETTER_FIELD)){
-			Object value = field.getGetter().get(query);
-			if(value == null){
+		for (Field field : MapperUtils.getMapper().getFields(type).accept(FieldFeature.EXISTING_GETTER_FIELD)) {
+			AnyValue value = new AnyValue(field.getGetter().get(query));
+			if(value.isEmpty()) {
 				continue;
 			}
-			
-			where.and(field.getGetter().getName() + "=?", value);
+			where.and(field.getGetter().getName() + "=?", value.getAsObject(Object.class));
 		}
-		Sql sql = where.assembleSql("select * from " + StringUtils.humpNamingReplacement(type.getSimpleName(), "_"), null);
-		return db.select(type, page, limit, sql);
+		return where.assembleSql("select * from " + StringUtils.humpNamingReplacement(type.getSimpleName(), "_"), null);
+	}
+
+	@Override
+	public <T> Pagination<T> list(Class<? extends T> type, T query, int page, int limit) {
+		return db.select(type, page, limit, toSql(type, query));
 	}
 
 	@Override
 	public <T> T info(Class<? extends T> type, T query) {
-		// TODO Auto-generated method stub
-		return null;
+		return db.selectOne(type, toSql(type, query));
 	}
 
 	@Override
 	public <T> Result update(Class<? extends T> type, T result) {
-		// TODO Auto-generated method stub
-		return null;
+		db.update(result);
+		return resultFactory.success(result);
 	}
 
 	@Override
 	public <T> Result delete(Class<? extends T> type, T query) {
-		// TODO Auto-generated method stub
-		return null;
+		db.delete(query);
+		return resultFactory.success();
 	}
 
 	@Override
@@ -68,8 +71,7 @@ public class DBDataManager implements DataManager {
 
 	@Override
 	public List<SelectOptions> selectOptions(Class<?> queryClass, Object queryParam) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 }

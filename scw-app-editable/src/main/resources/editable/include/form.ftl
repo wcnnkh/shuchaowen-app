@@ -10,11 +10,11 @@
 			<#if field.options??>
 				<select name="${field.name}">
 					<#list field.options as option>
-						<option value="${option.value}">${option.text}</option>
+						<option value="${option.value}" <#if ((info[field.name])!'')==option.value>selected="selected"</#if>>${option.text}</option>
 					</#list>
 				</select>
 			<#else>
-				<input type="text" name="${field.name}" required="" value=""
+				<input type="text" name="${field.name}" required="" value="${(info[field.name])!''}"
 				   <#if (field.required)!false>lay-verify="required"</#if> autocomplete="off" class="layui-input"/>
 			</#if>
 		</div>

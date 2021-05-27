@@ -20,13 +20,13 @@
 					<div class="layui-input-inline">
 						<select name="${field.name}">
 							<#list field.options as option>
-								<option value="${option.value }">${option.text}</option>
+								<option value="${option.value }" <#if ((query[field.name])!'') == option.value></#if>>${option.text}</option>
 							</#list>
 						</select>
 					</div>
 				<#else>
 					<input type="text" name="${field.name}"
-									   placeholder="请输入${field.describe}" autocomplete="off"
+									   placeholder="请输入${field.describe}" autocomplete="off" value="${(query[field.name])!''}"
 									   class="layui-input"/>
 				</#if>
 				&nbsp;&nbsp
@@ -54,13 +54,10 @@
 			<#list list as item>
 				<tr>
 					<#list fields as field>
-						<td>${item[field.name]}</td>
+						<td fieldName="${field.name}">${item[field.name]}</td>
 					</#list>
 					<td class="td-manage">
-					<a title="删除"
-											 onclick="x_admin_show('删除','delete?<#list fields as f><#if f.primaryKey>${f.name}=${item[f.name]}&</#if></#list>')"
-											 href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
-					</a>
+						<a title="删除" onclick="deleteInfo(this)" href="javascript:;"> <i class="layui-icon">&#xe640;</i></a>
 					&nbsp;&nbsp;
 					<a title="查看/修改"
 											 onclick="x_admin_show('查看/修改','info?<#list fields as f><#if f.primaryKey>${f.name}=${item[f.name]}&</#if></#list>')"
@@ -75,4 +72,40 @@
 	<#include "/admin/ftl/include/pagination.ftl" />
 </div>
 </body>
+<script>
+	function deleteInfo(obj) {
+			layer.confirm('确认要删除吗？', function(index) {
+				var requestData = {};
+				$(obj).parents("tr").find("td[fieldName]").each(function(index){
+					requestData[$(this).attr("fieldName")] = $(this).text();
+				})
+				
+				//发异步删除数据
+				$.ajax({
+					"url" : "delete",
+					"method" : "POST",
+					"dataType" : "json",
+					"data" : requestData,
+					success : function(response) {
+						if (response.code != 0) {
+							layer.alert(response.msg, {
+								icon : 5
+							});
+						} else {
+							$(obj).parents("tr").remove();
+							layer.msg('删除成功!', {
+								icon : 1,
+								time : 1000
+							});
+						}
+					},
+					error : function() {
+						layer.msg("网络或系统错误，请稍后重试", {
+							icon : 5
+						});
+					}
+				})
+			});
+		}
+</script>
 </html>

@@ -42,8 +42,6 @@
 			})
 			return false;
 		});
-
-
 	});
 </script>
 </body>
