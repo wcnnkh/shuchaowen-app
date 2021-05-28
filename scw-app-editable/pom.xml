@@ -17,5 +17,9 @@
 			<groupId>scw</groupId>
 			<artifactId>scw-boot</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>scw</groupId>
+			<artifactId>scw-upload</artifactId>
+		</dependency>
 	</dependencies>
 </project>
