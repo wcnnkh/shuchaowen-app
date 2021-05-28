@@ -23,11 +23,10 @@ import scw.http.HttpMethod;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.ActionAuthorityParent;
 import scw.mvc.annotation.Controller;
-import scw.mvc.page.Page;
-import scw.mvc.page.PageFactory;
 import scw.mvc.security.HttpActionAuthorityManager;
 import scw.security.authority.http.HttpAuthority;
 import scw.security.session.UserSession;
+import scw.web.model.Page;
 
 @LoginRequired
 @ActionAuthorityParent(AdminUserController.class)
@@ -38,8 +37,6 @@ public class PermissionGroupController {
 	@Autowired
 	private ResultFactory resultFactory;
 	private UserService userService;
-	@Autowired
-	private PageFactory pageFactory;
 	@Autowired
 	private HttpActionAuthorityManager httpActionAuthorityManager;
 
@@ -55,7 +52,7 @@ public class PermissionGroupController {
 	public Page group_list(UserSession<Long> requestUser, Integer parentId) {
 		User user = userService.getUser(requestUser.getUid());
 		int pid = (parentId == null || parentId == 0) ? user.getPermissionGroupId() : parentId;
-		Page page = pageFactory.getPage("/admin/ftl/group_list.ftl");
+		Page page = new Page("/admin/ftl/group_list.ftl");
 		page.put("groupList", permissionGroupService.getSubList(pid, false));
 		page.put("parentId", pid);
 		page.put("parentGroup", permissionGroupService.getById(pid));
@@ -66,7 +63,7 @@ public class PermissionGroupController {
 	@ActionAuthority(value = "(查看或修改)权限界面")
 	@Controller(value = "group_view")
 	public Object group_view(int parentId, int id) {
-		Page page = pageFactory.getPage("/admin/ftl/group_view.ftl");
+		Page page = new Page("/admin/ftl/group_view.ftl");
 		page.put("parentId", parentId);
 		page.put("group", permissionGroupService.getById(id));
 		return page;

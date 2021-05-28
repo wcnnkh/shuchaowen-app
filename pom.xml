@@ -19,6 +19,8 @@
 		<module>scw-app-vc-service</module>
 		<module>scw-app-address-service</module>
 		<module>scw-app-web</module>
+		<module>scw-app-editable</module>
+		<module>scw-app-editable-db</module>
 	</modules>
 
 	<dependencyManagement>
@@ -56,6 +58,16 @@
 			<dependency>
 				<groupId>scw-app</groupId>
 				<artifactId>scw-app-web</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-editable</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>scw-app</groupId>
+				<artifactId>scw-app-editable-db</artifactId>
 				<version>2.0</version>
 			</dependency>
 

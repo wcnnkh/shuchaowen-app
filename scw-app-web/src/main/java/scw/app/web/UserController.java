@@ -15,8 +15,8 @@ import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
-import scw.mvc.annotation.RequestBody;
 import scw.security.session.UserSession;
+import scw.web.message.annotation.RequestBody;
 
 @Controller(value = "user", methods = { HttpMethod.GET, HttpMethod.POST })
 public class UserController {

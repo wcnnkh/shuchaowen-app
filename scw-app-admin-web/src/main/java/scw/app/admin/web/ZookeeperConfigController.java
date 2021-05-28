@@ -11,10 +11,8 @@ import scw.core.utils.StringUtils;
 import scw.http.HttpMethod;
 import scw.mvc.annotation.ActionAuthority;
 import scw.mvc.annotation.Controller;
-import scw.mvc.page.Page;
-import scw.mvc.page.PageFactory;
-import scw.mvc.view.View;
 import scw.value.Value;
+import scw.web.model.Page;
 import scw.zookeeper.ZookeeperCloudPropertyFactory;
 
 @Controller(value= SecurityProperties.ADMIN_CONTROLLER + "/zookeeper/config", methods={HttpMethod.GET, HttpMethod.POST})
@@ -22,8 +20,6 @@ public class ZookeeperConfigController {
 	private final ZookeeperCloudPropertyFactory cloudPropertyFactory;
 	@Autowired
 	private ResultFactory resultFactory;
-	@Autowired
-	private PageFactory pageFactory;
 	
 	public ZookeeperConfigController(ZookeeperCloudPropertyFactory cloudPropertyFactory){
 		this.cloudPropertyFactory = cloudPropertyFactory;
@@ -31,8 +27,8 @@ public class ZookeeperConfigController {
 	
 	@ActionAuthority(menu=true, value="配置中心(zookeeper)")
 	@Controller(value="list")
-	public View list(){
-		Page page = pageFactory.getPage("/admin/ftl/config_list.ftl");
+	public Page list(){
+		Page page = new Page("/admin/ftl/config_list.ftl");
 		Map<String, String> configMap = new HashMap<String, String>();
 		for(String key : cloudPropertyFactory){
 			Value value = cloudPropertyFactory.getValue(key);
@@ -54,8 +50,8 @@ public class ZookeeperConfigController {
 	
 	@ActionAuthority(value="添加/修改配置界面(zookeeper)")
 	@Controller(value="view")
-	public View view(String key){
-		Page page = pageFactory.getPage("/admin/ftl/config_view.ftl");
+	public Page view(String key){
+		Page page = new Page("/admin/ftl/config_view.ftl");
 		page.put("key", key);
 		page.put("value", cloudPropertyFactory.getValue(key).getAsString());
 		return page;

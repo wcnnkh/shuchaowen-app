@@ -1,8 +1,8 @@
 package scw.app.admin.web;
 
 import scw.context.annotation.Provider;
-import scw.http.server.resource.DefaultStaticResourceLoader;
-import scw.http.server.resource.StaticResourceHttpServiceHandler;
+import scw.web.resource.DefaultStaticResourceLoader;
+import scw.web.resource.StaticResourceHttpServiceHandler;
 
 @Provider
 public class AdminWebResourceHttpServiceHandler extends StaticResourceHttpServiceHandler {

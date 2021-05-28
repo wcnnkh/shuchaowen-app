@@ -10,9 +10,9 @@ import scw.beans.annotation.Autowired;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.http.HttpMethod;
-import scw.http.server.ServerHttpRequest;
-import scw.http.server.ServerHttpResponse;
 import scw.mvc.annotation.Controller;
+import scw.web.ServerHttpRequest;
+import scw.web.ServerHttpResponse;
 import scw.web.WebUtils;
 
 @Controller(value = "address", methods = { HttpMethod.GET, HttpMethod.POST })

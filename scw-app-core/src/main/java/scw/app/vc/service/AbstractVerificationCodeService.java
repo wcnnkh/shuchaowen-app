@@ -7,7 +7,7 @@ import scw.context.result.ResultFactory;
 import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.data.TemporaryStorage;
-import scw.logger.Level;
+import scw.logger.Levels;
 import scw.logger.Logger;
 import scw.logger.LoggerFactory;
 import scw.util.RandomUtils;
@@ -109,7 +109,7 @@ public abstract class AbstractVerificationCodeService {
 
 		String code = RandomUtils.getNumCode(getCodeLength());
 		Result result = resultFactory.success();
-		Level level = isTest() ? Level.INFO : Level.DEBUG;
+		Levels level = isTest() ? Levels.INFO : Levels.DEBUG;
 		if (logger.isLoggable(level.getValue())) {
 			logger.log(level.getValue(), (isTest() ? "测试模式" : "") + "向用户[{}]发送验证码[{}]", user, code);
 		}

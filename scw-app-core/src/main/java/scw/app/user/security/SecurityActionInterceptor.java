@@ -85,15 +85,14 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		};
 	}
 	
-	private boolean loginRequired(LoginRequired loginRequired, ActionAuthority actionAuthority) {
-		return actionAuthority != null || (loginRequired != null && loginRequired.value());
+	private boolean loginRequired(LoginRequired loginRequired, HttpChannel httpChannel) {
+		return httpActionAuthorityManager.getAuthority(httpChannel.getRequest().getPath(), httpChannel.getRequest().getMethod()) != null || (loginRequired != null && loginRequired.value());
 	}
 
 	public boolean isAccept(HttpChannel httpChannel, Action action, ActionParameters parameters) {
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action);
-		ActionAuthority actionAuthority = action.getAnnotation(ActionAuthority.class);
-		return loginRequired(required, actionAuthority)
+		return loginRequired(required, httpChannel)
 				|| (loginRequiredRegistry == null || loginRequiredRegistry.isLoginRequried(httpChannel.getRequest()));
 	}
 
@@ -102,7 +101,7 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 		LoginRequired required = AnnotationUtils.getAnnotation(LoginRequired.class, action.getDeclaringClass(),
 				action);
 		ActionAuthority actionAuthority = action.getAnnotation(ActionAuthority.class);
-		boolean loginRequired = loginRequired(required, actionAuthority);
+		boolean loginRequired = loginRequired(required, httpChannel);
 		if(loginRequired && !isSupported()) {
 			logger.warn("Authentication is required, but authentication service is not supported! {}, {}", getUnsupportedDesc(), httpChannel);
 			return resultFactory.error("Authentication is required, but authentication service is not supported");
@@ -120,12 +119,12 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 					return authorizationFailure(httpChannel, action);
 				}
 			}
-
-			if (actionAuthority != null) {
+			
+			HttpAuthority authority = httpActionAuthorityManager.getAuthority(httpChannel.getRequest().getPath(), httpChannel.getRequest().getMethod());
+			if (actionAuthority != null || authority != null) {
 				if (!userService.isSuperAdmin(userSession.getUid())) {
-					HttpAuthority httpAuthority = httpActionAuthorityManager.getAuthority(action);
-					if (httpAuthority == null) {
-						return error(httpChannel, action, resultFactory.error("权限不足(1)"));
+					if (authority == null) {
+						return error(httpChannel, action, resultFactory.error("系统错误，权限不足"));
 					}
 
 					User user = userService.getUser(userSession.getUid());
@@ -139,14 +138,14 @@ public class SecurityActionInterceptor implements ActionInterceptor, ActionInter
 
 					PermissionGroup group = permissionGroupService.getById(user.getPermissionGroupId());
 					if (group == null) {
-						return error(httpChannel, action, resultFactory.error("权限不足(2)"));
+						return error(httpChannel, action, resultFactory.error("权限不足(1)"));
 					}
 
 					if (group.isDisable()) {
 						return error(httpChannel, action, resultFactory.error("账号分组已禁用，如有问题请联系管理员!"));
 					}
 
-					if (!permissionGroupActionService.check(user.getPermissionGroupId(), httpAuthority.getId())) {
+					if (!permissionGroupActionService.check(user.getPermissionGroupId(), authority.getId())) {
 						return error(httpChannel, action, resultFactory.error("权限不足"));
 					}
 				}
