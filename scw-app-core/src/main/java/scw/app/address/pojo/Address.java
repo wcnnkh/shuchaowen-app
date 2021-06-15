@@ -3,7 +3,7 @@ package scw.app.address.pojo;
 import scw.app.address.model.AddressModel;
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class Address extends AddressModel implements Cloneable {

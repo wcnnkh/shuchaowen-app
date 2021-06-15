@@ -43,14 +43,14 @@ public class DBDataManager implements DataManager {
 
 	@Override
 	public <T> Pagination<T> list(Class<? extends T> type, T query, int page, int limit) {
-		return db.select(type, page, limit, toSql(type, query));
+		return db.paginationQuery(type, toSql(type, query), page, limit);
 	}
 
 	@Override
 	public <T> T info(Class<? extends T> type, T query) {
-		return db.selectOne(type, toSql(type, query));
+		return db.queryFirst(type, toSql(type, query));
 	}
-
+	
 	@Override
 	public <T> Result update(Class<? extends T> type, T result) {
 		db.update(result);

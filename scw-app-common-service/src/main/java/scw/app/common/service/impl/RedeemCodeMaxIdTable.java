@@ -3,10 +3,8 @@ package scw.app.common.service.impl;
 import java.io.Serializable;
 
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
-import scw.sql.orm.cache.CacheEnable;
+import scw.orm.sql.annotation.Table;
 
-@CacheEnable(value=false)
 @Table
 public class RedeemCodeMaxIdTable implements Serializable{
 	private static final long serialVersionUID = 1L;

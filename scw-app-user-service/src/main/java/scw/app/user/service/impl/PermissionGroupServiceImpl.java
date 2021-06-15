@@ -55,7 +55,7 @@ public class PermissionGroupServiceImpl extends BaseServiceConfiguration impleme
 	}
 
 	public List<PermissionGroup> getSubList(int id, boolean ergodic) {
-		List<PermissionGroup> subList = db.select(PermissionGroup.class,
+		List<PermissionGroup> subList = db.query(PermissionGroup.class,
 				new SimpleSql("select * from permission_group where parentId=?", id));
 		if (!ergodic) {
 			return subList;

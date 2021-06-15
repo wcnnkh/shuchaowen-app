@@ -150,8 +150,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 			sql.and("(uid=? or phone like ? or username like ? or nickname like ?)",
 					search, value, value, value);
 		}
-		return db.select(User.class, page, limit,
-				sql.assembleSql("select * from user", null));
+		return db.paginationQuery(User.class, sql.assembleSql("select * from user", null), page, limit);
 	}
 
 	public DataResult<User> createOrUpdateAdminUser(long uid,
@@ -222,7 +221,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 			sql = new SimpleSql("select * from user where "
 					+ type.getFieldName() + "=?", account);
 		}
-		return db.selectOne(User.class, sql);
+		return db.queryFirst(User.class, sql);
 	}
 
 	public DataResult<User> register(AccountType accountType, String account,

@@ -11,6 +11,7 @@ import scw.app.editable.FieldInfo;
 import scw.app.editable.annotation.Editable;
 import scw.app.editable.annotation.SelectOption;
 import scw.app.user.security.SecurityProperties;
+import scw.core.annotation.AnnotatedElementUtils;
 import scw.http.HttpMethod;
 import scw.mapper.Field;
 import scw.mapper.FieldFeature;
@@ -114,7 +115,7 @@ public class EditorParent implements Editor {
 				.accept(FieldFeature.EXISTING_SETTER_FIELD).accept(FieldFeature.IGNORE_STATIC)) {
 			FieldInfo fieldInfo = new FieldInfo();
 			fieldInfo.setName(field.getGetter().getName());
-			fieldInfo.setDescribe(field.getGetter().getDescription());
+			fieldInfo.setDescribe(AnnotatedElementUtils.getDescription(field));
 			fieldInfo.setPrimaryKey(field.getGetter().isAnnotationPresent(PrimaryKey.class));
 			if (fieldInfo.getDescribe() == null) {
 				fieldInfo.setDescribe(fieldInfo.getName());

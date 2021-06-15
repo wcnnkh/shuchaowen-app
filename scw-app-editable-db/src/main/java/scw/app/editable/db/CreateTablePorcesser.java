@@ -5,7 +5,7 @@ import scw.boot.ApplicationPostProcessor;
 import scw.boot.ConfigurableApplication;
 import scw.context.annotation.Provider;
 import scw.db.DB;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 @Provider
 public class CreateTablePorcesser implements ApplicationPostProcessor{

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import scw.app.editable.annotation.Editable;
 import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 @Table
 @Editable(name = "测试栏目")

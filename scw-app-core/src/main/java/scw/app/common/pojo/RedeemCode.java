@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Counter;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Counter;
+import scw.orm.sql.annotation.Table;
 
 /**
  * 兑换码

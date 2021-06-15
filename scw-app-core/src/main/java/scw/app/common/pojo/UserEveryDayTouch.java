@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import scw.core.utils.XTime;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class UserEveryDayTouch implements Serializable {

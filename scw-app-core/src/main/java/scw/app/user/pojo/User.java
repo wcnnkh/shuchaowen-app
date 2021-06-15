@@ -6,9 +6,9 @@ import scw.core.utils.StringUtils;
 import scw.core.utils.XTime;
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Column;
-import scw.sql.orm.annotation.Table;
-import scw.sql.orm.support.generation.annotation.Generator;
+import scw.orm.generator.annotation.Generator;
+import scw.orm.sql.annotation.Table;
+import scw.orm.sql.annotation.Unique;
 
 @Table
 public class User extends UserAttributeModel {
@@ -17,13 +17,13 @@ public class User extends UserAttributeModel {
 	@PrimaryKey
 	private long uid;
 	private long cts;
-	@Column(unique = true, length = 32)
+	@Unique
 	private String username;
 	private String password;
 	private long lastUpdatePasswordTime;
-	@Column(unique = true, length = 16)
+	@Unique
 	private String phone;
-	@Column(unique = true)
+	@Unique
 	private String email;
 	private int permissionGroupId;// 权限组id
 	private boolean disable;// 是否禁用
