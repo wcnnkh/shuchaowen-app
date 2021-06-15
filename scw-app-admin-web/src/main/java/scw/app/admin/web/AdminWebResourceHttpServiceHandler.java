@@ -9,8 +9,8 @@ public class AdminWebResourceHttpServiceHandler extends StaticResourceHttpServic
 
 	public AdminWebResourceHttpServiceHandler() {
 		DefaultStaticResourceLoader resourceLoader = new DefaultStaticResourceLoader();
-		resourceLoader.addMapping("/", "/admin/js/*", "/admin/css/*", "/admin/fonts/*", "/admin/images/*",
-				"/admin/lib/*");
+		resourceLoader.addMapping("/", "/admin/js/**", "/admin/css/**", "/admin/fonts/**", "/admin/images/**",
+				"/admin/lib/**");
 		setResourceLoader(resourceLoader);
 	}
 }
