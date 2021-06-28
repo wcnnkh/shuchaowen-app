@@ -18,7 +18,7 @@ public class EditableController {
 			HttpMethod.DELETE, HttpMethod.PUT })
 	public Object editable(HttpChannel httpChannel) {
 		Editor editor = editorRegistry.getEditor(httpChannel.getRequest()
-				.getPath(), httpChannel.getRequest().getMethod());
+				.getPath(), httpChannel.getRequest().getRawMethod());
 		if (editor == null) {
 			httpChannel.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
 			return null;

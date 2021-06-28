@@ -50,8 +50,8 @@ public class EditorParent implements Editor {
 	}
 
 	@Override
-	public HttpMethod getMethod() {
-		return HttpMethod.GET;
+	public String getMethod() {
+		return HttpMethod.GET.name();
 	}
 
 	@Override
