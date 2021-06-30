@@ -37,7 +37,7 @@ public class UserMembershipCardServiceImpl extends BaseServiceConfiguration impl
 		long t = System.currentTimeMillis();
 		Sql sql = new SimpleSql(
 				"select * from user_membership_card where uid=? and beginTime>=? and endTime<? limit 0,1", uid, t, t);
-		return db.queryFirst(UserMembershipCard.class, sql);
+		return db.query(UserMembershipCard.class, sql).first();
 	}
 
 	public UserMembershipCard getCurrentUserMembershipCard(long uid) {
@@ -76,7 +76,7 @@ public class UserMembershipCardServiceImpl extends BaseServiceConfiguration impl
 			sql = new SimpleSql("select * from user_membership_card where uid=? and endTime<? order by cts desc", uid,
 					System.currentTimeMillis());
 		}
-		return db.query(UserMembershipCard.class, sql);
+		return db.query(UserMembershipCard.class, sql).shared();
 	}
 
 	public void addUserMembershipCard(long uid, int type, TimeCycle timeCycle, int timeCycleCount) {
@@ -85,7 +85,7 @@ public class UserMembershipCardServiceImpl extends BaseServiceConfiguration impl
 		}
 
 		Sql sql = new SimpleSql("select * from user_membership_card where uid=? order by cts desc limit 0,1", uid);
-		UserMembershipCard lastCard = db.queryFirst(UserMembershipCard.class, sql);
+		UserMembershipCard lastCard = db.query(UserMembershipCard.class, sql).first();
 		UserMembershipCard card = new UserMembershipCard();
 		card.setUid(uid);
 		card.setCts(System.currentTimeMillis());

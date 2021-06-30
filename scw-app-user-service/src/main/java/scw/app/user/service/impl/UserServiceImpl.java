@@ -35,13 +35,10 @@ import scw.sql.WhereSql;
 import scw.util.Pagination;
 
 @Service
-public class UserServiceImpl extends BaseServiceConfiguration implements
-		UserService {
-	public static String ADMIN_NAME = Sys.env.getValue("scw.admin.username",
-			String.class, "admin");
+public class UserServiceImpl extends BaseServiceConfiguration implements UserService {
+	public static String ADMIN_NAME = Sys.env.getValue("scw.admin.username", String.class, "admin");
 
-	private static final Encoder<String, String> PASSWORD_ENCODER = CharsetCodec.UTF_8
-			.toMD5();
+	private static final Encoder<String, String> PASSWORD_ENCODER = CharsetCodec.UTF_8.toMD5();
 
 	@Autowired(required = false)
 	private PhoneVerificationCodeService verificationCodeService;
@@ -50,18 +47,15 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 	@Autowired
 	private AppEventDispatcher appEventDispatcher;
 
-	public UserServiceImpl(DB db, ResultFactory resultFactory,
-			Environment environment) {
+	public UserServiceImpl(DB db, ResultFactory resultFactory, Environment environment) {
 		super(db, resultFactory);
 		db.createTable(User.class, false);
 		User user = getUserByAccount(AccountType.USERNAME, ADMIN_NAME);
 		if (user == null) {
 			AdminUserModel adminUserModel = new AdminUserModel();
 			adminUserModel.setUsername(ADMIN_NAME);
-			adminUserModel.setNickname(environment.getValue(
-					"scw.admin.nickname", String.class, "超级管理员"));
-			adminUserModel.setPassword(environment.getValue(
-					"scw.admin.password", String.class, "123456"));
+			adminUserModel.setNickname(environment.getValue("scw.admin.nickname", String.class, "超级管理员"));
+			adminUserModel.setPassword(environment.getValue("scw.admin.password", String.class, "123456"));
 			createOrUpdateAdminUser(0, adminUserModel);
 		}
 	}
@@ -78,8 +72,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		return PASSWORD_ENCODER.encode(password);
 	}
 
-	public Result updateUserAttribute(long uid,
-			UserAttributeModel userAttributeModel) {
+	public Result updateUserAttribute(long uid, UserAttributeModel userAttributeModel) {
 		User user = getUser(uid);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
@@ -137,8 +130,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		return false;
 	}
 
-	public Pagination<User> search(Collection<Integer> permissionGroupIds,
-			String search, int page, int limit) {
+	public Pagination<User> search(Collection<Integer> permissionGroupIds, String search, int page, int limit) {
 		WhereSql sql = new WhereSql();
 		sql.and("permissionGroupId>0");
 		if (!CollectionUtils.isEmpty(permissionGroupIds)) {
@@ -147,21 +139,17 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 
 		if (StringUtils.isNotEmpty(search)) {
 			String value = SqlUtils.toLikeValue(search);
-			sql.and("(uid=? or phone like ? or username like ? or nickname like ?)",
-					search, value, value, value);
+			sql.and("(uid=? or phone like ? or username like ? or nickname like ?)", search, value, value, value);
 		}
 		return db.paginationQuery(User.class, sql.assembleSql("select * from user", null), page, limit);
 	}
 
-	public DataResult<User> createOrUpdateAdminUser(long uid,
-			AdminUserModel adminUserModel) {
-		if (StringUtils.isEmpty(adminUserModel.getUsername(),
-				adminUserModel.getNickname())) {
+	public DataResult<User> createOrUpdateAdminUser(long uid, AdminUserModel adminUserModel) {
+		if (StringUtils.isEmpty(adminUserModel.getUsername(), adminUserModel.getNickname())) {
 			return resultFactory.error("参数错误");
 		}
 
-		User username = getUserByAccount(AccountType.USERNAME,
-				adminUserModel.getUsername());
+		User username = getUserByAccount(AccountType.USERNAME, adminUserModel.getUsername());
 		User user = getUser(uid);
 		if (user == null) {
 			if (username != null) {
@@ -210,22 +198,19 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		return getUserByAccount(type, account, null);
 	}
 
-	public User getUserByAccount(AccountType type, String account,
-			String password) {
+	public User getUserByAccount(AccountType type, String account, String password) {
 		Sql sql;
 		if (StringUtils.isNotEmpty(password)) {
-			sql = new SimpleSql("select * from user where "
-					+ type.getFieldName() + "=? and password=?", account,
+			sql = new SimpleSql("select * from user where " + type.getFieldName() + "=? and password=?", account,
 					password);
 		} else {
-			sql = new SimpleSql("select * from user where "
-					+ type.getFieldName() + "=?", account);
+			sql = new SimpleSql("select * from user where " + type.getFieldName() + "=?", account);
 		}
-		return db.queryFirst(User.class, sql);
+		return db.query(User.class, sql).first();
 	}
 
-	public DataResult<User> register(AccountType accountType, String account,
-			String password, UserAttributeModel userAttributeModel) {
+	public DataResult<User> register(AccountType accountType, String account, String password,
+			UserAttributeModel userAttributeModel) {
 		User user = getUserByAccount(accountType, account);
 		if (user != null) {
 			return resultFactory.error("账号已经存在");
@@ -240,13 +225,11 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 			userAttributeModel.writeTo(user);
 		}
 		db.save(user);
-		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user,
-				EventType.CREATE));
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
 		return resultFactory.success(user);
 	}
 
-	public DataResult<User> bind(long uid, AccountType accountType,
-			String account) {
+	public DataResult<User> bind(long uid, AccountType accountType, String account) {
 		User user = getUserByAccount(accountType, account);
 		if (user != null) {
 			return resultFactory.error("账号已被绑定");
@@ -266,8 +249,8 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		return resultFactory.success(user);
 	}
 
-	public DataResult<User> registerUnionId(int unionIdType, String unionId,
-			String password, UserAttributeModel userAttributeModel) {
+	public DataResult<User> registerUnionId(int unionIdType, String unionId, String password,
+			UserAttributeModel userAttributeModel) {
 		UnionIdToUid unionIdToUid = getUidByUnionId(unionId, unionIdType);
 		if (unionIdToUid != null) {
 			return resultFactory.error("账号已经存在");
@@ -294,8 +277,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		uidToUnionId.setUid(user.getUid());
 		db.save(unionIdToUid);
 
-		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user,
-				EventType.CREATE));
+		appEventDispatcher.publishEvent(User.class, new AppEvent<User>(user, EventType.CREATE));
 		return resultFactory.success(user);
 	}
 
@@ -323,8 +305,7 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 				return resultFactory.error("与原绑定信息一致");
 			}
 
-			UnionIdToUid old = getUidByUnionId(uidToUnionId.getUnionId(),
-					unionIdType);
+			UnionIdToUid old = getUidByUnionId(uidToUnionId.getUnionId(), unionIdType);
 			if (old != null) {
 				db.delete(old);
 			}
@@ -352,10 +333,9 @@ public class UserServiceImpl extends BaseServiceConfiguration implements
 		return db.getById(UnionIdToUid.class, unionId, type);
 	}
 
-	public DataResult<User> registerUnionId(UnionIdType type, String unionId,
-			String password, UserAttributeModel userAttributeModel) {
-		return registerUnionId(type.getValue(), unionId, password,
-				userAttributeModel);
+	public DataResult<User> registerUnionId(UnionIdType type, String unionId, String password,
+			UserAttributeModel userAttributeModel) {
+		return registerUnionId(type.getValue(), unionId, password, userAttributeModel);
 	}
 
 	public Result bindUnionId(long uid, UnionIdType type, String unionId) {

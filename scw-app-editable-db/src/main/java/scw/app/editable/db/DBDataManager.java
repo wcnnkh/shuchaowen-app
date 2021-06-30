@@ -48,7 +48,7 @@ public class DBDataManager implements DataManager {
 
 	@Override
 	public <T> T info(Class<? extends T> type, T query) {
-		return db.queryFirst(type, toSql(type, query));
+		return db.query(type, toSql(type, query)).first();
 	}
 	
 	@Override
