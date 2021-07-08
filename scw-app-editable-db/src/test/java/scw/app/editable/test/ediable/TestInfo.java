@@ -2,7 +2,9 @@ package scw.app.editable.test.ediable;
 
 import java.io.Serializable;
 
+import scw.app.editable.InputType;
 import scw.app.editable.annotation.Editable;
+import scw.app.editable.annotation.Input;
 import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
 import scw.orm.sql.annotation.Table;
@@ -16,6 +18,10 @@ public class TestInfo implements Serializable{
 	private String id;
 	@Description("值")
 	private String value;
+	@Input(type = InputType.IMAGE)
+	private String image;
+	@Input(type = InputType.IMAGES)
+	private String images;
 
 	public String getId() {
 		return id;

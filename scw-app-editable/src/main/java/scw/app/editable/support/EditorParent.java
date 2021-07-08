@@ -9,6 +9,7 @@ import scw.app.editable.DataManager;
 import scw.app.editable.Editor;
 import scw.app.editable.FieldInfo;
 import scw.app.editable.annotation.Editable;
+import scw.app.editable.annotation.Input;
 import scw.app.editable.annotation.SelectOption;
 import scw.app.user.security.SecurityProperties;
 import scw.core.annotation.AnnotatedElementUtils;
@@ -120,10 +121,15 @@ public class EditorParent implements Editor {
 			if (fieldInfo.getDescribe() == null) {
 				fieldInfo.setDescribe(fieldInfo.getName());
 			}
-
+			
 			SelectOption selectOption = field.getAnnotation(SelectOption.class);
 			if (selectOption != null) {
 				fieldInfo.setOptions(dataManager.selectOptions(selectOption.value(), query));
+			}
+			
+			Input input = field.getAnnotation(Input.class);
+			if(input != null){
+				fieldInfo.setInputType(input.type());
 			}
 			list.add(fieldInfo);
 		}

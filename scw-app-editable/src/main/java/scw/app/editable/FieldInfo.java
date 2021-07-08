@@ -10,6 +10,7 @@ public class FieldInfo implements Serializable {
 	private List<SelectOptions> options;
 	private boolean required;
 	private boolean primaryKey;
+	private InputType inputType = InputType.INPUT;
 
 	public String getName() {
 		return name;
@@ -49,5 +50,13 @@ public class FieldInfo implements Serializable {
 
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey = primaryKey;
+	}
+
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
 	}
 }
