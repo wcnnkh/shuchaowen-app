@@ -2,25 +2,24 @@ package scw.app.editable.test.ediable;
 
 import java.io.Serializable;
 
-import scw.app.editable.InputType;
 import scw.app.editable.annotation.Editable;
-import scw.app.editable.annotation.Input;
+import scw.app.editable.annotation.Image;
 import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
 import scw.orm.sql.annotation.Table;
 
 @Table
 @Editable(name = "测试栏目")
-public class TestInfo implements Serializable{
+public class TestInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Description("ID")
 	@PrimaryKey
 	private String id;
 	@Description("值")
 	private String value;
-	@Input(type = InputType.IMAGE)
+	@Image
 	private String image;
-	@Input(type = InputType.IMAGES)
+	@Image(multiple = true)
 	private String images;
 
 	public String getId() {

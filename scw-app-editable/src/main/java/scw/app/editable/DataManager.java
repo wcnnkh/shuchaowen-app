@@ -6,6 +6,7 @@ import scw.context.result.DataResult;
 import scw.context.result.Result;
 import scw.lang.Nullable;
 import scw.util.Pagination;
+import scw.util.Pair;
 
 public interface DataManager {
 	<T> Pagination<T> list(Class<? extends T> type, T query, int page, int limit);
@@ -19,5 +20,5 @@ public interface DataManager {
 
 	<T> DataResult<T> add(Class<? extends T> type, T result);
 
-	List<SelectOptions> selectOptions(Class<?> queryClass, Object queryParam);
+	List<Pair<String, String>> selectOptions(Class<?> queryClass, Object queryParam);
 }

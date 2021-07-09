@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import scw.app.editable.DataManager;
-import scw.app.editable.SelectOptions;
 import scw.context.annotation.Provider;
 import scw.context.result.DataResult;
 import scw.context.result.Result;
@@ -17,6 +16,7 @@ import scw.mapper.MapperUtils;
 import scw.sql.Sql;
 import scw.sql.WhereSql;
 import scw.util.Pagination;
+import scw.util.Pair;
 import scw.value.AnyValue;
 
 @Provider
@@ -70,7 +70,7 @@ public class DBDataManager implements DataManager {
 	}
 
 	@Override
-	public List<SelectOptions> selectOptions(Class<?> queryClass, Object queryParam) {
+	public List<Pair<String, String>> selectOptions(Class<?> queryClass, Object queryParam) {
 		return Collections.emptyList();
 	}
 

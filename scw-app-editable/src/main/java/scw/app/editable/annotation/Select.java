@@ -5,10 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import scw.app.editable.InputType;
-
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Input {
-	InputType type() default InputType.INPUT;
+public @interface Select {
+	Class<?> value();
 }

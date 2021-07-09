@@ -1,16 +1,30 @@
-package scw.app.editable;
+package scw.app.editable.form;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class FieldInfo implements Serializable {
+public class Input implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private final String type;
 	private String name;
 	private String describe;
-	private List<SelectOptions> options;
 	private boolean required;
 	private boolean primaryKey;
-	private InputType inputType = InputType.INPUT;
+
+	public Input() {
+		this(InputType.INPUT);
+	}
+
+	protected Input(InputType type) {
+		this.type = type.name();
+	}
+
+	protected Input(String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
+	}
 
 	public String getName() {
 		return name;
@@ -36,27 +50,11 @@ public class FieldInfo implements Serializable {
 		this.required = required;
 	}
 
-	public List<SelectOptions> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<SelectOptions> options) {
-		this.options = options;
-	}
-
 	public boolean isPrimaryKey() {
 		return primaryKey;
 	}
 
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey = primaryKey;
-	}
-
-	public InputType getInputType() {
-		return inputType;
-	}
-
-	public void setInputType(InputType inputType) {
-		this.inputType = inputType;
 	}
 }

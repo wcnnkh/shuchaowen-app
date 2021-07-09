@@ -7,10 +7,12 @@ import java.util.Map;
 
 import scw.app.editable.DataManager;
 import scw.app.editable.Editor;
-import scw.app.editable.FieldInfo;
 import scw.app.editable.annotation.Editable;
-import scw.app.editable.annotation.Input;
-import scw.app.editable.annotation.SelectOption;
+import scw.app.editable.annotation.Image;
+import scw.app.editable.annotation.Select;
+import scw.app.editable.form.ImageInput;
+import scw.app.editable.form.Input;
+import scw.app.editable.form.SelectInput;
 import scw.app.user.security.SecurityProperties;
 import scw.core.annotation.AnnotatedElementUtils;
 import scw.http.HttpMethod;
@@ -88,50 +90,58 @@ public class EditorParent implements Editor {
 		if (page == null || page < 1) {
 			page = 1;
 		}
-		
+
 		Integer limit = httpChannel.getValue("limit").getAsInteger();
 		if (limit == null || limit < 1) {
 			limit = 10;
 		}
-		
+
 		Pagination<Object> pagination = dataManager.list(editableClass, requestBean, page, limit);
 		Page view = new Page("/editable/list.ftl");
-		int maxPage = pagination == null? 1:pagination.getMaxPage();
+		int maxPage = pagination == null ? 1 : pagination.getMaxPage();
 		int currentPage = Math.min(page, maxPage);
 		view.put("page", currentPage);
 		view.put("limit", limit);
 		view.put("list", pagination == null ? null : pagination.getData());
 		view.put("totalCount", pagination == null ? 0 : pagination.getTotalCount());
 		view.put("query", requestBean);
-		view.put("fields", getFieldInfos(requestBean));
+		view.put("fields", getInputs(requestBean));
 		view.put("maxPage", maxPage);
 		view.put("name", getName());
 		return view;
 	}
 
+	private Input createInput(Object query, Field field) {
+		Select selects = field.getAnnotation(Select.class);
+		if (selects != null) {
+			SelectInput select = new SelectInput();
+			select.setOptions(dataManager.selectOptions(selects.value(), query));
+			return select;
+		}
+
+		Image images = field.getAnnotation(Image.class);
+		if (images != null) {
+			ImageInput image = new ImageInput();
+			image.setMultiple(images.multiple());
+			return image;
+		}
+
+		return new Input();
+	}
+
 	@Override
-	public List<FieldInfo> getFieldInfos(Object query) {
-		List<FieldInfo> list = new ArrayList<FieldInfo>();
+	public List<Input> getInputs(Object query) {
+		List<Input> list = new ArrayList<Input>();
 		for (Field field : MapperUtils.getMapper().getFields(editableClass).accept(FieldFeature.EXISTING_GETTER_FIELD)
 				.accept(FieldFeature.EXISTING_SETTER_FIELD).accept(FieldFeature.IGNORE_STATIC)) {
-			FieldInfo fieldInfo = new FieldInfo();
-			fieldInfo.setName(field.getGetter().getName());
-			fieldInfo.setDescribe(AnnotatedElementUtils.getDescription(field));
-			fieldInfo.setPrimaryKey(field.getGetter().isAnnotationPresent(PrimaryKey.class));
-			if (fieldInfo.getDescribe() == null) {
-				fieldInfo.setDescribe(fieldInfo.getName());
+			Input input = createInput(query, field);
+			input.setName(field.getGetter().getName());
+			input.setDescribe(AnnotatedElementUtils.getDescription(field));
+			input.setPrimaryKey(field.getGetter().isAnnotationPresent(PrimaryKey.class));
+			if (input.getDescribe() == null) {
+				input.setDescribe(input.getName());
 			}
-			
-			SelectOption selectOption = field.getAnnotation(SelectOption.class);
-			if (selectOption != null) {
-				fieldInfo.setOptions(dataManager.selectOptions(selectOption.value(), query));
-			}
-			
-			Input input = field.getAnnotation(Input.class);
-			if(input != null){
-				fieldInfo.setInputType(input.type());
-			}
-			list.add(fieldInfo);
+			list.add(input);
 		}
 		return list;
 	}

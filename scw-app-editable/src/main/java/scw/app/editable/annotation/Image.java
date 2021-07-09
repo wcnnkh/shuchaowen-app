@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SelectOption {
-	Class<?> value();
+public @interface Image {
+	boolean multiple() default false;
 }

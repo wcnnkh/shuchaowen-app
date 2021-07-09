@@ -16,7 +16,7 @@
 		<form class="layui-form layui-col-md12 x-so">
 			<#list fields as field>
 				${field.describe}:
-				<#if (field.options)??>
+				<#if field.type = "SELECT" && (field.options)??>
 					<div class="layui-input-inline">
 						<select name="${field.name}">
 							<#list field.options as option>
@@ -54,7 +54,7 @@
 			<#list list as item>
 				<tr>
 					<#list fields as field>
-						<td fieldName="${field.name}">${item[field.name]}</td>
+						<td fieldName="${field.name}">${(item[field.name])!''}</td>
 					</#list>
 					<td class="td-manage">
 						<a title="删除" onclick="deleteInfo(this)" href="javascript:;"> <i class="layui-icon">&#xe640;</i></a>

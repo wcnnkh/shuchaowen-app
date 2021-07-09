@@ -105,7 +105,7 @@ $(function() {
 								var clone = uploadDiv.clone(true);
 								clone.find('input').val('');
 								clone.find('input').attr("data-url", "");
-								clone.find('.show-img').attr("src", "");
+								//clone.find('.show-img').attr("src", "");
 								// IE9以下
 								clone.find('.show-img').css("filter", "");
 								clone.find('.add-img').show();

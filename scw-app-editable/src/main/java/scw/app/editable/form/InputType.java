@@ -1,8 +1,7 @@
-package scw.app.editable;
+package scw.app.editable.form;
 
 public enum InputType {
 	INPUT,
 	SELECT,
-	IMAGE,
-	IMAGES
+	IMAGE
 }
