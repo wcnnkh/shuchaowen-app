@@ -29,13 +29,13 @@
 					<#if (info[field.name])??>
 						<#list info[field.name]?split(",") as url>
 							 <img src="${_request.contextPath}/admin/images/addImg.png" class="add-img" /> 
-							 <input name="file" type="file" class="upload-input" data-url="${url}">
+							 <input name="${field.name}" type="file" class="upload-input" data-url="${url}">
 							 <img class="show-img" alt="" url="${url}"> 
 							 <img class="delete-img" src="${_request.contextPath}/admin/images/delete.png" style="display: inline-block">
 						</#list>
 					<#else>
 						 <img src="${_request.contextPath}/admin/images/addImg.png" class="add-img" /> 
-						 <input name="file" type="file" class="upload-input" data-url="">
+						 <input name="${field.name}" type="file" class="upload-input" data-url="">
 						 <img class="show-img" alt="" style="display:none"> 
 						 <img class="delete-img" src="${_request.contextPath}/admin/images/delete.png" style="display: inline-block">
 					</#if>
@@ -49,3 +49,5 @@
 		</div>
 	</div>
 </#list>
+<script>
+</script>

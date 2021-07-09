@@ -6,6 +6,7 @@ import scw.db.DB;
 import scw.env.Sys;
 import scw.mvc.annotation.Controller;
 import scw.sqlite.SQLiteDB;
+import scw.upload.Uploader;
 import scw.web.cors.Cors;
 import scw.web.cors.CorsRegistry;
 
@@ -45,5 +46,10 @@ public class EditableTestApplication {
 		CorsRegistry corsRegistry = new CorsRegistry();
 		corsRegistry.addMapping("/**", Cors.DEFAULT);
 		return corsRegistry;
+	}
+	
+	@Bean
+	public Uploader getUploader() {
+		return new Uploader(Sys.env.getWorkPath() + "/upload");
 	}
 }
