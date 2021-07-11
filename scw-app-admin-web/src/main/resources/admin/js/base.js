@@ -253,12 +253,42 @@ function previewImg(input, pic) {
 	}
 }
 
+function uploadImagesByPolicy(signUrl, fileInputs, successCall) {
+	var i = 0;
+	var uriArr = new Array();
+	(function upload() {
+		if (i >= fileInputs.length) {
+			successCall(uriArr);
+			return;
+		}
+
+		var fileInput = $(fileInputs).eq(i);
+		if (!isNull(fileInput.attr("data-url"))) {
+			uriArr.push(fileInput.attr("data-url"));
+			i++;
+			upload();
+		} else {
+			if (isNull(fileInput.val())) {
+				i++;
+				upload();
+				return;
+			}
+
+			uploadImageByPolicy(signUrl, fileInput, function(src) {
+				uriArr.push(src);
+				i++;
+				upload();
+			})
+		}
+	})();
+}
+
 
 function clearFileInputDataUrl(fileInput){
 	$(fileInput).attr("data-url", "");
 }
 
-function uploadImg(url, fileInput, successCall) {
+function uploadImageByPolicy(url, fileInput, successCall) {
 	var dataUrl = $(fileInput).attr("data-url");
 	if (dataUrl && dataUrl.length > 0) {
 		successCall(dataUrl);
@@ -285,6 +315,46 @@ function uploadImg(url, fileInput, successCall) {
 				console.log(e);
 				alert("系统错误");
 			}
+		})
+	}
+}
+
+function uploadImageByPolicy(signUrl, ossUrl, fileInput, urlPrefix, successCall) {
+	var dataUrl = $(fileInput).attr("data-url");
+	if (dataUrl && dataUrl.length > 0) {
+		successCall(dataUrl);
+	} else {
+		var index = layer.load(1, {
+			shade : [ 0.8, '#fff' ]
+		});
+
+		var requestData = {};
+		var fileName = $(fileInput)[0].value;
+		var lastIndex = fileName.lastIndexOf(".");
+		if (lastIndex != -1) {
+			fileName = fileName.substring(lastIndex + 1).toLowerCase();
+			requestData.suffix = fileName;
+		}
+
+		$.getJSON(signUrl, requestData, function(sign) {
+			var form = new FormData();
+			form.append("key", sign.key);
+			form.append("OSSAccessKeyId", sign.OSSAccessKeyId);
+			form.append("policy", sign.policy);
+			form.append("Signature", sign.Signature);
+			form.append("file", $(fileInput)[0].files[0]);
+			$.ajax({
+				url : ossUrl,
+				data : form,
+				processData : false,
+				contentType : false,
+				type : 'POST'
+			}).done(function() {
+				layer.close(index);
+				var imgUrl = urlPrefix + sign.key;
+				$(fileInput).attr("data-url", imgUrl);
+				successCall(imgUrl);
+			});
 		})
 	}
 }
