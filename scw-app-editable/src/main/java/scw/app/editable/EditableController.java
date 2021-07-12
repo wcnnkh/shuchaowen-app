@@ -46,7 +46,7 @@ public class EditableController {
 
 		UploadPolicy uploadPolicy = resourceStorageService.generatePolicy(
 				group + "/" + requestUser.getUid() + "/" + XUtils.getUUID() + "." + suffix,
-				new Date(System.currentTimeMillis() + 10000L));
+				new Date(System.currentTimeMillis() + 60000L));
 		return resultFactory.success(uploadPolicy);
 	}
 }
