@@ -1,16 +1,14 @@
 package scw.app.editable;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import scw.app.user.security.SecurityProperties;
 import scw.beans.annotation.Autowired;
 import scw.context.result.Result;
 import scw.context.result.ResultFactory;
 import scw.data.ResourceStorageService;
+import scw.data.ResourceStorageService.UploadPolicy;
 import scw.http.HttpMethod;
-import scw.http.HttpRequestEntity;
 import scw.http.HttpStatus;
 import scw.mvc.HttpChannel;
 import scw.mvc.annotation.Controller;
@@ -41,15 +39,14 @@ public class EditableController {
 	}
 
 	@Controller(value = "/generate_upload_policy")
-	public Result generateUploadPolicy(UserSession<Long> requestUser) {
+	public Result generateUploadPolicy(UserSession<Long> requestUser, String group, String suffix) {
 		if (resourceStorageService == null) {
 			return resultFactory.error("不支持资源上传");
 		}
-		HttpRequestEntity<?> requestEntity = resourceStorageService.generatePolicy(
-				requestUser.getUid() + "/" + XUtils.getUUID(), new Date(System.currentTimeMillis() + 10000L));
-		Map<String, Object> map = new HashMap<>(4);
-		map.put("url", requestEntity.getURI());
-		map.put("method", requestEntity.getMethod());
-		return resultFactory.success(map);
+
+		UploadPolicy uploadPolicy = resourceStorageService.generatePolicy(
+				group + "/" + requestUser.getUid() + "/" + XUtils.getUUID() + "." + suffix,
+				new Date(System.currentTimeMillis() + 10000L));
+		return resultFactory.success(uploadPolicy);
 	}
 }

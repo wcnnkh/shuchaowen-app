@@ -50,4 +50,7 @@
 	</div>
 </#list>
 <script>
+	function uploadFormImages(successCallback){
+		uploadImagesByPolicy("${_request.contextPath}/admin/generate_upload_policy", $("input.upload-input"), successCallback);
+	}
 </script>

@@ -258,13 +258,27 @@ function uploadImagesByPolicy(signUrl, fileInputs, successCall) {
 	var uriArr = new Array();
 	(function upload() {
 		if (i >= fileInputs.length) {
-			successCall(uriArr);
+			var map = {};
+			uriArr.forEach(function(item){
+				var urls = map[item.name];
+				if(urls){
+					urls.push(item.url);
+				}else{
+					urls = new Array();
+					urls.push(item.url);
+					map[item.name] = urls;
+				}
+			})
+			successCall(map);
 			return;
 		}
 
 		var fileInput = $(fileInputs).eq(i);
 		if (!isNull(fileInput.attr("data-url"))) {
-			uriArr.push(fileInput.attr("data-url"));
+			var info = {};
+			info.name = fileInput.attr("name");
+			info.url = fileInput.attr("data-url");
+			uriArr.push(info);
 			i++;
 			upload();
 		} else {
@@ -291,35 +305,52 @@ function clearFileInputDataUrl(fileInput){
 function uploadImageByPolicy(url, fileInput, successCall) {
 	var dataUrl = $(fileInput).attr("data-url");
 	if (dataUrl && dataUrl.length > 0) {
-		successCall(dataUrl);
+		var info = {};
+		info.name = fileInput.attr("name");
+		info.url = dataUrl;
+		successCall(info);
 	} else {
-		$.ajaxFileUpload({
-			url : url, //用于文件上传的服务器端请求地址
-			secureuri : false, //一般设置为false
-			fileInput : "#" + $(fileInput).attr("id"), //文件上传空间的id属性  <input type="file" id="file" name="file" />
-			dataType : 'JSON', //返回值类型 一般设置为json
-			success : function(data, status) //服务器成功响应处理函数
-			{
-				var json = JSON.parse(data);
-				if (json.error == 0) {
-					var uri = json.data;
-					$(fileInput).attr("data-url", uri);
-					successCall(uri);
-				} else {
-					alert(json.data);
+		var fileName = $(fileInput)[0].value;
+		var lastIndex = fileName.lastIndexOf(".");
+		if (lastIndex != -1) {
+			fileName = fileName.substring(lastIndex + 1).toLowerCase();
+		}
+		$.getJSON(url, {
+			"group":"image",
+			"suffix": fileName
+		}, function(response){
+			var data = response.data;
+			var index = layer.load(1, {
+				shade : [ 0.8, '#fff' ]
+			});
+			
+			var form = new FormData();
+			if(data.policy.body){
+				for(var fieldName in data.policy.body){
+					form.append(fieldName, data.policy.body[fieldName]);
 				}
-			},
-			error : function(data, status, e)//服务器响应失败处理函数
-			{
-				console.log(data);
-				console.log(e);
-				alert("系统错误");
 			}
+			form.append("file", $(fileInput)[0].files[0]);
+			$.ajax({
+				url : data.policy.url,
+				data : form,
+				processData : false,
+				contentType : false,
+				type : data.policy.method
+			}).done(function() {
+				layer.close(index);
+				var imgUrl = data.url;
+				$(fileInput).attr("data-url", imgUrl);
+				var info = {};
+				info.name = $(fileInput).attr("name");
+				info.url = imgUrl;
+				successCall(info);
+			});
 		})
 	}
 }
 
-function uploadImageByPolicy(signUrl, ossUrl, fileInput, urlPrefix, successCall) {
+/*function uploadImageByPolicy(signUrl, ossUrl, fileInput, urlPrefix, successCall) {
 	var dataUrl = $(fileInput).attr("data-url");
 	if (dataUrl && dataUrl.length > 0) {
 		successCall(dataUrl);
@@ -357,7 +388,7 @@ function uploadImageByPolicy(signUrl, ossUrl, fileInput, urlPrefix, successCall)
 			});
 		})
 	}
-}
+}*/
 
 function Base64(inputStr) {
 	if (!inputStr) {

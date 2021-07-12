@@ -50,6 +50,8 @@ public class EditableTestApplication {
 	
 	@Bean
 	public Uploader getUploader() {
-		return new Uploader(Sys.env.getWorkPath() + "/upload");
+		Uploader uploader = new Uploader(Sys.env.getWorkPath() + "/upload");
+		uploader.setBaseUrl("http://localhost:8080");
+		return uploader;
 	}
 }

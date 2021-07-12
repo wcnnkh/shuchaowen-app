@@ -20,24 +20,29 @@
 				,layer = layui.layer;
 
 		form.on('submit(add)', function(data){
-			var requestData = data.field;
-			$.ajax({
-				"url": "add",
-				"method":"POST",
-				"dataType":"json",
-				"data": requestData,
-				success:function(response){
-					if(response.code != 0){
-						layer.alert(response.msg, {icon: 5});
-					}else{
-						layer.alert("操作成功", {icon: 6},function () {
-							parent.location.reload();
-						});
-					}
-				},
-				error:function(){
-					layer.msg("网络或系统错误，请稍后重试", {icon: 5});
+			uploadFormImages(function(images){
+				var requestData = data.field;
+				for(var key in images){
+					requestData[key] = images[key].join(",");
 				}
+				$.ajax({
+					"url": "add",
+					"method":"POST",
+					"dataType":"json",
+					"data": requestData,
+					success:function(response){
+						if(response.code != 0){
+							layer.alert(response.msg, {icon: 5});
+						}else{
+							layer.alert("操作成功", {icon: 6},function () {
+								parent.location.reload();
+							});
+						}
+					},
+					error:function(){
+						layer.msg("网络或系统错误，请稍后重试", {icon: 5});
+					}
+				})
 			})
 			return false;
 		});

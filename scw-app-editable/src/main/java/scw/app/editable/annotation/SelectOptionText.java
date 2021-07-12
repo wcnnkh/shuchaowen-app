@@ -7,8 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Select {
-	Class<?> value();
-	
-	String name() default "";
+public @interface SelectOptionText {
 }
