@@ -1,5 +1,7 @@
 package scw.app.editable.test;
 
+import javax.servlet.annotation.MultipartConfig;
+
 import scw.beans.annotation.Bean;
 import scw.boot.support.MainApplication;
 import scw.db.DB;
@@ -10,6 +12,7 @@ import scw.upload.Uploader;
 import scw.web.cors.Cors;
 import scw.web.cors.CorsRegistry;
 
+@MultipartConfig
 public class EditableTestApplication {
 	
 	public static void main(String[] args) {

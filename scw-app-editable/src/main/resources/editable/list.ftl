@@ -15,20 +15,15 @@
 	<div class="layui-row">
 		<form class="layui-form layui-col-md12 x-so">
 			<#list fields as field>
+				<#assign info=query>
 				${field.describe}:
-				<#if field.type = "SELECT" && (field.options)??>
-					<div class="layui-input-inline">
-						<select name="${field.name}">
-							<#list field.options as option>
-								<option value="${option.value }" <#if ((query[field.name])!'') == option.value></#if>>${option.text}</option>
-							</#list>
-						</select>
-					</div>
-				<#else>
-					<input type="text" name="${field.name}"
-									   placeholder="请输入${field.describe}" autocomplete="off" value="${(query[field.name])!''}"
-									   class="layui-input"/>
-				</#if>
+				<div class="layui-input-inline">
+					<#if field.type = "SELECT" && (field.options)??>
+						<#include "/editable/include/form-select.ftl">
+					<#else>
+						<#include "/editable/include/form-input.ftl">
+					</#if>
+				</div>
 				&nbsp;&nbsp
 			</#list>
 			<button class="layui-btn" lay-submit="" lay-filter="sreach">
@@ -54,7 +49,15 @@
 			<#list list as item>
 				<tr>
 					<#list fields as field>
-						<td fieldName="${field.name}">${(item[field.name])!''}</td>
+						<#assign info=item>
+						<#assign readonly=true>
+						<td fieldName="${field.name}" width="100">
+							<#if field.type == "SELECT">
+								<#include "/editable/include/form-select.ftl">
+							<#else>
+								${(item[field.name])!''}
+							</#if>
+						</td>
 					</#list>
 					<td class="td-manage">
 						<a title="删除" onclick="deleteInfo(this)" href="javascript:;"> <i class="layui-icon">&#xe640;</i></a>

@@ -9,4 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Image {
 	boolean multiple() default false;
+	
+	int width() default 200;
+	
+	int height() default 200;
 }

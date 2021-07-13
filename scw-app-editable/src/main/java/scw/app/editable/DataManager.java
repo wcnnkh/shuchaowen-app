@@ -20,5 +20,5 @@ public interface DataManager {
 
 	<T> DataResult<T> add(Class<? extends T> type, T result);
 
-	List<Pair<String, String>> selectOptions(Class<?> queryClass, Object queryParam);
+	List<Pair<String, String>> queryOptions(Class<?> queryClass, @Nullable String query);
 }

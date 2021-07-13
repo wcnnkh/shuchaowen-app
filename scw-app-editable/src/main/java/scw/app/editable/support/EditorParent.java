@@ -114,16 +114,14 @@ public class EditorParent implements Editor {
 	private Input createInput(Object query, Field field) {
 		Select selects = field.getAnnotation(Select.class);
 		if (selects != null) {
-			SelectInput select = new SelectInput();
-			select.setOptions(dataManager.selectOptions(selects.value(), query));
+			SelectInput select = new SelectInput(selects);
+			select.setOptions(dataManager.queryOptions(selects.value(), null));
 			return select;
 		}
 
 		Image images = field.getAnnotation(Image.class);
 		if (images != null) {
-			ImageInput image = new ImageInput();
-			image.setMultiple(images.multiple());
-			return image;
+			return new ImageInput(images);
 		}
 
 		return new Input();

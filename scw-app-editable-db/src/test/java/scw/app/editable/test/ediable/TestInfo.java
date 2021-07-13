@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import scw.app.editable.annotation.Editable;
 import scw.app.editable.annotation.Image;
+import scw.app.editable.annotation.Select;
 import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
 import scw.orm.sql.annotation.Table;
@@ -17,7 +18,11 @@ public class TestInfo implements Serializable {
 	private String id;
 	@Description("值")
 	private String value;
-	@Image
+
+	@Select(TestOptions.class)
+	private Integer selectValue;
+
+	@Image(width = 400, height = 200)
 	private String image;
 	@Image(multiple = true)
 	private String images;
@@ -36,5 +41,29 @@ public class TestInfo implements Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
+	}
+
+	public Integer getSelectValue() {
+		return selectValue;
+	}
+
+	public void setSelectValue(Integer selectValue) {
+		this.selectValue = selectValue;
 	}
 }

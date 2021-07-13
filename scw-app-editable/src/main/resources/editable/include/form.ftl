@@ -1,56 +1,42 @@
-<#list fields as field>
+<form class="layui-form">
+	<#include "/editable/include/form-fields.ftl">
 	<div class="layui-form-item">
-		<label for="name" class="layui-form-label">
-			<#if (field.requried)!false>
-				<span class="x-red">*</span>
-			</#if>
-			${field.describe}
-		</label>
-		<#if field.type == "IMAGE">
-			<div class="layui-input-block">
-		<#else>
-			<div class="layui-input-inline">
-		</#if>
-			<#if field.type == "SELECT">
-				<select name="${field.name}">
-					<#if (field.options)??>
-						<#list field.options as option>
-							<option value="${option.key}" <#if ((info[field.name])!'')==option.value>selected="selected"</#if>>${option.text}</option>
-						</#list>
-					</#if>
-				</select>
-			<#elseif field.type == "IMAGE">
-				<div class="upload-img" name="${field.name}" 
-					<#if field.multiple>
-					data-auto-add = "true"
-					</#if>
-				>
-					
-					<#if (info[field.name])??>
-						<#list info[field.name]?split(",") as url>
-							 <img src="${_request.contextPath}/admin/images/addImg.png" class="add-img" /> 
-							 <input name="${field.name}" type="file" class="upload-input" data-url="${url}">
-							 <img class="show-img" alt="" url="${url}"> 
-							 <img class="delete-img" src="${_request.contextPath}/admin/images/delete.png" style="display: inline-block">
-						</#list>
-					<#else>
-						 <img src="${_request.contextPath}/admin/images/addImg.png" class="add-img" /> 
-						 <input name="${field.name}" type="file" class="upload-input" data-url="">
-						 <img class="show-img" alt="" style="display:none"> 
-						 <img class="delete-img" src="${_request.contextPath}/admin/images/delete.png" style="display: inline-block">
-					</#if>
-				</div>
-			<#else>
-				<input type="text" name="${field.name}" required="" value="${(info[field.name])!''}" 
-				   <#if (info[field.name])?? && field.primaryKey>readonly="readonly"</#if>
-				   <#if (field.required)!false>lay-verify="required"</#if> 
-				   autocomplete="off" class="layui-input" placeholder="请输入${field.describe}" />
-			</#if>
-		</div>
+		<label for="L_repass" class="layui-form-label"> </label>
+		<button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
 	</div>
-</#list>
+</form>
 <script>
-	function uploadFormImages(successCallback){
-		uploadImagesByPolicy("${_request.contextPath}/admin/generate_upload_policy", $("input.upload-input"), successCallback);
-	}
+	layui.use(['form','layer'], function(){
+		$ = layui.jquery;
+		var form = layui.form
+				,layer = layui.layer;
+
+		form.on('submit(add)', function(data){
+			uploadFormImages(function(images){
+				var requestData = data.field;
+				for(var key in images){
+					requestData[key] = images[key].join(",");
+				}
+				$.ajax({
+					"url": "${postUrl}",
+					"method":"POST",
+					"dataType":"json",
+					"data": requestData,
+					success:function(response){
+						if(response.code != 0){
+							layer.alert(response.msg, {icon: 5});
+						}else{
+							layer.alert("操作成功", {icon: 6},function () {
+								parent.location.reload();
+							});
+						}
+					},
+					error:function(){
+						layer.msg("网络或系统错误，请稍后重试", {icon: 5});
+					}
+				})
+			})
+			return false;
+		});
+	});
 </script>
