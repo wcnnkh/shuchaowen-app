@@ -7,5 +7,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SelectOption {
+public @interface Image {
+	boolean multiple() default false;
+	
+	int width() default 200;
+	
+	int height() default 200;
 }

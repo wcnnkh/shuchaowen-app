@@ -26,7 +26,7 @@
     <div class="left-nav">
       <div id="side-nav">
         <ul id="nav">
-        	${leftHtml};
+        	${leftHtml}
         </ul>
       </div>
     </div>

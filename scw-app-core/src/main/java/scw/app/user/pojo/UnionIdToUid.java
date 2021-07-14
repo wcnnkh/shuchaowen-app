@@ -3,7 +3,7 @@ package scw.app.user.pojo;
 import java.io.Serializable;
 
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class UnionIdToUid implements Serializable{

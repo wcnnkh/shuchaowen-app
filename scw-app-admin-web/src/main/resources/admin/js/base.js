@@ -105,7 +105,7 @@ $(function() {
 								var clone = uploadDiv.clone(true);
 								clone.find('input').val('');
 								clone.find('input').attr("data-url", "");
-								clone.find('.show-img').attr("src", "");
+								//clone.find('.show-img').attr("src", "");
 								// IE9以下
 								clone.find('.show-img').css("filter", "");
 								clone.find('.add-img').show();
@@ -253,41 +253,142 @@ function previewImg(input, pic) {
 	}
 }
 
+function uploadImagesByPolicy(signUrl, fileInputs, successCall) {
+	var i = 0;
+	var uriArr = new Array();
+	(function upload() {
+		if (i >= fileInputs.length) {
+			var map = {};
+			uriArr.forEach(function(item){
+				var urls = map[item.name];
+				if(urls){
+					urls.push(item.url);
+				}else{
+					urls = new Array();
+					urls.push(item.url);
+					map[item.name] = urls;
+				}
+			})
+			successCall(map);
+			return;
+		}
+
+		var fileInput = $(fileInputs).eq(i);
+		if (!isNull(fileInput.attr("data-url"))) {
+			var info = {};
+			info.name = fileInput.attr("name");
+			info.url = fileInput.attr("data-url");
+			uriArr.push(info);
+			i++;
+			upload();
+		} else {
+			if (isNull(fileInput.val())) {
+				i++;
+				upload();
+				return;
+			}
+
+			uploadImageByPolicy(signUrl, fileInput, function(src) {
+				uriArr.push(src);
+				i++;
+				upload();
+			})
+		}
+	})();
+}
+
 
 function clearFileInputDataUrl(fileInput){
 	$(fileInput).attr("data-url", "");
 }
 
-function uploadImg(url, fileInput, successCall) {
+function uploadImageByPolicy(url, fileInput, successCall) {
+	var dataUrl = $(fileInput).attr("data-url");
+	if (dataUrl && dataUrl.length > 0) {
+		var info = {};
+		info.name = fileInput.attr("name");
+		info.url = dataUrl;
+		successCall(info);
+	} else {
+		var fileName = $(fileInput)[0].value;
+		var lastIndex = fileName.lastIndexOf(".");
+		if (lastIndex != -1) {
+			fileName = fileName.substring(lastIndex + 1).toLowerCase();
+		}
+		$.getJSON(url, {
+			"group":"image",
+			"suffix": fileName
+		}, function(response){
+			var data = response.data;
+			var index = layer.load(1, {
+				shade : [ 0.8, '#fff' ]
+			});
+			
+			var form = new FormData();
+			if(data.policy.body){
+				for(var fieldName in data.policy.body){
+					form.append(fieldName, data.policy.body[fieldName]);
+				}
+			}
+			form.append("file", $(fileInput)[0].files[0]);
+			$.ajax({
+				url : data.policy.url,
+				data : form,
+				processData : false,
+				contentType : false,
+				type : data.policy.method
+			}).done(function() {
+				layer.close(index);
+				var imgUrl = data.url;
+				$(fileInput).attr("data-url", imgUrl);
+				var info = {};
+				info.name = $(fileInput).attr("name");
+				info.url = imgUrl;
+				successCall(info);
+			});
+		})
+	}
+}
+
+/*function uploadImageByPolicy(signUrl, ossUrl, fileInput, urlPrefix, successCall) {
 	var dataUrl = $(fileInput).attr("data-url");
 	if (dataUrl && dataUrl.length > 0) {
 		successCall(dataUrl);
 	} else {
-		$.ajaxFileUpload({
-			url : url, //用于文件上传的服务器端请求地址
-			secureuri : false, //一般设置为false
-			fileInput : "#" + $(fileInput).attr("id"), //文件上传空间的id属性  <input type="file" id="file" name="file" />
-			dataType : 'JSON', //返回值类型 一般设置为json
-			success : function(data, status) //服务器成功响应处理函数
-			{
-				var json = JSON.parse(data);
-				if (json.error == 0) {
-					var uri = json.data;
-					$(fileInput).attr("data-url", uri);
-					successCall(uri);
-				} else {
-					alert(json.data);
-				}
-			},
-			error : function(data, status, e)//服务器响应失败处理函数
-			{
-				console.log(data);
-				console.log(e);
-				alert("系统错误");
-			}
+		var index = layer.load(1, {
+			shade : [ 0.8, '#fff' ]
+		});
+
+		var requestData = {};
+		var fileName = $(fileInput)[0].value;
+		var lastIndex = fileName.lastIndexOf(".");
+		if (lastIndex != -1) {
+			fileName = fileName.substring(lastIndex + 1).toLowerCase();
+			requestData.suffix = fileName;
+		}
+
+		$.getJSON(signUrl, requestData, function(sign) {
+			var form = new FormData();
+			form.append("key", sign.key);
+			form.append("OSSAccessKeyId", sign.OSSAccessKeyId);
+			form.append("policy", sign.policy);
+			form.append("Signature", sign.Signature);
+			form.append("file", $(fileInput)[0].files[0]);
+			$.ajax({
+				url : ossUrl,
+				data : form,
+				processData : false,
+				contentType : false,
+				type : 'POST'
+			}).done(function() {
+				layer.close(index);
+				var imgUrl = urlPrefix + sign.key;
+				$(fileInput).attr("data-url", imgUrl);
+				successCall(imgUrl);
+			});
 		})
 	}
-}
+}*/
 
 function Base64(inputStr) {
 	if (!inputStr) {

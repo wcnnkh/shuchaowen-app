@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.Table;
 
 /**
  * 用户使用兑换码日志

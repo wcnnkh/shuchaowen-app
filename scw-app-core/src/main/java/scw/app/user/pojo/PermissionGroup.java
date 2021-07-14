@@ -3,8 +3,8 @@ package scw.app.user.pojo;
 import scw.app.user.model.PermissionGroupModel;
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.AutoIncrement;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.AutoIncrement;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class PermissionGroup extends PermissionGroupModel {

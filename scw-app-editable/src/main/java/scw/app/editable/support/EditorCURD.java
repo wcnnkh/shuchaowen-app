@@ -18,8 +18,8 @@ public abstract class EditorCURD extends EditorParent {
 	}
 
 	@Override
-	public final HttpMethod getMethod() {
-		return method;
+	public final String getMethod() {
+		return method.name();
 	}
 	
 	@Override

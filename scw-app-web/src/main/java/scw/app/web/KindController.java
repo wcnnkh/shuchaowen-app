@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scw.http.HttpMethod;
+import scw.io.IOUtils;
 import scw.mvc.annotation.Controller;
-import scw.net.message.multipart.FileItem;
+import scw.net.message.multipart.MultipartMessage;
 import scw.security.session.UserSession;
 import scw.upload.kind.KindDirType;
 import scw.upload.kind.KindEditor;
@@ -26,7 +27,7 @@ public class KindController {
 
 	@Controller(value = "upload", methods = { HttpMethod.POST, HttpMethod.PUT })
 	public Object upload(UserSession<Long> requestUser, MultiPartServerHttpRequest request, KindDirType dir) {
-		FileItem fileItem = request.getFirstFile();
+		MultipartMessage fileItem = request.getFirstFile();
 		if (fileItem == null) {
 			return error("请选择文件");
 		}
@@ -37,7 +38,7 @@ public class KindController {
 		} catch (Exception e) {
 			return error(e.getMessage());
 		} finally {
-			request.close();
+			IOUtils.closeQuietly(fileItem);
 		}
 	}
 

@@ -1,22 +1,42 @@
-<#list fields as field>
+<form class="layui-form">
+	<#include "/editable/include/form-fields.ftl">
 	<div class="layui-form-item">
-		<label for="name" class="layui-form-label">
-			<#if (field.requried)!false>
-				<span class="x-red">*</span>
-			</#if>
-			${field.describe}
-		</label>
-		<div class="layui-input-inline">
-			<#if field.options??>
-				<select name="${field.name}">
-					<#list field.options as option>
-						<option value="${option.value}" <#if ((info[field.name])!'')==option.value>selected="selected"</#if>>${option.text}</option>
-					</#list>
-				</select>
-			<#else>
-				<input type="text" name="${field.name}" required="" value="${(info[field.name])!''}"
-				   <#if (field.required)!false>lay-verify="required"</#if> autocomplete="off" class="layui-input"/>
-			</#if>
-		</div>
+		<label for="L_repass" class="layui-form-label"> </label>
+		<button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
 	</div>
-</#list>
+</form>
+<script>
+	layui.use(['form','layer'], function(){
+		$ = layui.jquery;
+		var form = layui.form
+				,layer = layui.layer;
+
+		form.on('submit(add)', function(data){
+			uploadFormImages(function(images){
+				var requestData = data.field;
+				for(var key in images){
+					requestData[key] = images[key].join(",");
+				}
+				$.ajax({
+					"url": "${postUrl}",
+					"method":"POST",
+					"dataType":"json",
+					"data": requestData,
+					success:function(response){
+						if(response.code != 0){
+							layer.alert(response.msg, {icon: 5});
+						}else{
+							layer.alert("操作成功", {icon: 6},function () {
+								parent.location.reload();
+							});
+						}
+					},
+					error:function(){
+						layer.msg("网络或系统错误，请稍后重试", {icon: 5});
+					}
+				})
+			})
+			return false;
+		});
+	});
+</script>

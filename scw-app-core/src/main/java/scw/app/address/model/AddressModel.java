@@ -2,15 +2,15 @@ package scw.app.address.model;
 
 import java.io.Serializable;
 
+import scw.lang.Description;
 import scw.mapper.MapperUtils;
-import scw.sql.orm.annotation.Column;
 
 public class AddressModel implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 	private String name;
-	@Column(comment = "经度")
+	@Description("经度")
 	private float longitude;
-	@Column(comment = "纬度")
+	@Description("纬度")
 	private float latitude;
 
 	public String getName() {

@@ -48,8 +48,8 @@ public class UserAddressServiceImpl extends BaseServiceConfiguration implements 
 	}
 
 	public List<UserAddressInfo> getUserAddressList(long uid) {
-		List<UserAddress> userAddressList = db.select(UserAddress.class,
-				new SimpleSql("select * from user_address where uid=? order by lastUpdateTime desc", uid));
+		List<UserAddress> userAddressList = db.query(UserAddress.class,
+				new SimpleSql("select * from user_address where uid=? order by lastUpdateTime desc", uid)).shared();
 		if (CollectionUtils.isEmpty(userAddressList)) {
 			return Collections.emptyList();
 		}

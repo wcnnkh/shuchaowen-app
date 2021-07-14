@@ -3,9 +3,9 @@ package scw.app.address.pojo;
 import scw.app.address.model.UserAddressModel;
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.AutoIncrement;
-import scw.sql.orm.annotation.Index;
-import scw.sql.orm.annotation.Table;
+import scw.orm.sql.annotation.AutoIncrement;
+import scw.orm.sql.annotation.Index;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class UserAddress extends UserAddressModel {

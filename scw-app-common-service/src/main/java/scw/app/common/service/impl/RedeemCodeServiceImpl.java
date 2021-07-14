@@ -105,8 +105,7 @@ public class RedeemCodeServiceImpl extends BaseServiceConfiguration implements R
 			whereSql.and("cts <=?", endTime);
 		}
 
-		return db.select(UserRedeemCodeLog.class, page, limit,
-				whereSql.assembleSql("select * from user_redeem_code_log", "order by cts desc"));
+		return db.paginationQuery(UserRedeemCodeLog.class, whereSql.assembleSql("select * from user_redeem_code_log", "order by cts desc"), page, limit);
 	}
 
 }

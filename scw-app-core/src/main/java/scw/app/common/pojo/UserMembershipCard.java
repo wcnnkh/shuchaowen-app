@@ -2,30 +2,30 @@ package scw.app.common.pojo;
 
 import java.io.Serializable;
 
+import scw.lang.Description;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Column;
-import scw.sql.orm.annotation.Index;
-import scw.sql.orm.annotation.Table;
-import scw.sql.orm.support.generation.annotation.CreateTime;
-import scw.sql.orm.support.generation.annotation.SequenceId;
+import scw.orm.generator.annotation.CreateTime;
+import scw.orm.generator.annotation.Generator;
+import scw.orm.sql.annotation.Index;
+import scw.orm.sql.annotation.Table;
 
 @Table(comment = "用户会员卡")
 public class UserMembershipCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
-	@SequenceId
-	@Column(comment = "会员卡id")
+	@Generator
+	@Description("会员卡id")
 	private String id;
 	@Index
 	private long uid;
-	@Column(comment = "会员卡类型")
+	@Description("会员卡类型")
 	private int type;
 	@CreateTime
-	@Column(comment = "创建时间")
+	@Description("创建时间")
 	private long cts;
-	@Column(comment = "生效时间")
+	@Description("生效时间")
 	private long beginTime;
-	@Column(comment = "失效时间")
+	@Description("失效时间")
 	private long endTime;
 
 	public String getId() {

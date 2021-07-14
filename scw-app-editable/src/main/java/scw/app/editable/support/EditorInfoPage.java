@@ -24,7 +24,7 @@ public class EditorInfoPage extends EditorCURD {
 		Page page = new Page("/editable/info.ftl");
 		page.put("info", info);
 		page.put("query", requestBean);
-		page.put("fields", getFieldInfos(requestBean));
+		page.put("fields", getInputs(requestBean));
 		return page;
 	}
 }

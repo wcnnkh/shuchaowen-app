@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 import scw.mapper.MapperUtils;
 import scw.orm.annotation.PrimaryKey;
-import scw.sql.orm.annotation.Index;
-import scw.sql.orm.annotation.Table;
-import scw.sql.orm.support.generation.annotation.CreateTime;
-import scw.sql.orm.support.generation.annotation.SequenceId;
+import scw.orm.generator.annotation.CreateTime;
+import scw.orm.generator.annotation.Generator;
+import scw.orm.sql.annotation.Index;
+import scw.orm.sql.annotation.Table;
 
 @Table
 public class RedeemCodeUseLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@PrimaryKey
-	@SequenceId
+	@Generator
 	private String id;
 	@Index
 	private long uid;
