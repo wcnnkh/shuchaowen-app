@@ -25,7 +25,7 @@ public class AuthorityInitializer implements ApplicationPostProcessor {
 				.getInstance(EditorRegistry.class);
 		EditorResolver editorResolver = application.getBeanFactory()
 				.getInstance(EditorResolver.class);
-		for (Class<?> clazz : application.getContextClassesLoader()) {
+		for (Class<?> clazz : application.getContextClasses()) {
 			if (!editorResolver.canResolve(clazz)) {
 				continue;
 			}

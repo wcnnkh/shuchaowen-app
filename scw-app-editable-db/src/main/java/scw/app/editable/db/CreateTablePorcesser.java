@@ -15,7 +15,7 @@ public class CreateTablePorcesser implements ApplicationPostProcessor{
 			throws Throwable {
 		if(application.isInstance(DB.class) && application.isInstance(EditorResolver.class)){
 			DB db = application.getInstance(DB.class);
-			for(Class<?> clazz : application.getContextClassesLoader()){
+			for(Class<?> clazz : application.getContextClasses()){
 				if(clazz.isAnnotationPresent(Editable.class)){
 					db.createTable(clazz);
 				}
